@@ -5,8 +5,21 @@ const Button = (props) => (
     {props.text}
   </button>
 )
-const Statistic = (props) => (
+const StatisticLine = (props) => (
   <p>{props.text} {props.number} {props.percentage}</p>
+)
+const Statistics = (props) => (
+  <>
+    <StatisticLine text="Good" number={props.values[0]} />
+    <StatisticLine text="Neutral" number={props.values[1]} />
+    <StatisticLine text="Bad" number={props.values[2]} />
+    <StatisticLine text="All" number={props.values[0]+
+      props.values[1]+props.values[2]} />
+    <StatisticLine text="Average" number={(props.values[0]-props.values[2]) / 
+      (props.values[0]+props.values[1]+props.values[2])} />
+    <StatisticLine text="Positive" number={props.values[0] / 
+      (props.values[0]+props.values[1]+props.values[2])} percentage="%" />
+</>
 )
 const App = () => {
   // save clicks of each button to its own state
@@ -21,12 +34,7 @@ const App = () => {
       <Button handleClick={() => setNeutral(neutral+1)} text="Neutral" />
       <Button handleClick={() => setBad(bad+1)} text="Bad" />
       <h1>Statistics</h1>
-      <Statistic text="Good" number={good} />
-      <Statistic text="Neutral" number={neutral} />
-      <Statistic text="Bad" number={bad} />
-      <Statistic text="All" number={good+neutral+bad} />
-      <Statistic text="Average" number={(good-bad)/(good+bad+neutral)} />
-      <Statistic text="Positive" number={good/(good+bad+neutral)} percentage="%" />
+      <Statistics values={[good, neutral, bad]} />
     </div>
   )
 }
