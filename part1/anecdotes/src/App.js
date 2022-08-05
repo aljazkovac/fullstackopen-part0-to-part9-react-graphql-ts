@@ -26,7 +26,12 @@ const DisplayVotes = (props) => (
 const DisplayAnecdote = (props) => (
   <p>"{props.anecdote}"</p>
 )
-
+const findIdxOfMostPopularAnecdote = (votes) => {
+  var idxMaxValue = votes.reduce(
+    (bestIndexSoFar, currentlyTestedValue, currentlyTestedIndex, votes) => 
+    currentlyTestedValue > votes[bestIndexSoFar] ? currentlyTestedIndex : bestIndexSoFar, 0)
+  return idxMaxValue
+}
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -40,16 +45,21 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState((Array(anecdotes.length).fill(0)))
-  console.log("Votes = ", votes)
+  const mostPopularAnecdoteIdx = findIdxOfMostPopularAnecdote(votes)
+  const mostPopularAnecdote = anecdotes[mostPopularAnecdoteIdx]
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <DisplayAnecdote anecdote={anecdotes[selected]} />
       <DisplayVotes numberOfVotes={votes[selected]} />
       <div>
         <Button handleClick={() => setVotes(voteForAnecdote(selected, votes))} text="Vote for anecdote" />
         <Button handleClick={() => setSelected(findRandomAnecdote(selected, anecdotes))} text="Next random anecdote" />
       </div>
+      <h1>The most popular anecdote</h1>
+      <DisplayAnecdote anecdote={mostPopularAnecdote} />
+      <DisplayVotes numberOfVotes={votes[mostPopularAnecdoteIdx]} />
     </div>
   )
 }
