@@ -8,7 +8,6 @@ const Button = (props) => (
 const StatisticLine = (props) => (
     <p>{props.text} {props.number} {props.percentage}</p>
   )
-
 const Statistics = (props) => {
   if (props.values[0]+props.values[1]+props.values[2] > 0) {
     return (
