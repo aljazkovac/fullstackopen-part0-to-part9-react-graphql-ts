@@ -4,7 +4,7 @@ const Button = (props) => (
     {props.text}
   </button>
 )
-const FindRandomAnecdote = (selected, anecdotes) => {
+const findRandomAnecdote = (selected, anecdotes) => {
   var idx = Math.floor(Math.random()*(anecdotes.length-1))
   if (idx == selected && idx == anecdotes.length-1) {
     return 0
@@ -14,6 +14,19 @@ const FindRandomAnecdote = (selected, anecdotes) => {
   }
   return idx
 }
+const voteForAnecdote = (selected, votes) => {
+  const copyVotes = [...votes]
+  copyVotes[selected] += 1
+  votes = copyVotes
+  return votes
+}
+const DisplayVotes = (props) => (
+  <p>The anecdote has {props.numberOfVotes} votes.</p>
+)
+const DisplayAnecdote = (props) => (
+  <p>"{props.anecdote}"</p>
+)
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -26,12 +39,16 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState((Array(anecdotes.length).fill(0)))
+  console.log("Votes = ", votes)
 
   return (
     <div>
-      {anecdotes[selected]}
+      <DisplayAnecdote anecdote={anecdotes[selected]} />
+      <DisplayVotes numberOfVotes={votes[selected]} />
       <div>
-        <Button handleClick={() => setSelected(FindRandomAnecdote(selected, anecdotes))} text="Next random anecdote" />
+        <Button handleClick={() => setVotes(voteForAnecdote(selected, votes))} text="Vote for anecdote" />
+        <Button handleClick={() => setSelected(findRandomAnecdote(selected, anecdotes))} text="Next random anecdote" />
       </div>
     </div>
   )
