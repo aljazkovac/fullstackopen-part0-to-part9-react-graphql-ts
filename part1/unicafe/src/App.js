@@ -6,27 +6,34 @@ const Button = (props) => (
   </button>
 )
 const StatisticLine = (props) => (
-  <p>{props.text} {props.number} {props.percentage}</p>
-)
-const Statistics = (props) => (
-  <>
-    <StatisticLine text="Good" number={props.values[0]} />
-    <StatisticLine text="Neutral" number={props.values[1]} />
-    <StatisticLine text="Bad" number={props.values[2]} />
-    <StatisticLine text="All" number={props.values[0]+
-      props.values[1]+props.values[2]} />
-    <StatisticLine text="Average" number={(props.values[0]-props.values[2]) / 
-      (props.values[0]+props.values[1]+props.values[2])} />
-    <StatisticLine text="Positive" number={props.values[0] / 
-      (props.values[0]+props.values[1]+props.values[2])} percentage="%" />
-</>
-)
+    <p>{props.text} {props.number} {props.percentage}</p>
+  )
+
+const Statistics = (props) => {
+  if (props.values[0]+props.values[1]+props.values[2] > 0) {
+    return (
+      <>
+        <StatisticLine text="Good" number={props.values[0]} />
+        <StatisticLine text="Neutral" number={props.values[1]} />
+        <StatisticLine text="Bad" number={props.values[2]} />
+        <StatisticLine text="All" number={props.values[0]+
+          props.values[1]+props.values[2]} />
+        <StatisticLine text="Average" number={(props.values[0]-props.values[2]) / 
+          (props.values[0]+props.values[1]+props.values[2])} />
+        <StatisticLine text="Positive" number={props.values[0] / 
+          (props.values[0]+props.values[1]+props.values[2])} percentage="%" />
+    </>
+    )
+  }
+  return (
+    <p>No feedback given.</p>
+  )
+}
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-
   return (
     <div>
       <h1>Give feedback</h1>
