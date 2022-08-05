@@ -6,12 +6,17 @@ const Button = (props) => (
   </button>
 )
 const StatisticLine = (props) => (
-    <p>{props.text} {props.number} {props.percentage}</p>
-  )
+      <tr>
+        <td>{props.text}</td> 
+        <td>{props.number}</td>
+        <td>{props.percentage}</td>
+      </tr>
+)
 const Statistics = (props) => {
   if (props.values[0]+props.values[1]+props.values[2] > 0) {
     return (
-      <>
+      <table>
+        <tbody>
         <StatisticLine text="Good" number={props.values[0]} />
         <StatisticLine text="Neutral" number={props.values[1]} />
         <StatisticLine text="Bad" number={props.values[2]} />
@@ -20,8 +25,9 @@ const Statistics = (props) => {
         <StatisticLine text="Average" number={(props.values[0]-props.values[2]) / 
           (props.values[0]+props.values[1]+props.values[2])} />
         <StatisticLine text="Positive" number={props.values[0] / 
-          (props.values[0]+props.values[1]+props.values[2])} percentage="%" />
-    </>
+          (props.values[0]+props.values[1]+props.values[2])*100} percentage="%" />
+        </tbody>
+      </table>
     )
   }
   return (
