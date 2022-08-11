@@ -20,8 +20,8 @@ const App = () => {
       return
     }
     setPersons(persons.concat(personObject))
-    // The following line ensures that the name does not remain
-    // written in the input box after submitting 
+    // The following line ensures that the name and number 
+    // do not remain written in the input box after submitting 
     setNewName('')
     setNewNumber('')
   }
