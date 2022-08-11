@@ -1,5 +1,5 @@
 const Person = ({ person }) => (
-    <p>{person.name}</p>
+    <p>{person.name} {person.number}</p>
 )
 
 export default Person

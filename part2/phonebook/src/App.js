@@ -3,14 +3,16 @@ import Person from './components/Person'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '+3587341902' }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
+      number: newNumber
     }
     if (persons.some(p => p.name === newName)) {
       alert(`${newName} is already added to phonebook`)
@@ -21,10 +23,15 @@ const App = () => {
     // The following line ensures that the name does not remain
     // written in the input box after submitting 
     setNewName('')
+    setNewNumber('')
   }
-  const handleNewNote = (event) => {
+  const handleNewName = (event) => {
     // console.log(event.target.value)
     setNewName(event.target.value)
+  }
+  const handleNewNumber = (event) => {
+    // console.log(event.target.value)
+    setNewNumber(event.target.value)
   }
   return (
     <div>
@@ -33,7 +40,13 @@ const App = () => {
         <div>
           name: <input 
             value={newName}
-            onChange={handleNewNote}
+            onChange={handleNewName}
+                />
+        </div>
+        <div>
+          number: <input 
+            value={newNumber}
+            onChange={handleNewNumber}
                 />
         </div>
         <div>
