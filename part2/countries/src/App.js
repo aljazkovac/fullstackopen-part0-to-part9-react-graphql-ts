@@ -55,7 +55,7 @@ function App() {
       <h1>Country Finder</h1>
       <Filter filter={filter} handleFilter={handleFilter} />
       <Message message={message} />
-      <Results hitsToShow={hitsToShow} />
+      <Results hitsToShow={hitsToShow} setHits={setHits} />
     </div>
   );
 }

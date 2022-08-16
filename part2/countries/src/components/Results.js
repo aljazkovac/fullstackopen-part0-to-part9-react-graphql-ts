@@ -1,7 +1,7 @@
 import Country from "./Country"
 import CountryDetails from "./CountryDetails"
 
-const Results = ( { hitsToShow } ) => {
+const Results = ( { hitsToShow, setHits } ) => {
     if (hitsToShow.length === 1) {
         return (
             <div>
@@ -13,7 +13,7 @@ const Results = ( { hitsToShow } ) => {
     <table>
         <tbody>
         {hitsToShow.map(country => 
-            <tr key={country.name.common}><Country country={country} /></tr>
+            <tr key={country.name.common}><Country country={country} setHits={setHits} /></tr>
         )} 
         </tbody>
     </table>
