@@ -1,5 +1,5 @@
 function showCountryDetails(country, setHits) {
-    console.log(`Hello, ${country.name.common}`);
+    // console.log(`Hello, ${country.name.common}`);
     setHits([country])
 }
 const Country = ({ country, setHits }) => (

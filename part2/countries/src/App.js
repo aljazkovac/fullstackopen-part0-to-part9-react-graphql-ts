@@ -13,11 +13,11 @@ function App() {
   const [hits, setHits] = useState([])
 
   useEffect(() => {
-    console.log('effect')
+    console.log('App effect')
     axios
       .get('https://restcountries.com/v3.1/all')
       .then(response => {
-        console.log('promise fulfilled')
+        console.log('countries promise fulfilled')
         setCountries(response.data)
       })
   }, [])
