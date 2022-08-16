@@ -10,11 +10,13 @@ const Results = ( { hitsToShow } ) => {
         )
     }
     return (
-    <div>
-    {hitsToShow.map(country => 
-        <Country key={country.name.common} country={country} />
-    )} 
-    </div>
+    <table>
+        <tbody>
+        {hitsToShow.map(country => 
+            <tr key={country.name.common}><Country country={country} /></tr>
+        )} 
+        </tbody>
+    </table>
     )
 }
  
