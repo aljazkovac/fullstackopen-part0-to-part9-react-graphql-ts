@@ -62,7 +62,8 @@ const App = () => {
     console.log("Deleted person idx = ", idx);
     let personsCopy = [...persons]
     // console.log("Persons copy before delete = ", personsCopy);
-    personService
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
       .deletePerson(id)
       .then(() => {
         personsCopy.splice(idx, 1)
@@ -76,7 +77,24 @@ const App = () => {
         )
         setPersons(persons.filter(p => p.id !== id))
       })
+    }
+  }
 
+  const updateEntry = (id, updatedNumber) => {
+    console.log("Updating entry!");
+    const person = persons.find(p => p.id === id)
+    const changedPerson = {...person, number: updatedNumber}
+    personService
+      .update(id, changedPerson)
+      .then(returnedPerson => {
+        setPersons(persons.map(p => p.id !== id ? person : returnedPerson))
+      })
+      .catch(error => {
+        alert(
+          `The person '${person.name}' was already deleted from the server.`
+        )
+        setPersons(persons.filter(p => p.id !== id))
+      })
   }
   const handleNewName = (event) => {
     // console.log(event.target.value)
@@ -112,7 +130,7 @@ const App = () => {
                   handleNewName={handleNewName} newNumber={newNumber}
                   handleNewNumber={handleNewNumber} />
       <h2>Filtered results</h2>
-      <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry}/>
+      <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry} updateEntry={updateEntry} />
     </div>
   )
 }
