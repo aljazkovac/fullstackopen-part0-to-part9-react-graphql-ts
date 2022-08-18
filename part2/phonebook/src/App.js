@@ -23,12 +23,22 @@ const App = () => {
   }, [])
   console.log('render', persons.length, 'persons')
 
+  const findMaxId = () => {
+    let maxId = 0
+    persons.forEach(person => { 
+      if (person.id > maxId) {
+        maxId = person.id
+      }
+    return maxId
+    });
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length+1
+      id: findMaxId()
     }
     if (persons.some(p => p.name === newName)) {
       alert(`${newName} is already added to phonebook`)
@@ -45,6 +55,28 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+  }
+  const deleteEntry = id => {
+    const person = persons.find(n => n.id === id)
+    const idx = persons.indexOf(person)
+    console.log("Deleted person idx = ", idx);
+    let personsCopy = [...persons]
+    // console.log("Persons copy before delete = ", personsCopy);
+    personService
+      .deletePerson(id)
+      .then(() => {
+        personsCopy.splice(idx, 1)
+        // console.log("Persons copy after delete = ", personsCopy);
+        setPersons(personsCopy)
+      }
+      )
+      .catch(() => {
+        alert(
+          `Person '${person.name}' was already deleted from the server.`
+        )
+        setPersons(persons.filter(p => p.id !== id))
+      })
+
   }
   const handleNewName = (event) => {
     // console.log(event.target.value)
@@ -80,7 +112,7 @@ const App = () => {
                   handleNewName={handleNewName} newNumber={newNumber}
                   handleNewNumber={handleNewNumber} />
       <h2>Filtered results</h2>
-      <Entries entriesToShow={entriesToShow} />
+      <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry}/>
     </div>
   )
 }
