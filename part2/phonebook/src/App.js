@@ -130,7 +130,7 @@ const App = () => {
                   handleNewName={handleNewName} newNumber={newNumber}
                   handleNewNumber={handleNewNumber} />
       <h2>Filtered results</h2>
-      <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry} updateEntry={updateEntry} />
+      <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry} />
     </div>
   )
 }
