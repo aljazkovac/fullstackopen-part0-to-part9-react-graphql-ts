@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [filter, setNewFilter] = useState('')
+  // const [updatingNumber, setUpdatingNumber] = useState(false)
 
   useEffect(() => {
     console.log('effect')
@@ -35,13 +36,19 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
+    const personObject = 
+    {
       name: newName,
       number: newNumber,
       id: findMaxId()
     }
     if (persons.some(p => p.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace 
+            the old number with a new one?`)) {
+              console.log("Updating the number");
+              const person = persons.find(p => p.name === newName)
+              updatePerson(person)
+            }
       setNewName('')
       setNewNumber('')
       return
@@ -56,6 +63,23 @@ const App = () => {
         setNewNumber('')
       })
   }
+  const updatePerson = (person) => {
+    const changedPerson = { ... person, number: newNumber}
+    console.log("Changed person = ", changedPerson);
+
+    personService
+      .update(changedPerson.id, changedPerson)
+      .then(returnedPerson => {
+        setPersons(persons.map(p => p.id !== changedPerson.id ? p : returnedPerson))
+      })
+      .catch(error => {
+        alert(
+          `The person ${person.name} was already deleted from the server.`
+        )
+        setPersons(persons.filter(p => p.id !== changedPerson.id))
+      })
+  }
+
   const deleteEntry = id => {
     const person = persons.find(n => n.id === id)
     const idx = persons.indexOf(person)
@@ -80,22 +104,6 @@ const App = () => {
     }
   }
 
-  const updateEntry = (id, updatedNumber) => {
-    console.log("Updating entry!");
-    const person = persons.find(p => p.id === id)
-    const changedPerson = {...person, number: updatedNumber}
-    personService
-      .update(id, changedPerson)
-      .then(returnedPerson => {
-        setPersons(persons.map(p => p.id !== id ? person : returnedPerson))
-      })
-      .catch(error => {
-        alert(
-          `The person '${person.name}' was already deleted from the server.`
-        )
-        setPersons(persons.filter(p => p.id !== id))
-      })
-  }
   const handleNewName = (event) => {
     // console.log(event.target.value)
     setNewName(event.target.value)
