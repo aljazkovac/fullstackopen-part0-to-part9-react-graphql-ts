@@ -17,8 +17,8 @@ h1 {
   font-style: italic;
 }
 
-.message {
-  color: red;
+.notification {
+  color: green;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
@@ -26,4 +26,15 @@ h1 {
   padding: 10px;
   margin-bottom: 10px;
   margin-top: 10px;
+}
+
+.errorMessage {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px; 
 }

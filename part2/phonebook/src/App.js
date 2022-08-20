@@ -4,6 +4,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Entries from './components/Entries'
 import personService from './services/Persons'
+import Notification from './components/Notification'
 import './index.css'
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [filter, setNewFilter] = useState('')
   const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     console.log('effect')
@@ -25,14 +27,6 @@ const App = () => {
   }, [])
   console.log('render', persons.length, 'persons')
 
-  const Notification = ({ message }) => {
-    if (message === null) {
-      return null
-    }
-    return ( 
-      <div className='message'> {message} </div>
-    )
-  }
 
   const findMaxId = () => {
     let maxId = 0
@@ -91,8 +85,8 @@ const App = () => {
         }, 5000)
       })
       .catch(error => {
-        setMessage(`The person ${person.name} was already deleted from the server.`)
-        `The person ${person.name} was already deleted from the server.`
+        setError(true)
+        setMessage(`${person.name} was already deleted from the server.`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
@@ -120,7 +114,8 @@ const App = () => {
       }
       )
       .catch(() => {
-        setMessage(`The person ${person.name} was already deleted from the server.`)
+        setError(true)
+        setMessage(`${person.name} was already deleted from the server.`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
@@ -162,7 +157,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName}
                   handleNewName={handleNewName} newNumber={newNumber}
                   handleNewNumber={handleNewNumber} />
-      <Notification message={message} />
+      <Notification message={message} error={error} />
       <h2>Filtered results</h2>
       <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry} />
     </div>
