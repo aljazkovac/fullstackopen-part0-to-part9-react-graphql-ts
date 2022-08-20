@@ -4,6 +4,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Entries from './components/Entries'
 import personService from './services/Persons'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,7 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [filter, setNewFilter] = useState('')
-  // const [updatingNumber, setUpdatingNumber] = useState(false)
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -23,6 +24,15 @@ const App = () => {
       })
   }, [])
   console.log('render', persons.length, 'persons')
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+    return ( 
+      <div className='message'> {message} </div>
+    )
+  }
 
   const findMaxId = () => {
     let maxId = 0
@@ -61,6 +71,10 @@ const App = () => {
         // do not remain written in the input box after submitting 
         setNewName('')
         setNewNumber('')
+        setMessage(`Added ${personObject.name}.`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
   }
   const updatePerson = (person) => {
@@ -71,11 +85,17 @@ const App = () => {
       .update(changedPerson.id, changedPerson)
       .then(returnedPerson => {
         setPersons(persons.map(p => p.id !== changedPerson.id ? p : returnedPerson))
+        setMessage(`Updated the number for ${changedPerson.name}.`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
       .catch(error => {
-        alert(
-          `The person ${person.name} was already deleted from the server.`
-        )
+        setMessage(`The person ${person.name} was already deleted from the server.`)
+        `The person ${person.name} was already deleted from the server.`
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
         setPersons(persons.filter(p => p.id !== changedPerson.id))
       })
   }
@@ -91,14 +111,19 @@ const App = () => {
       .deletePerson(id)
       .then(() => {
         personsCopy.splice(idx, 1)
+        setMessage(`Deleted ${person.name}.`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
         // console.log("Persons copy after delete = ", personsCopy);
         setPersons(personsCopy)
       }
       )
       .catch(() => {
-        alert(
-          `Person '${person.name}' was already deleted from the server.`
-        )
+        setMessage(`The person ${person.name} was already deleted from the server.`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
         setPersons(persons.filter(p => p.id !== id))
       })
     }
@@ -137,6 +162,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName}
                   handleNewName={handleNewName} newNumber={newNumber}
                   handleNewNumber={handleNewNumber} />
+      <Notification message={message} />
       <h2>Filtered results</h2>
       <Entries entriesToShow={entriesToShow} deleteEntry={deleteEntry} />
     </div>
