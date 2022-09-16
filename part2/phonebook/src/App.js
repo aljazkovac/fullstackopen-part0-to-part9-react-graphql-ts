@@ -7,6 +7,8 @@ import personService from './services/Persons'
 import Notification from './components/Notification'
 import './index.css'
 
+const baseUrl = '/api/persons'
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -15,11 +17,11 @@ const App = () => {
   const [filter, setNewFilter] = useState('')
   const [message, setMessage] = useState(null)
   const [error, setError] = useState(false)
-
+  
   useEffect(() => {
     console.log('effect')
     axios
-      .get('http://localhost:3001/persons')
+      .get(baseUrl)
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
@@ -72,7 +74,7 @@ const App = () => {
       })
   }
   const updatePerson = (person) => {
-    const changedPerson = { ... person, number: newNumber}
+    const changedPerson = {...person, number: newNumber}
     console.log("Changed person = ", changedPerson);
 
     personService
