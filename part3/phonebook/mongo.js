@@ -31,13 +31,12 @@ if (process.argv.length === 5) {
         return entry.save()
         })
         .then(() => {
-        console.log(`Added ${entry.name} with number 
-        ${entry.number} to the phonebook.`)
+        console.log(`Added ${entry.name} with number ${entry.number} to the phonebook.`)
         return mongoose.connection.close()
         })
         .catch((err) => console.log(err))
 }
 else if (process.argv.length > 5) {
     console.log("Too many arguments")
-    console.log("Use like this: node mongo.js password name number")
+    console.log("Use like this: node mongo.js password 'name' number")
 }

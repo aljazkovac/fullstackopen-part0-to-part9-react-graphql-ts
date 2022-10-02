@@ -1,50 +1,41 @@
+// *** THE SETUP ***
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
-
+const password = process.argv[2]
+const mongoose = require('mongoose')
+const url = `mongodb+srv://aljaz:${password}@cluster0.l8aozni.mongodb.net/phonebookApp?retryWrites=true&w=majority`
+const entrySchema = new mongoose.Schema({
+  name: String,
+  number: Number,
+})
+const Entry = mongoose.model('Entry', entrySchema)
 app.use(cors())
 app.use(express.static('build'))
-
 morgan.token('data', (req) => JSON.stringify(req.body))
 app.use(morgan(
     ':method :url :status :res[content-length] - :response-time ms :data'))
-
-let persons = [
-    { 
-        "id": 1,
-        "name": "Arto Hellas", 
-        "number": "040-123456"
-      },
-      { 
-        "id": 2,
-        "name": "Ada Lovelace", 
-        "number": "39-44-5323523"
-      },
-      { 
-        "id": 3,
-        "name": "Dan Abramov", 
-        "number": "12-43-234345"
-      },
-      { 
-        "id": 4,
-        "name": "Mary Poppendieck", 
-        "number": "39-23-6423122"
-      },
-      { 
-        "id": 5,
-        "name": "Azi Bazi", 
-        "number": "070-4123-345453"
-      }
-]
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
-})
-
+ // *** THE METHODS ***
+ //#region Methods
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    mongoose
+        .connect(url)
+        .then(result => {
+            console.log("connected to MongoDB")
+            Entry
+              .find({})
+              .then(entries => {
+                  res.json(entries)
+                  mongoose.connection.close()
+                  console.log("connection to MongoDB closed")
+              })
+        })
+        .catch((error) => {
+            console.log("error connecting to MongoDB: ", error.message)
+        })
 })
 
 app.get('/api/info', (req, res) => {
@@ -104,3 +95,4 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`)
 })
+//#endregion
