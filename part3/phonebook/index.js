@@ -23,20 +23,17 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/info', (req, res) => {
     const date = new Date()
-    res.send(`<p>Phonebook has info for ${persons.length} people.<p>
+    Entry.find({}).then(entries => 
+    res.send(`<p>Phonebook has info for ${entries.length} people.<p>
             <p>${date.toString()}<p>`)
+      )
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-  
-    if (person) {
-      res.json(person)
-    } else {
-      res.status(404).end()
-    }
+  Entry.findById(req.params.id).then(entry => {
+    res.json(entry)
   })
+})
 
 function generateRandomId() {
     return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
@@ -54,18 +51,24 @@ app.post('/api/persons', (req, res) => {
             error: 'number missing'
         })
     }
-    if (persons.find(p => p.name === body.name)) {
-        return res.status(400).json({
-            error: 'person already in phonebook'
-        })
-    }
-    const person = {
+    Entry.find({}).then(entries => 
+      { 
+        if (entries.find(
+          p => p.name === body.name)) 
+          { 
+            return res.status(400).json({
+              error: "person already in phonebook"})
+          }
+      })
+
+    const entry = new Entry({
         id: generateRandomId(),
         name: body.name,
         number: body.number
-    }
-    persons = persons.concat(person)
-    res.json(person)
+    })
+    entry.save().then(savedEntry => {
+      res.json(savedEntry)
+    })
 })
 
 app.delete('/api/persons/:id', (req, res) => {

@@ -6,7 +6,7 @@ content-type: application/json
 # There needs to be an empty line here!
 
 {
-    "name": "Maria Ristenvik",
+    "name": "Test Person",
     "number": "+46730445334"
 }
 
