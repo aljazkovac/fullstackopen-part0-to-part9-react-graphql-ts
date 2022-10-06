@@ -1,16 +1,11 @@
 // *** THE SETUP ***
+const mongoose = require('mongoose')
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
-const password = process.argv[2]
-const mongoose = require('mongoose')
-const url = `mongodb+srv://aljaz:${password}@cluster0.l8aozni.mongodb.net/phonebookApp?retryWrites=true&w=majority`
-const entrySchema = new mongoose.Schema({
-  name: String,
-  number: Number,
-})
-const Entry = mongoose.model('Entry', entrySchema)
+const Entry = require('./models/entry')
 app.use(cors())
 app.use(express.static('build'))
 morgan.token('data', (req) => JSON.stringify(req.body))
@@ -21,21 +16,9 @@ app.use(express.json())
  // *** THE METHODS ***
  //#region Methods
 app.get('/api/persons', (req, res) => {
-    mongoose
-        .connect(url)
-        .then(result => {
-            console.log("connected to MongoDB")
-            Entry
-              .find({})
-              .then(entries => {
-                  res.json(entries)
-                  mongoose.connection.close()
-                  console.log("connection to MongoDB closed")
-              })
-        })
-        .catch((error) => {
-            console.log("error connecting to MongoDB: ", error.message)
-        })
+  Entry.find({}).then(entries => {
+    res.json(entries)
+  })
 })
 
 app.get('/api/info', (req, res) => {
