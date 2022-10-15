@@ -62,20 +62,24 @@ app.post('/api/persons', (req, res) => {
 })
 
 app.put('/api/persons/:id', (req, res) => {
-    Entry.findById(req.params.id).then(updatedEntry => {
-      updatedEntry.number = req.body.number
-      updatedEntry.save().then(updEntr => {
-        res.json(updEntr)
-      })
+  const updatedEntry = {
+    name: req.body.name,
+    number: req.body.number
+  }
+  Entry.findByIdAndUpdate(req.params.id, updatedEntry, { new: true })
+    .then(updEntr => {
+      res.json(updEntr)
     })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-    Entry.findOneAndDelete(req.params.id).then(deletedEntry => {
-        res.json(deletedEntry)
-      }
-    )
-  })
+    Entry.findByIdAndRemove(req.params.id)
+      .then(deletedEntry => {
+        res.status(204).end()
+      })
+      .catch(error => next(error))
+})
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
