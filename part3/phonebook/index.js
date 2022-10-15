@@ -43,7 +43,7 @@ app.post('/api/persons', (req, res) => {
     const body = req.body
     if (!body.name) {
         return res.status(400).json({ 
-        error: 'name missing' 
+            error: 'name missing' 
         })
     }
     if (!body.number) {
@@ -51,16 +51,6 @@ app.post('/api/persons', (req, res) => {
             error: 'number missing'
         })
     }
-    Entry.find({}).then(entries => 
-      { 
-        if (entries.find(
-          p => p.name === body.name)) 
-          { 
-            return res.status(400).json({
-              error: "person already in phonebook"})
-          }
-      })
-
     const entry = new Entry({
         id: generateRandomId(),
         name: body.name,
@@ -71,10 +61,20 @@ app.post('/api/persons', (req, res) => {
     })
 })
 
+app.put('/api/persons/:id', (req, res) => {
+    Entry.findById(req.params.id).then(updatedEntry => {
+      updatedEntry.number = req.body.number
+      updatedEntry.save().then(updEntr => {
+        res.json(updEntr)
+      })
+    })
+})
+
 app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    persons = persons.filter(person => person.id !== id)
-    res.status(204).end()
+    Entry.findOneAndDelete(req.params.id).then(deletedEntry => {
+        res.json(deletedEntry)
+      }
+    )
   })
 
 const PORT = process.env.PORT || 3001
