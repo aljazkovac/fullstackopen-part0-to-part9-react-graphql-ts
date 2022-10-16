@@ -1,19 +1,22 @@
-// *** THE SETUP ***
+// #region Setup
 const mongoose = require('mongoose')
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const app = express()
 const Entry = require('./models/entry')
-app.use(cors())
+const app = express()
+// #endregion
+
+// #region Middleware
 app.use(express.static('build'))
+app.use(express.json())
+app.use(cors())
 morgan.token('data', (req) => JSON.stringify(req.body))
 app.use(morgan(
     ':method :url :status :res[content-length] - :response-time ms :data'))
-app.use(express.json())
+// #endregion
 
- // *** THE METHODS ***
  //#region Methods
 app.get('/api/persons', (req, res) => {
   Entry.find({}).then(entries => {
@@ -29,10 +32,15 @@ app.get('/api/info', (req, res) => {
       )
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   Entry.findById(req.params.id).then(entry => {
-    res.json(entry)
-  })
+    if (entry) {
+      res.json(entry)
+    }
+    else {
+      res.status(404).end()
+    }
+  }).catch(error => next(error))
 })
 
 function generateRandomId() {
@@ -80,6 +88,27 @@ app.delete('/api/persons/:id', (req, res) => {
       })
       .catch(error => next(error))
 })
+
+// #region Error handling
+const unknownEndPoint = (req, res) => {
+  res.status(400).send({ error: 'unknown endpoint' })
+}
+// Handles requests with unknown endpoint
+// Must be loaded next to last
+app.use(unknownEndPoint)
+
+const errorHandler = (error, req, res, next) => {
+  console.log(error.message);
+
+  if (error.name === 'CastError') {
+    return res.status(400).send({ error: 'malformatted id'})
+  }
+  next(error)
+}
+
+// This has to be the last loaded middleware
+app.use(errorHandler)
+// #endregion
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
