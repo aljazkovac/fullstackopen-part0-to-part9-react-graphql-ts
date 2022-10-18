@@ -9,8 +9,9 @@
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
     "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build && cp -r build ../../part3/phonebook",
     "deploy": "fly deploy",
-    "deploy:full": "npm run build:ui && npm run deploy",    
-    "logs:prod": "fly logs"
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs",
+    "lint": "eslint ."
   },
   "author": "Aljaz Kovac",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.25.0",
     "nodemon": "^2.0.19"
   }
 }

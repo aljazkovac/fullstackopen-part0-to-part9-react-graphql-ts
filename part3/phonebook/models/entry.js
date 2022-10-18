@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
+// eslint-disable-next-line no-undef
 const url = process.env.MONGODB_URI
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
@@ -30,6 +31,4 @@ entrySchema.set('toJSON', {
     delete returnedObject.__v
   }
 })
-const Entry = mongoose.model('Entry', entrySchema)
-
 module.exports = mongoose.model('Entry', entrySchema)
