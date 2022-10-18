@@ -72,6 +72,11 @@ const App = () => {
           setMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        console.log(error.response);
+        setError(true)
+        setMessage("Error")
+      })
   }
   const updatePerson = (person) => {
     const changedPerson = {...person, number: newNumber}
@@ -88,7 +93,8 @@ const App = () => {
       })
       .catch(error => {
         setError(true)
-        setMessage(`${person.name} was already deleted from the server.`)
+        console.log(error.response.data.error);
+        setMessage("Error")
         setTimeout(() => {
           setMessage(null)
         }, 5000)
