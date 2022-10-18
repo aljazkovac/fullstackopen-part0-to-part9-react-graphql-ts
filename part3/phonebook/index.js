@@ -47,18 +47,8 @@ function generateRandomId() {
     return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 }
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
-    if (!body.name) {
-        return res.status(400).json({ 
-            error: 'name missing' 
-        })
-    }
-    if (!body.number) {
-        return res.status(400).json({
-            error: 'number missing'
-        })
-    }
     const entry = new Entry({
         id: generateRandomId(),
         name: body.name,
@@ -67,21 +57,25 @@ app.post('/api/persons', (req, res) => {
     entry.save().then(savedEntry => {
       res.json(savedEntry)
     })
+    .catch(error => next(error))
 })
 
-app.put('/api/persons/:id', (req, res) => {
+app.put('/api/persons/:id', (req, res, next) => {
   const updatedEntry = {
     name: req.body.name,
     number: req.body.number
   }
-  Entry.findByIdAndUpdate(req.params.id, updatedEntry, { new: true })
+  Entry.findByIdAndUpdate(
+    req.params.id, 
+    updatedEntry, 
+    { new: true, runValidators: true, context: 'query' })
     .then(updEntr => {
       res.json(updEntr)
     })
     .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
     Entry.findByIdAndRemove(req.params.id)
       .then(deletedEntry => {
         res.status(204).end()
@@ -102,6 +96,9 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id'})
+  }
+  else if (error.name === 'Validation error') {
+    return res.status(400).json({ error: error.message })
   }
   next(error)
 }
