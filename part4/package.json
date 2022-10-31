@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
+    "test": "jest --verbose",
     "build:ui": "rm -rf build && cd ../part2/phonebook && npm run build && cp -r build ../../part4/",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
@@ -26,6 +26,10 @@
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "eslint": "^8.25.0",
+    "jest": "^29.2.2",
     "nodemon": "^2.0.19"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
