@@ -118,3 +118,68 @@ describe('favorite blog', () => {
     expect(result).toEqual(blogs[2])
   })
 })
+describe('most blogs', () => {
+  test('when list has only one blog, equals that author', () => {
+    const blogsSlice = blogs.slice(0, 1)
+    const result = listHelper.mostBlogs(blogsSlice)
+    expect(result).toEqual({ author: 'Michael Chan', blogs: 1 })
+  })
+  test('two blogs, return the author with most blogs', () => {
+    const blogsSlice = blogs.slice(0, 2)
+    const result = listHelper.mostBlogs(blogsSlice)
+    const possibleResults = [ { author: 'Michael Chan', blogs: 1 }, { author: 'Edsger W. Dijkstra', blogs: 1 } ]
+    expect(possibleResults).toContainEqual(result)
+  })
+  test('three blogs, return the author with most blogs', () => {
+    const blogsSlice = blogs.slice(0, 3)
+    const result = listHelper.mostBlogs(blogsSlice)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 2 })
+  })
+  test('four blogs, return the author with most blogs', () => {
+    const blogsSlice = blogs.slice(0, 4)
+    const result = listHelper.mostBlogs(blogsSlice)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 2 })
+  })
+  test('five blogs, return the author with most blogs', () => {
+    const blogsSlice = blogs.slice(0, 5)
+    const result = listHelper.mostBlogs(blogsSlice)
+    const possibleResults = [ { author: 'Edsger W. Dijkstra', blogs: 2 }, { author: 'Robert C. Martin', blogs: 2 } ]
+    expect(possibleResults).toContainEqual(result)
+  })
+  test('six blogs, return the author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 })
+  })
+})
+
+describe('most likes', () => {
+  test('when list has only one blog, equals that author', () => {
+    const blogsSlice = blogs.slice(0, 1)
+    const result = listHelper.mostLikes(blogsSlice)
+    expect(result).toEqual({ author: 'Michael Chan', likes: 7 })
+  })
+  test('two blogs, return the author with most likes', () => {
+    const blogsSlice = blogs.slice(0, 2)
+    const result = listHelper.mostLikes(blogsSlice)
+    expect(result).toEqual({ author: 'Michael Chan', likes: 7 })
+  })
+  test('three blogs, return the author with most likes', () => {
+    const blogsSlice = blogs.slice(0, 3)
+    const result = listHelper.mostLikes(blogsSlice)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+  })
+  test('four blogs, return the author with most likes', () => {
+    const blogsSlice = blogs.slice(0, 4)
+    const result = listHelper.mostLikes(blogsSlice)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+  })
+  test('five blogs, return the author with most likes', () => {
+    const blogsSlice = blogs.slice(0, 5)
+    const result = listHelper.mostLikes(blogsSlice)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+  })
+  test('six blogs, return the author with most likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+  })
+})
