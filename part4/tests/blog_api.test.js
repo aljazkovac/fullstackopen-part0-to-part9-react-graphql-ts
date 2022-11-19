@@ -1,32 +1,15 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const initialBlogs = [
-  {
-    _id: '5a422a851b54a676234d17f7',
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-    __v: 0
-  },
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0
-  },
-]
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
+  let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
 }, 100000)
 
@@ -39,7 +22,7 @@ test('blogs are returned as json', async () => {
 
 test('there are two blogs', async () => {
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(2)
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
 }, 100000)
 
 test('the first blog is about React patterns', async () => {
@@ -53,6 +36,39 @@ test('a specific blog is within the returned blogs', async () => {
   expect(titles).toContain(
     'Go To Statement Considered Harmful'
   )}, 100000)
+
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'The greatest blog ever',
+    author: 'The greatest blogger',
+    url: 'https://greatestblogtest.com',
+    likes: 1000000
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(r => r.title)
+  expect(titles).toContain(
+    'The greatest blog ever'
+  )}, 100000)
+
+test('blog without a title is not added', async () => {
+  const newBlog = {
+    author: 'The greatest blogger',
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)}, 100000)
 
 afterAll(() => {
   mongoose.connection.close()

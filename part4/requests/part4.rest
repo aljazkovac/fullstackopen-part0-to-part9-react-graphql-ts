@@ -6,10 +6,9 @@ content-type: application/json
 # There needs to be an empty line here!
 
 {
-    "title": "A even greater test blog",
-    "author": "A greater test author",
-    "url": "https://agreatertestblog.com",
-    "likes": 100
+    "author": "The greatest blogger",
+    "url": "https://greatestblogtest.com",
+    "likes": 1000000
 }
 
 ###
