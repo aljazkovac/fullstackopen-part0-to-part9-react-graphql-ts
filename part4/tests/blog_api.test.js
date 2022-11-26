@@ -121,6 +121,22 @@ describe('delete and update a blog', () => {
     expect(titles).not.toContain(blogToDelete.title)}, 100000)
 })
 
+test('a blog can be updated', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+  blogToUpdate.likes = 999
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(blogToUpdate)
+    .expect(200)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  console.log(blogsAtEnd)
+  expect(blogsAtEnd).toHaveLength(
+    helper.initialBlogs.length
+  )
+  expect(blogsAtEnd[0].likes).toBe(999)}, 100000)
+
 describe('validating a blog', () => {
   test('a blog has the unique identifier id', async () => {
     const blogsAtStart = await helper.blogsInDb()
@@ -138,7 +154,6 @@ describe('validating a blog', () => {
       .send(newBlog)
       .expect(201)
     const blogsAtEnd = await helper.blogsInDb()
-    console.log(blogsAtEnd)
     const blogToView = blogsAtEnd[blogsAtEnd.length - 1]
     expect(blogToView.likes).toBe(0)}, 100000)
 })
