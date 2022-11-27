@@ -6,9 +6,21 @@ content-type: application/json
 # There needs to be an empty line here!
 
 {
-    "author": "The greatest blogger",
+    "author": "Azi blogger",
+    "title": "Azis test blog",
     "url": "https://greatestblogtest.com",
-    "likes": 1000000
+    "likes": 1,
+    "userId": "63834734432ab04978ab9f6f"
+}
+
+###
+POST http://localhost:3001/api/users/
+content-type: application/json
+
+{
+    "username": "azi",
+    "name": "bazi",
+    "password": "topsecret"
 }
 
 ###

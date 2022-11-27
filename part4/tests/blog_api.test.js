@@ -4,6 +4,8 @@ const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -56,11 +58,13 @@ describe('viewing a specific blog', () => {
 
 describe('addition of a new blog', () => {
   test('a valid blog can be added', async () => {
+    const user = (await helper.usersInDb()).at(0)
     const newBlog = {
       title: 'The greatest blog ever',
       author: 'The greatest blogger',
       url: 'https://greatestblogtest.com',
-      likes: 1000000
+      likes: 1000000,
+      userId: user.id
     }
     await api
       .post('/api/blogs')
@@ -131,7 +135,6 @@ test('a blog can be updated', async () => {
     .expect(200)
 
   const blogsAtEnd = await helper.blogsInDb()
-  console.log(blogsAtEnd)
   expect(blogsAtEnd).toHaveLength(
     helper.initialBlogs.length
   )
@@ -147,7 +150,8 @@ describe('validating a blog', () => {
     const newBlog = {
       title: 'A blog without the likes property',
       author: 'An author without a name',
-      url: 'https://blogwithoutlikes.com'
+      url: 'https://blogwithoutlikes.com',
+      userId: (await helper.usersInDb()).at(0).id
     }
     await api
       .post('/api/blogs')
@@ -156,6 +160,52 @@ describe('validating a blog', () => {
     const blogsAtEnd = await helper.blogsInDb()
     const blogToView = blogsAtEnd[blogsAtEnd.length - 1]
     expect(blogToView.likes).toBe(0)}, 100000)
+})
+
+describe('when there is initially only one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('secret', 10)
+    const user = new User({ username: 'root', name: 'superuser', passwordHash })
+    await user.save()
+  })
+
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const newUser = {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+    const usernames = usersAtEnd.map(u => u.username)
+    expect(usernames).toContain(newUser.username)
+  })
+
+  test('creation fails with proper statuscode and message if username already taken', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const newUser = {
+      username: 'root',
+      name: 'Superuser',
+      passwordHash: 'salainen',
+    }
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('username must be unique')
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toEqual(usersAtStart)
+  })
 })
 
 afterAll(() => {
