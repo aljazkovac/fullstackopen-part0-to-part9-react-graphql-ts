@@ -10,10 +10,6 @@ const User = require('../models/user')
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
-  // const blogObjects = helper.initialBlogs
-  // .map(blog => new Blog(blog))
-  // const promiseArray = blogObjects.map(blog => blog.save())
-  // await Promise.all(promiseArray)
 })
 
 describe('general checks', () => {
@@ -58,7 +54,15 @@ describe('viewing a specific blog', () => {
 
 describe('addition of a new blog', () => {
   test('a valid blog can be added', async () => {
-    const user = (await helper.usersInDb()).at(0)
+    const user = {
+      username: 'root',
+      password: 'superpassword'
+    }
+    const response = await api
+      .post('/api/login')
+      .send(user)
+      .expect(200)
+    const token = response.body.token
     const newBlog = {
       title: 'The greatest blog ever',
       author: 'The greatest blogger',
@@ -68,6 +72,7 @@ describe('addition of a new blog', () => {
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -147,6 +152,15 @@ describe('validating a blog', () => {
     expect(blogToView.id).toBeDefined()}, 100000)
 
   test('a blog without the likes property defaults to 0 likes', async () => {
+    const user = {
+      username: 'root',
+      password: 'superpassword'
+    }
+    const response = await api
+      .post('/api/login')
+      .send(user)
+      .expect(200)
+    const token = response.body.token
     const newBlog = {
       title: 'A blog without the likes property',
       author: 'An author without a name',
@@ -155,6 +169,7 @@ describe('validating a blog', () => {
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + token)
       .send(newBlog)
       .expect(201)
     const blogsAtEnd = await helper.blogsInDb()
@@ -165,7 +180,7 @@ describe('validating a blog', () => {
 describe('when there is initially only one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-    const passwordHash = await bcrypt.hash('secret', 10)
+    const passwordHash = await bcrypt.hash('superpassword', 10)
     const user = new User({ username: 'root', name: 'superuser', passwordHash })
     await user.save()
   })
@@ -173,9 +188,9 @@ describe('when there is initially only one user in db', () => {
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
     const newUser = {
-      username: 'mluukkai',
-      name: 'Matti Luukkainen',
-      password: 'salainen',
+      username: 'azi',
+      name: 'Aljaz Kovac',
+      password: 'topsecret',
     }
     await api
       .post('/api/users')
@@ -203,6 +218,23 @@ describe('when there is initially only one user in db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('username must be unique')
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toEqual(usersAtStart)
+  })
+  test('creation fails if password too short', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const newUser = {
+      username: 'testUser',
+      name: 'testUserPassword',
+      password: 'ps',
+    }
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('password must be at least 3 characters long')
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })

@@ -19,7 +19,6 @@ content-type: application/json
 
 {
     "username": "azi",
-    "name": "bazi",
     "password": "topsecret"
 }
 
