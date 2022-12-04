@@ -221,6 +221,7 @@ describe('when there is initially only one user in db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
+
   test('creation fails if password too short', async () => {
     const usersAtStart = await helper.usersInDb()
     const newUser = {
