@@ -38,9 +38,26 @@ blogRouter.post('/', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-  await Blog
-    .findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const requestToken = request.token
+  const blog = await Blog.findById(request.params.id)
+  const blogCreator = blog.userId
+
+  const decodedToken = jwt.decode(requestToken)
+  const userIdFromDecodedToken = decodedToken.id
+  console.log('Request token = ', requestToken)
+  console.log('BlogCreator = ', blogCreator)
+  console.log('UserIDFromDecodedToken = ', userIdFromDecodedToken.toString())
+  console.log('BlogCreatorId = ', blogCreator.toHexString())
+
+  if(blogCreator.toHexString() === userIdFromDecodedToken.toString()) {
+    await Blog
+      .findByIdAndRemove(request.params.id)
+      // Also remove the blog from the user object
+    response.status(204).end()
+  }
+  else {
+    response.status(401).end()
+  }
 })
 
 blogRouter.put('/:id', async (request, response) => {

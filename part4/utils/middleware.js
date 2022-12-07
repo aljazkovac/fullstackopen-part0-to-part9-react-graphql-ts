@@ -39,11 +39,10 @@ const getTokenFrom = request => {
 const tokenExtractor = (request, response, next)  => {
   const token = getTokenFrom(request)
   if (token) {
-    request.body.token = token
+    request.token = token
   }
   next()
 }
-
 
 module.exports = {
   requestLogger,

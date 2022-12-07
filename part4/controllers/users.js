@@ -32,4 +32,12 @@ usersRouter.post('/', async (request, response) => {
   response.status(201).json(savedUser)
 })
 
+usersRouter.put('/id', async (request, response) => {
+  const { username, name, password } = request.body
+  const existingUser = await User.findOne({ username })
+  if (existingUser) {
+    
+  }
+})
+
 module.exports = usersRouter
