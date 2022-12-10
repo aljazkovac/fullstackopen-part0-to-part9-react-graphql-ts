@@ -44,9 +44,10 @@ const tokenExtractor = (request, response, next)  => {
   next()
 }
 
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
 }

@@ -44,15 +44,22 @@ blogRouter.delete('/:id', async (request, response) => {
 
   const decodedToken = jwt.decode(requestToken)
   const userIdFromDecodedToken = decodedToken.id
-  console.log('Request token = ', requestToken)
-  console.log('BlogCreator = ', blogCreator)
-  console.log('UserIDFromDecodedToken = ', userIdFromDecodedToken.toString())
-  console.log('BlogCreatorId = ', blogCreator.toHexString())
 
   if(blogCreator.toHexString() === userIdFromDecodedToken.toString()) {
     await Blog
       .findByIdAndRemove(request.params.id)
-      // Also remove the blog from the user object
+    // Remove the blog reference from the user's blogs array
+    // Do not forget to await here!
+    let user = await User.findById(blogCreator.toHexString())
+    let userBlogs = user.blogs
+    let blogToRemoveIdx = userBlogs.indexOf(request.params.id)
+    userBlogs.splice(blogToRemoveIdx, 1)
+    User.updateOne({ name: user.name }, { blogs: userBlogs },
+      function(err) {
+        if (err) {
+          console.log(err)
+        }
+      })
     response.status(204).end()
   }
   else {
