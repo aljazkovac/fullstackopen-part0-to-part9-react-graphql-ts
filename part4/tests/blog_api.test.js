@@ -8,6 +8,14 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 beforeEach(async () => {
+  await User.deleteMany({})
+  const passwordHash = await bcrypt.hash('superpassword', 10)
+  const user = new User({ username: 'root', name: 'superuser', passwordHash })
+  await user.save()
+  helper.initialBlogs.forEach(blog => {
+    blog.userId = user.id
+  })
+  await User.updateOne({ username: 'root' }, { blogs: helper.initialBlogs })
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
@@ -68,7 +76,7 @@ describe('addition of a new blog', () => {
       author: 'The greatest blogger',
       url: 'https://greatestblogtest.com',
       likes: 1000000,
-      userId: user.id
+      userId: user._id
     }
     await api
       .post('/api/blogs')
@@ -116,9 +124,18 @@ describe('delete and update a blog', () => {
   test('a blog can be deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
-
+    const user = {
+      username: 'root',
+      password: 'superpassword'
+    }
+    const response = await api
+      .post('/api/login')
+      .send(user)
+      .expect(200)
+    const token = response.body.token
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', 'bearer ' + token)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
@@ -128,22 +145,32 @@ describe('delete and update a blog', () => {
     )
     const titles = blogsAtEnd.map(r => r.title)
     expect(titles).not.toContain(blogToDelete.title)}, 100000)
+
+  test('a blog can be updated', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+    blogToUpdate.likes = 999
+    const user = {
+      username: 'root',
+      password: 'superpassword'
+    }
+    const response = await api
+      .post('/api/login')
+      .send(user)
+      .expect(200)
+    const token = response.body.token
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .set('Authorization', 'bearer ' + token)
+      .send(blogToUpdate)
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length
+    )
+    expect(blogsAtEnd[0].likes).toBe(999)}, 100000)
 })
-
-test('a blog can be updated', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-  const blogToUpdate = blogsAtStart[0]
-  blogToUpdate.likes = 999
-  await api
-    .put(`/api/blogs/${blogToUpdate.id}`)
-    .send(blogToUpdate)
-    .expect(200)
-
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd).toHaveLength(
-    helper.initialBlogs.length
-  )
-  expect(blogsAtEnd[0].likes).toBe(999)}, 100000)
 
 describe('validating a blog', () => {
   test('a blog has the unique identifier id', async () => {
@@ -178,13 +205,6 @@ describe('validating a blog', () => {
 })
 
 describe('when there is initially only one user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-    const passwordHash = await bcrypt.hash('superpassword', 10)
-    const user = new User({ username: 'root', name: 'superuser', passwordHash })
-    await user.save()
-  })
-
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
     const newUser = {

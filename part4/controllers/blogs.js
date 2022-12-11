@@ -54,12 +54,7 @@ blogRouter.delete('/:id', async (request, response) => {
     let userBlogs = user.blogs
     let blogToRemoveIdx = userBlogs.indexOf(request.params.id)
     userBlogs.splice(blogToRemoveIdx, 1)
-    User.updateOne({ name: user.name }, { blogs: userBlogs },
-      function(err) {
-        if (err) {
-          console.log(err)
-        }
-      })
+    await User.updateOne({ name: user.name }, { blogs: userBlogs })
     response.status(204).end()
   }
   else {
