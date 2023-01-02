@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import BlogRow from './BlogRow'
+import BlogList from './BlogList'
+import BlogAddForm from './BlogAddForm'
 import blogService from '../services/blogs'
+
 const LoggedInView = ({user}) => {
     const [blogs, setBlogs] = useState([])
     useEffect(() => {
@@ -11,9 +13,8 @@ const LoggedInView = ({user}) => {
     return (
         <div>
             <p>{user.name} logged in</p>
-            {blogs.map(blog =>
-            <BlogRow key={blog.id} blog={blog} />
-            )}
+            <BlogList blogs={blogs} />
+            <BlogAddForm blogs={blogs} setBlogs={setBlogs}/>
         </div>
     )
 }
