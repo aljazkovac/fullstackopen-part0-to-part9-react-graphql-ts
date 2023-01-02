@@ -1,6 +1,6 @@
 const BlogRow = ({blog}) => (
   <div>
-    {blog.title} {blog.author} {blog.likes}
+    {blog.title}, {blog.author}, {blog.likes}
   </div>  
 )
 

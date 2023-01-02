@@ -58,7 +58,9 @@ return(
     value={newLikes}
     onChange={handleLikesChange}
     />
-    <button type='submit'>Save</button>
+    <p>
+      <button type='submit'>Save</button>
+    </p>
 </form>
 )
 } 
