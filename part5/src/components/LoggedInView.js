@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import BlogRow from './BlogRow'
 import blogService from '../services/blogs'
-const LoggedInView = (user) => {
+const LoggedInView = ({user}) => {
     const [blogs, setBlogs] = useState([])
     useEffect(() => {
         blogService.getAll().then(initialBlogs =>
