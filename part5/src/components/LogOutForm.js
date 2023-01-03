@@ -8,4 +8,5 @@ const LogOutForm = () => {
         </form>
     )
 }
+
 export default LogOutForm

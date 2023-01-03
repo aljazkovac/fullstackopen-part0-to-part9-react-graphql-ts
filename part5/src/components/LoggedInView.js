@@ -22,4 +22,5 @@ const LoggedInView = ({user, setMessage}) => {
         </div>
     )
 }
+
 export default LoggedInView
