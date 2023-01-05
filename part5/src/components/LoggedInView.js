@@ -1,24 +1,16 @@
-import { useEffect, useState } from 'react'
-import BlogList from './BlogList'
 import BlogAddForm from './BlogAddForm'
-import blogService from '../services/blogs'
 import LogOutForm from './LogOutForm'
+import Togglable from './Togglable'
 
-const LoggedInView = ({user, setMessage}) => {
-    const [blogs, setBlogs] = useState([])
-    useEffect(() => {
-        blogService.getAll().then(initialBlogs =>
-        setBlogs( initialBlogs )
-        )  
-    }, [])
+const LoggedInView = ({cancel, setCancel, user, blogs, setBlogs, setMessage, setError}) => {
+
     return (
         <div>
             <p>{user.name} logged in</p>
             <LogOutForm />
-            <h3>All blogs(title, author, likes)</h3>
-            <BlogList blogs={blogs} />
-            <h4>Add a blog</h4>
-            <BlogAddForm blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} />
+            <Togglable buttonLabel='Add a blog' cancel={cancel} setCancel={setCancel} >
+                <BlogAddForm cancel={cancel} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError} />
+            </Togglable>
         </div>
     )
 }

@@ -1,11 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import blogService from "../services/blogs"
 
-const BlogAddForm = ({blogs, setBlogs, setMessage}) => {
+const BlogAddForm = ({blogs, cancel, setBlogs, setMessage, setError}) => {
     const [newAuthor, setNewAuthor] = useState('')
     const [newTitle, setNewTitle] = useState('')
     const [newUrl, setNewUrl] = useState('')
     const [newLikes, setNewLikes] = useState(0)
+
+    useEffect(() => {
+        setNewAuthor('')
+        setNewTitle('')
+        setNewUrl('')
+        setNewLikes(0)
+    }, [cancel])
+
     const handleAuthorChange = (event) => {
         setNewAuthor(event.target.value)
       }
@@ -35,6 +43,7 @@ const BlogAddForm = ({blogs, setBlogs, setMessage}) => {
             setNewUrl('')
             setNewLikes(0)
             setMessage(`A new blog, ${blogObject.title} by ${blogObject.author}, added!`)
+            setError(false)
             setTimeout(() => {
               setMessage(null)
             }, 5000)
