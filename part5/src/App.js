@@ -32,8 +32,9 @@ const App = () => {
       <h2>The Blogosphere</h2>
       <Notification message={message} error={error} />
       {user === null ?
-        <Togglable buttonLabel='login' cancel={cancel} setCancel={setCancel} >
-          <LoginForm cancel={cancel} setUser={setUser} setMessage={setMessage} setError={setError} />
+        <Togglable buttonLabel='login' cancel={cancel} setCancel={setCancel}  >
+          <LoginForm cancel={cancel} setUser={setUser} setMessage={setMessage} 
+                     setError={setError} />
         </Togglable>
         :
         <LoggedInView cancel={cancel} setCancel={setCancel} user={user} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError}/>

@@ -1,54 +1,7 @@
-import { useEffect, useState } from "react"
-import blogService from "../services/blogs"
+const BlogAddForm = ({addBlog, newAuthor, handleAuthorChange,
+                      newTitle, handleTitleChange, newUrl, handleUrlChange,
+                      newLikes, handleLikesChange}) => {
 
-const BlogAddForm = ({blogs, cancel, setBlogs, setMessage, setError}) => {
-    const [newAuthor, setNewAuthor] = useState('')
-    const [newTitle, setNewTitle] = useState('')
-    const [newUrl, setNewUrl] = useState('')
-    const [newLikes, setNewLikes] = useState(0)
-
-    useEffect(() => {
-        setNewAuthor('')
-        setNewTitle('')
-        setNewUrl('')
-        setNewLikes(0)
-    }, [cancel])
-
-    const handleAuthorChange = (event) => {
-        setNewAuthor(event.target.value)
-      }
-      const handleTitleChange = (event) => {
-        setNewTitle(event.target.value)
-      }
-      const handleUrlChange = (event) => {
-        setNewUrl(event.target.value)
-      }
-      const handleLikesChange = (event) => {
-        setNewLikes(event.target.value)
-      }
-      const addBlog = (event) => {
-        event.preventDefault()
-        const blogObject = {
-          author: newAuthor,
-          title: newTitle,
-          url: newUrl,
-          likes: newLikes,
-        }
-        blogService
-          .create(blogObject)
-          .then(returnedObject => {
-            setBlogs(blogs.concat(returnedObject))
-            setNewAuthor('')
-            setNewTitle('')
-            setNewUrl('')
-            setNewLikes(0)
-            setMessage(`A new blog, ${blogObject.title} by ${blogObject.author}, added!`)
-            setError(false)
-            setTimeout(() => {
-              setMessage(null)
-            }, 5000)
-            })
-      }
 return(
 <form onSubmit={addBlog}>
     <p>Author:</p>
