@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import { useTable, useSortBy } from 'react-table'
+import { useTable, useSortBy, useRowSelect } from 'react-table'
 
 const BlogList = ({blogs}) => {
     const data = useMemo(
@@ -34,8 +34,33 @@ const BlogList = ({blogs}) => {
         prepareRow,
         allColumns,
         getToggleHideAllColumnsProps,
+        state: { selectedRowIds },
       } = useTable({ columns, data },
-        useSortBy
+        useSortBy,
+        useRowSelect,
+        hooks => {
+          hooks.visibleColumns.push(columns => [
+            // Let's make a column for selection
+            {
+              id: 'selection',
+              // The header can use the table's getToggleAllRowsSelectedProps method
+              // to render a checkbox
+              Header: ({ getToggleAllRowsSelectedProps }) => (
+                <div>
+                  <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                </div>
+              ),
+              // The cell can use the individual row's getToggleRowSelectedProps method
+              // to the render a checkbox
+              Cell: ({ row }) => (
+                <div>
+                  <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                </div>
+              ),
+            },
+            ...columns,
+          ])
+        }
         )
       const IndeterminateCheckbox = React.forwardRef(
         ({ indeterminate, ...rest }, ref) => {
@@ -49,6 +74,9 @@ const BlogList = ({blogs}) => {
           return <input type="checkbox" ref={resolvedRef} {...rest} />
         }
       )
+      const VoteButton = () => {
+        <button type="submit">vote</button>
+      }
 
     return(
       <>
@@ -120,6 +148,10 @@ const BlogList = ({blogs}) => {
           })}
         </tbody>
      </table>
+     { selectedRowIds ? 
+          <button type="submit">vote</button> :
+          <button type="submit">don't vote</button>
+     }
      </>
     )
 }
