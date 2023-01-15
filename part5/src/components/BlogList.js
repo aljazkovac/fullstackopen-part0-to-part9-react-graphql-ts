@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import { useTable } from 'react-table'
+import { useTable, useSortBy } from 'react-table'
 
 const BlogList = ({blogs}) => {
     const data = useMemo(
@@ -34,8 +34,9 @@ const BlogList = ({blogs}) => {
         prepareRow,
         allColumns,
         getToggleHideAllColumnsProps,
-        state,
-      } = useTable({ columns, data })
+      } = useTable({ columns, data },
+        useSortBy
+        )
       const IndeterminateCheckbox = React.forwardRef(
         ({ indeterminate, ...rest }, ref) => {
           const defaultRef = React.useRef()
@@ -72,15 +73,24 @@ const BlogList = ({blogs}) => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th
-                  {...column.getHeaderProps()}
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
                     borderBottom: 'solid 3px red',
                     background: 'aliceblue',
                     color: 'black',
                     fontWeight: 'bold',
+                    cursor: 'pointer'
                   }}
                 >
                   {column.render('Header')}
+                  {/* Add a sort direction indicator */}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
                 </th>
               ))}
             </tr>
