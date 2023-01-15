@@ -74,9 +74,6 @@ const BlogList = ({blogs}) => {
           return <input type="checkbox" ref={resolvedRef} {...rest} />
         }
       )
-      const VoteButton = () => {
-        <button type="submit">vote</button>
-      }
 
     return(
       <>
