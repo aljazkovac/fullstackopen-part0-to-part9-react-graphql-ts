@@ -146,6 +146,7 @@ const BlogList = ({blogs}) => {
         </tbody>
      </table>
         <button type="submit" disabled={Object.keys(selectedRowIds).length === 0}>vote</button>
+        <button type="submit" disabled={Object.keys(selectedRowIds).length === 0}>delete</button>
      </>
     )
 }
