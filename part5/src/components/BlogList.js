@@ -178,7 +178,7 @@ const BlogList = ({user, blogs}) => {
         </tbody>
      </table>
         <button type="submit" disabled={Object.keys(selectedRowIds).length === 0} onClick={handleVote}>vote</button>
-        <button type="submit" disabled={!allSelectedBlogsCanBeDeleted()} onClick={handleDelete}>delete</button>
+        <button type="submit" disabled={Object.keys(selectedRowIds).length === 0 || !allSelectedBlogsCanBeDeleted()} onClick={handleDelete}>delete</button>
      </>
     )
 }
