@@ -1,79 +1,111 @@
 import React, {useMemo} from 'react'
 import { useTable, useSortBy, useRowSelect } from 'react-table'
 
-const BlogList = ({blogs}) => {
+const BlogList = ({user, blogs}) => {
     const data = useMemo(
         () => blogs, [blogs]
       )
-      const columns = useMemo(
-        () => [
-          {
-            Header: 'Author',
-            accessor: 'author', // accessor is the "key" in the data
-          },
-          {
-            Header: 'Title',
-            accessor: 'title',
-          },
-          {
-            Header: 'Url',
-            accessor: 'url',
-          },
-          {
-            Header: 'Likes',
-            accessor: 'likes',
-          },
-        ],
-        []
-      )
-      const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        allColumns,
-        getToggleHideAllColumnsProps,
-        state: { selectedRowIds },
-      } = useTable({ columns, data },
-        useSortBy,
-        useRowSelect,
-        hooks => {
-          hooks.visibleColumns.push(columns => [
-            // Let's make a column for selection
-            {
-              id: 'selection',
-              // The header can use the table's getToggleAllRowsSelectedProps method
-              // to render a checkbox
-              Header: ({ getToggleAllRowsSelectedProps }) => (
-                <div>
-                  <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-                </div>
-              ),
-              // The cell can use the individual row's getToggleRowSelectedProps method
-              // to the render a checkbox
-              Cell: ({ row }) => (
-                <div>
-                  <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                </div>
-              ),
-            },
-            ...columns,
-          ])
-        }
-        )
-      const IndeterminateCheckbox = React.forwardRef(
-        ({ indeterminate, ...rest }, ref) => {
-          const defaultRef = React.useRef()
-          const resolvedRef = ref || defaultRef
 
-          React.useEffect(() => {
-            resolvedRef.current.indeterminate = indeterminate
-          }, [resolvedRef, indeterminate])
-
-          return <input type="checkbox" ref={resolvedRef} {...rest} />
+    const allSelectedBlogsCanBeDeleted = () => {
+      const usersBlogs = data.filter(blog => blog.userId.username === user.username)
+      const selectedRows = rows.filter(row => Object.keys(selectedRowIds).includes(row.id))
+      //console.log("User", user);
+      //console.log("Blogs", data);
+      //console.log("User's blogs", usersBlogs);
+      //console.log("All rows: ", rows);
+      //console.log("Selected rows ids: ", selectedRowIds);
+      //console.log("Selected rows: ", selectedRows);
+      let canDeleteAll = true
+      // Check if all selectedRows are included in usersBlogs. If even one selectedRow is not
+      // included, return false. 
+      selectedRows.forEach(row => {
+        if (!usersBlogs.includes(row.original)) {
+          console.log(`The selected blog ${row} does not belong to this user.`)
+          canDeleteAll = false
         }
+      })
+      return canDeleteAll
+    }
+    
+    const columns = useMemo(
+      () => [
+        {
+          Header: 'Author',
+          accessor: 'author', // accessor is the "key" in the data
+        },
+        {
+          Header: 'Title',
+          accessor: 'title',
+        },
+        {
+          Header: 'Url',
+          accessor: 'url',
+        },
+        {
+          Header: 'Likes',
+          accessor: 'likes',
+        },
+      ],
+      []
+    )
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow,
+      allColumns,
+      getToggleHideAllColumnsProps,
+      state: { selectedRowIds },
+    } = useTable({ columns, data },
+      useSortBy,
+      useRowSelect,
+      hooks => {
+        hooks.visibleColumns.push(columns => [
+          // Let's make a column for selection
+          {
+            id: 'selection',
+            // The header can use the table's getToggleAllRowsSelectedProps method
+            // to render a checkbox
+            Header: ({ getToggleAllRowsSelectedProps }) => (
+              <div>
+                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+              </div>
+            ),
+            // The cell can use the individual row's getToggleRowSelectedProps method
+            // to the render a checkbox
+            Cell: ({ row }) => (
+              <div>
+                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+              </div>
+            ),
+          },
+          ...columns,
+        ])
+      }
       )
+    const IndeterminateCheckbox = React.forwardRef(
+      ({ indeterminate, ...rest }, ref) => {
+        const defaultRef = React.useRef()
+        const resolvedRef = ref || defaultRef
+
+        React.useEffect(() => {
+          resolvedRef.current.indeterminate = indeterminate
+        }, [resolvedRef, indeterminate])
+
+        return <input type="checkbox" ref={resolvedRef} {...rest} />
+      }
+    )
+    const handleDelete = async (event) => {
+        event.preventDefault()
+        console.log(Object.keys(selectedRowIds))
+        window.confirm(`Delete blog ${Object.keys(selectedRowIds)}?`)
+    }
+    
+    const handleVote = async (event) => {
+        event.preventDefault()
+        console.log(Object.keys(selectedRowIds))
+    }
 
     return(
       <>
@@ -145,8 +177,8 @@ const BlogList = ({blogs}) => {
           })}
         </tbody>
      </table>
-        <button type="submit" disabled={Object.keys(selectedRowIds).length === 0}>vote</button>
-        <button type="submit" disabled={Object.keys(selectedRowIds).length === 0}>delete</button>
+        <button type="submit" disabled={Object.keys(selectedRowIds).length === 0} onClick={handleVote}>vote</button>
+        <button type="submit" disabled={!allSelectedBlogsCanBeDeleted()} onClick={handleDelete}>delete</button>
      </>
     )
 }

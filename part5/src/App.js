@@ -40,7 +40,7 @@ const App = () => {
         <LoggedInView cancel={cancel} setCancel={setCancel} user={user} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError}/>
       }
       <h3>All blogs(title, author, likes)</h3>
-      <BlogList blogs={blogs} />
+      <BlogList user={user} blogs={blogs} />
       </div>
     )
 }
