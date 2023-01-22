@@ -1,32 +1,11 @@
 import React, {useMemo} from 'react'
 import { useTable, useSortBy, useRowSelect } from 'react-table'
+import blogService from '../services/blogs'
 
-const BlogList = ({user, blogs}) => {
+const BlogList = ({user, blogs, setBlogs}) => {
     const data = useMemo(
-        () => blogs, [blogs]
-      )
-
-    const allSelectedBlogsCanBeDeleted = () => {
-      const usersBlogs = data.filter(blog => blog.userId.username === user.username)
-      const selectedRows = rows.filter(row => Object.keys(selectedRowIds).includes(row.id))
-      //console.log("User", user);
-      //console.log("Blogs", data);
-      //console.log("User's blogs", usersBlogs);
-      //console.log("All rows: ", rows);
-      //console.log("Selected rows ids: ", selectedRowIds);
-      //console.log("Selected rows: ", selectedRows);
-      let canDeleteAll = true
-      // Check if all selectedRows are included in usersBlogs. If even one selectedRow is not
-      // included, return false. 
-      selectedRows.forEach(row => {
-        if (!usersBlogs.includes(row.original)) {
-          console.log(`The selected blog ${row} does not belong to this user.`)
-          canDeleteAll = false
-        }
-      })
-      return canDeleteAll
-    }
-    
+      () => blogs, [blogs]
+    )
     const columns = useMemo(
       () => [
         {
@@ -96,15 +75,47 @@ const BlogList = ({user, blogs}) => {
         return <input type="checkbox" ref={resolvedRef} {...rest} />
       }
     )
+    const allSelectedBlogsCanBeDeleted = () => {
+      const usersBlogs = data.filter(blog => blog.userId.username === user.username)
+      const selectedRows = rows.filter(row => Object.keys(selectedRowIds).includes(row.id))
+      let canDeleteAll = true
+      // Check if all selectedRows are included in usersBlogs. If even one selectedRow is not
+      // included, return false. 
+      selectedRows.forEach(row => {
+        if (!usersBlogs.includes(row.original)) {
+          canDeleteAll = false
+        }
+      })
+      return canDeleteAll
+    }
+    
     const handleDelete = async (event) => {
         event.preventDefault()
-        console.log(Object.keys(selectedRowIds))
         window.confirm(`Delete blog ${Object.keys(selectedRowIds)}?`)
     }
     
     const handleVote = async (event) => {
         event.preventDefault()
-        console.log(Object.keys(selectedRowIds))
+        const selectedRows = rows.filter(row => Object.keys(selectedRowIds).includes(row.id))
+        const upvotedBlogs = selectedRows.map(row => {
+          const blogObject = {
+            id: row.original.id,
+            author: row.original.author,
+            title: row.original.title,
+            url: row.original.url,
+            likes: row.original.likes + 1,
+          }
+          return blogObject
+        })
+        const upvotedBlogsPromises = upvotedBlogs.map(blog => 
+          blogService.update(blog.id, blog))
+        const resolvedPromises = await Promise.all(upvotedBlogsPromises)
+        let blogsArray = Array.from(blogs)
+        for (let i = 0; i < Object.keys(selectedRowIds).length; i++) {
+          let idx = Object.keys(selectedRowIds)[i]
+          blogsArray.splice(idx, 1, resolvedPromises[i])
+        }
+        setBlogs(blogsArray)
     }
 
     return(

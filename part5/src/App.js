@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(initialBlogs =>
-    setBlogs( initialBlogs )
+      setBlogs(initialBlogs)
     )  
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if(loggedUserJSON) {
@@ -40,7 +40,7 @@ const App = () => {
         <LoggedInView cancel={cancel} setCancel={setCancel} user={user} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError}/>
       }
       <h3>All blogs(title, author, likes)</h3>
-      <BlogList user={user} blogs={blogs} />
+      <BlogList user={user} blogs={blogs} setBlogs={setBlogs}/>
       </div>
     )
 }
