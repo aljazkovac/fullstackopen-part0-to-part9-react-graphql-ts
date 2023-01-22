@@ -110,6 +110,7 @@ const BlogList = ({user, blogs, setBlogs}) => {
         const upvotedBlogsPromises = upvotedBlogs.map(blog => 
           blogService.update(blog.id, blog))
         const resolvedPromises = await Promise.all(upvotedBlogsPromises)
+        // Update the blogs in the state, so we get a real-time change in the table.
         let blogsArray = Array.from(blogs)
         for (let i = 0; i < Object.keys(selectedRowIds).length; i++) {
           let idx = Object.keys(selectedRowIds)[i]
