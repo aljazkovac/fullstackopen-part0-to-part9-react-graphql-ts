@@ -35,7 +35,7 @@ const remove = async (id, token) => {
 }
 
 const exportedObject = {
- getAll, create, update, remove, setToken 
+  getAll, create, update, remove, setToken
 }
 
 export default exportedObject
