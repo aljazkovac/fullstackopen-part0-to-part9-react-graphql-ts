@@ -100,8 +100,17 @@ const BlogList = ({user, blogs, setBlogs}) => {
         const blogsDeletePromises = blogsToDelete.map(blog => {
           return blogService.remove(blog.id, user.token)
         })
-        const resolvedPromises = await Promise.all(blogsDeletePromises)
-        console.log('Resolved promises = ', resolvedPromises)
+        await Promise.all(blogsDeletePromises)
+        console.log('Selected rows = ', selectedRowIds)
+        // Update the blogs in the state, so we get a real-time change in the table.
+        // Important that the selectedRowIds are sorted for the loop below to work.
+        // The selectedRowIds are sorted by default. 
+        let blogsArray = Array.from(blogs)
+        for (let i = Object.keys(selectedRowIds).length-1; i >= 0; i--) {
+          let idx = Object.keys(selectedRowIds)[i]
+          blogsArray.splice(idx, 1)
+        }
+        setBlogs(blogsArray)
     }
     
     const handleVote = async (event) => {
