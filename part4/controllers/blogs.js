@@ -37,9 +37,28 @@ blogRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  console.log('Authorization', authorization)
+  if (authorization) {
+    return authorization
+  }
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
+const tokenExtractor = (request)  => {
+  const token = getTokenFrom(request)
+  console.log();
+  return token
+}
 blogRouter.delete('/:id', async (request, response) => {
-  const requestToken = request.token
+  const requestToken = request.token ? request.token : tokenExtractor(request, response)
+  console.log('Request token = ', requestToken)
   const blog = await Blog.findById(request.params.id)
+  console.log('Blog = ', blog)
   const blogCreator = blog.userId
 
   const decodedToken = jwt.decode(requestToken)

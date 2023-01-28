@@ -92,6 +92,16 @@ const BlogList = ({user, blogs, setBlogs}) => {
     const handleDelete = async (event) => {
         event.preventDefault()
         window.confirm(`Delete blog ${Object.keys(selectedRowIds)}?`)
+        const selectedRows = rows.filter(row => Object.keys(selectedRowIds).includes(row.id))
+        const blogsToDelete = selectedRows.map(row => {
+          return row.original
+        })
+        console.log('Blogs to delete', blogsToDelete);
+        const blogsDeletePromises = blogsToDelete.map(blog => {
+          return blogService.remove(blog.id, user.token)
+        })
+        const resolvedPromises = await Promise.all(blogsDeletePromises)
+        console.log('Resolved promises = ', resolvedPromises)
     }
     
     const handleVote = async (event) => {
