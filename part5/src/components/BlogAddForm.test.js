@@ -1,15 +1,12 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import BlogAddForm from './BlogAddForm'
 
 describe('<BlogAddForm />', () => {
   let container
-
-  function addBlog() {
-    return null
-  }
+  const addBlog = jest.fn()
   function handleAuthorChange() {
     return null
   }
@@ -39,5 +36,12 @@ describe('<BlogAddForm />', () => {
     ).container
   })
   test('add blog', async () => {
+    addBlog.mockImplementation(event => {
+      event.preventDefault()
+    })
+    const user = userEvent.setup()
+    const button = screen.getByText('Save')
+    await user.click(button)
+    expect(addBlog).toHaveBeenCalled()
   })
 })
