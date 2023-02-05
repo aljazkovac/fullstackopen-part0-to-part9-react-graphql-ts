@@ -11,7 +11,5 @@ test('renders content', () => {
 
   const element = screen.getByText('Blog added')
 
-  screen.debug()
-
   expect(element).toBeDefined()
 })

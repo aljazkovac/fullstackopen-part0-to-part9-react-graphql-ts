@@ -10,12 +10,14 @@ const LoggedInView = ({ cancel, setCancel, user, blogs, setBlogs, setMessage, se
   const [newUrl, setNewUrl] = useState('')
   const [newLikes, setNewLikes] = useState(0)
   const addBlogFormRef = useRef()
+
   useEffect(() => {
     setNewAuthor('')
     setNewTitle('')
     setNewUrl('')
     setNewLikes(0)
   }, [cancel])
+
   const handleAuthorChange = (event) => {
     setNewAuthor(event.target.value)
   }

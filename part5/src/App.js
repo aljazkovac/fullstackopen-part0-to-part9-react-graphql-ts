@@ -4,7 +4,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import LoggedInView from './components/LoggedInView'
 import blogService from './services/blogs'
-import BlogList from './components/BlogList'
+import BlogTable from './components/BlogTable'
 import Togglable from './components/Togglable'
 
 const App = () => {
@@ -40,7 +40,7 @@ const App = () => {
         <LoggedInView cancel={cancel} setCancel={setCancel} user={user} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError}/>
       }
       <h3>All blogs(title, author, likes)</h3>
-      <BlogList user={user} blogs={blogs} setBlogs={setBlogs}/>
+      <BlogTable user={user} blogs={blogs} setBlogs={setBlogs}/>
     </div>
   )
 }

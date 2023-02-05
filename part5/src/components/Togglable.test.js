@@ -52,4 +52,5 @@ describe('<Togglable />', () => {
     const div = container.querySelector('.togglableContent')
     expect(div).toHaveStyle('display: none')
   })
+
 })

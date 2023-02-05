@@ -8,21 +8,26 @@ const BlogAddForm = ({ addBlog, newAuthor, handleAuthorChange,
       <input
         value={newAuthor}
         onChange={handleAuthorChange}
+        id='newAuthorInput'
+        placeholder='authorInput'
       />
       <p>Title:</p>
       <input
         value={newTitle}
         onChange={handleTitleChange}
+        id='newTitleInput'
       />
       <p>Url:</p>
       <input
         value={newUrl}
         onChange={handleUrlChange}
+        id='newUrlInput'
       />
       <p>Likes:</p>
       <input
         value={newLikes}
         onChange={handleLikesChange}
+        id='newLikesInput'
       />
       <p>
         <button type='submit'>Save</button>

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useTable, useSortBy, useRowSelect } from 'react-table'
 import blogService from '../services/blogs'
 
-const BlogList = ({ user, blogs, setBlogs }) => {
+const BlogTable = ({ user, blogs, setBlogs }) => {
   const data = useMemo(
     () => blogs, [blogs]
   )
@@ -215,5 +215,5 @@ const BlogList = ({ user, blogs, setBlogs }) => {
   )
 }
 
-export default BlogList
+export default BlogTable
 
