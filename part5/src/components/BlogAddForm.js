@@ -9,7 +9,6 @@ const BlogAddForm = ({ addBlog, newAuthor, handleAuthorChange,
         value={newAuthor}
         onChange={handleAuthorChange}
         id='newAuthorInput'
-        placeholder='authorInput'
       />
       <p>Title:</p>
       <input

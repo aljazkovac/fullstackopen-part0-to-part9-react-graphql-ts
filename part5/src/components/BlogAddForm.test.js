@@ -1,24 +1,16 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import BlogAddForm from './BlogAddForm'
 
 describe('<BlogAddForm />', () => {
   let container
   const addBlog = jest.fn()
-  function handleAuthorChange() {
-    return null
-  }
-  function handleTitleChange() {
-    return null
-  }
-  function handleUrlChange() {
-    return null
-  }
-  function handleLikesChange() {
-    return null
-  }
+  const handleAuthorChange = jest.fn()
+  const handleTitleChange = jest.fn()
+  const handleUrlChange = jest.fn()
+  const handleLikesChange = jest.fn()
   const newAuthor = ''
   const newTitle = ''
   const newLikes = ''
@@ -41,6 +33,14 @@ describe('<BlogAddForm />', () => {
     })
     const user = userEvent.setup()
     const button = screen.getByText('Save')
+    const author = container.querySelector('#newAuthorInput')
+    const title = container.querySelector('#newTitleInput')
+    const url = container.querySelector('#newUrlInput')
+    const likes = container.querySelector('#newLikesInput')
+    fireEvent.change(author, { target: { value: 'Author Test' } })
+    fireEvent.change(title, { target: { value: 'Title Test' } })
+    fireEvent.change(url, { target: { value: 'Url Test' } })
+    fireEvent.change(likes, { target: { value: 'Likes Test' } })
     await user.click(button)
     expect(addBlog).toHaveBeenCalled()
   })

@@ -37,7 +37,8 @@ const App = () => {
             setError={setError} />
         </Togglable>
         :
-        <LoggedInView cancel={cancel} setCancel={setCancel} user={user} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError}/>
+        <LoggedInView cancel={cancel} setCancel={setCancel} user={user}
+          blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} setError={setError}/>
       }
       <h3>All blogs(title, author, likes)</h3>
       <BlogTable user={user} blogs={blogs} setBlogs={setBlogs}/>

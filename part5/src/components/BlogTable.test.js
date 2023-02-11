@@ -6,18 +6,30 @@ import BlogTable from './BlogTable'
 describe('<BlogTable />', () => {
   let container
 
-  // We do not intend to test the setBlogs functionality,
-  // so we simply return null here.
-  function setBlogs() {
-    return null
+  const setBlogs = jest.fn()
+
+  const user =
+  {
+    username: 'azi',
+    name: 'bazi',
+    blogs: [
+      {
+        title: 'Azi blog',
+        author: 'Azi',
+        url: 'azi url',
+        likes: 82,
+        id: '63cb971fa3e26c66e93d9caf'
+      }
+    ],
+    id: '63834734432ab04978ab9f6f'
   }
-  const user = null
   const blogs = [
     {
       title: 'Azi blog',
-      author: 'test blog',
-      url: 'test url',
-      likes: '10'
+      author: 'Azi',
+      url: 'azi url',
+      likes: 82,
+      id: '63cb971fa3e26c66e93d9caf'
     }
   ]
 
