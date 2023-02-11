@@ -61,7 +61,7 @@ const LoginForm = ({ cancel, setUser, setMessage, setError }) => {
           id='password-input'
         />
       </div>
-      <button type="submit">login</button>
+      <button id="login-button" type="submit">login</button>
     </form>
   )
 }
