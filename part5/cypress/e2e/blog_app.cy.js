@@ -25,7 +25,7 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
       cy.contains('test user logged in')
     })
-    it('login fails with wrong password', function() {
+    it('login fails with wrong password and error message is shown correctly', function() {
       cy.contains('login').click()
       cy.get('#username-input').type('mluukkai')
       cy.get('#password-input').type('wrong')
@@ -63,6 +63,9 @@ describe('Blog app', function() {
         url: 'Another test title',
         likes: '99'
       })
+    })
+    it('a blog can be liked', function() {
+
     })
   })
 })
