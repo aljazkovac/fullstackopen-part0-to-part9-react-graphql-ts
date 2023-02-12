@@ -25,6 +25,17 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
       cy.contains('test user logged in')
     })
+    it.only('login fails with wrong password', function() {
+      cy.contains('login').click()
+      cy.get('#username-input').type('mluukkai')
+      cy.get('#password-input').type('wrong')
+      cy.get('#login-button').click()
+      cy.get('.errorMessage')
+        .should('contain', 'Wrong credentials')
+        .and('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'border-style', 'solid')
+      cy.get('html').should('not.contain', 'test user logged in')
+    })
   })
 
   describe('when logged in', function() {
@@ -48,5 +59,3 @@ describe('Blog app', function() {
     })
   })
 })
-
-
