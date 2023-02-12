@@ -32,6 +32,10 @@ Cypress.Commands.add('login', ({ username, password }) => {
     cy.visit('')
   })
 })
+Cypress.Commands.add('logout', () => {
+  localStorage.clear()
+  cy.visit('')
+})
 Cypress.Commands.add('createBlog', ({ author, title, url, likes }) => {
   cy.request({
     url: 'http://localhost:3001/api/blogs',

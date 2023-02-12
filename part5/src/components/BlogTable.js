@@ -210,8 +210,8 @@ const BlogTable = ({ user, blogs, setBlogs }) => {
           })}
         </tbody>
       </table>
-      <button type="submit" disabled={Object.keys(selectedRowIds).length === 0} onClick={handleVote}>vote</button>
-      <button type="submit" disabled={Object.keys(selectedRowIds).length === 0 || !allSelectedBlogsCanBeDeleted()} onClick={handleDelete}>delete</button>
+      <button id='voteButton' type="submit" disabled={Object.keys(selectedRowIds).length === 0} onClick={handleVote}>vote</button>
+      <button id='deleteButton' type="submit" disabled={Object.keys(selectedRowIds).length === 0 || !allSelectedBlogsCanBeDeleted()} onClick={handleDelete}>delete</button>
     </>
   )
 }
