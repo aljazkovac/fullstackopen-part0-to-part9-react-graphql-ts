@@ -54,19 +54,26 @@ describe('Blog app', function() {
       cy.contains('Url Test')
       cy.contains('10')
     })
-  })
-  describe('and a blog exists', function() {
-    beforeEach(function () {
-      cy.createBlog({
-        author: 'Another test author',
-        title: 'Another test title',
-        url: 'Another test title',
-        likes: '99'
+    describe('and a blog exists', function() {
+      beforeEach(function () {
+        cy.createBlog({
+          author: 'Another test author',
+          title: 'Another test title',
+          url: 'Another test title',
+          likes: '99'
+        })
       })
-    })
-    it('a blog can be liked', function() {
-
-
+      it('all blogs can be liked by a logged-in user', function() {
+        cy.get('th').find('input').check()
+        cy.contains('vote').click()
+        cy.contains('100')
+      })
+      it.only('all blogs can be liked by a non logged-in user', function() {
+        cy.contains('Log out').click()
+        cy.get('th').find('input').check()
+        cy.contains('vote').click()
+        cy.contains('100')
+      })
     })
   })
 })
