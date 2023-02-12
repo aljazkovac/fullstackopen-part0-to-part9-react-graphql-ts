@@ -77,6 +77,7 @@ const BlogTable = ({ user, blogs, setBlogs }) => {
     }
   )
   const allSelectedBlogsCanBeDeleted = () => {
+    if (user === null) { return false }
     const usersBlogs = data.filter(blog => blog.userId.username === user.username)
     const selectedRows = rows.filter(row => Object.keys(selectedRowIds).includes(row.id))
     let canDeleteAll = true
