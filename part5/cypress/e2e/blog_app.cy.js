@@ -27,8 +27,8 @@ describe('Blog app', function() {
     })
     it('login fails with wrong password and error message is shown correctly', function() {
       cy.contains('login').click()
-      cy.get('#username-input').type('mluukkai')
-      cy.get('#password-input').type('wrong')
+      cy.get('#username-input').type('tester')
+      cy.get('#password-input').type('password')
       cy.get('#login-button').click()
       cy.get('.errorMessage')
         .should('contain', 'Wrong credentials')
@@ -68,8 +68,10 @@ describe('Blog app', function() {
         cy.contains('vote').click()
         cy.contains('100')
       })
-      it.only('all blogs can be liked by a non logged-in user', function() {
+      it('a user can log out and all blogs can still be liked', function() {
         cy.contains('Log out').click()
+        // The blogs get reloaded, so we wait for a little while.
+        cy.wait(500)
         cy.get('th').find('input').check()
         cy.contains('vote').click()
         cy.contains('100')
