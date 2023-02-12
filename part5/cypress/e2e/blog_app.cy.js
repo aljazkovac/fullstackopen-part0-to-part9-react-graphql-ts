@@ -42,7 +42,7 @@ describe('Blog app', function() {
     beforeEach(function() {
       cy.login({ username: 'tester', password: 'testerpassword' })
     })
-    it('a new blog can be created', function() {
+    it('the user can create a new blog', function() {
       cy.contains('Add a blog').click()
       cy.get('#newAuthorInput').type('Author Test')
       cy.get('#newTitleInput').type('Title Test')
@@ -65,6 +65,7 @@ describe('Blog app', function() {
       })
     })
     it('a blog can be liked', function() {
+
 
     })
   })
