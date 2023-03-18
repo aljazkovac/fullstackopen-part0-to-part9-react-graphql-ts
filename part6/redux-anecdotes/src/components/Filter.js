@@ -4,13 +4,17 @@ import { useDispatch } from 'react-redux'
 const Filter = (props) => {
   const dispatch = useDispatch()
 
+  const style = {
+      marginBottom: 10
+  }
+
   const handleChange = (event) => {
     console.log('Filter: ', event)
     dispatch(filterChange(event))
   }
 
   return (
-    <div>
+    <div style={style}>
       filter: 
       <input 
         type="input"
