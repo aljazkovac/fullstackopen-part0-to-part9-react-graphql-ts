@@ -18,10 +18,10 @@ const AnecdoteList = () => {
             console.log('STATE IS ALL');
             return state.anecdotes
         }
-        return state.anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(state.filter) || 
+        return state.anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(state.filter.toLowerCase()) || 
                 anecdote.votes.toString().includes(state.filter))
     })
-    const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+    const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes);
 
     return (
         <ul>
