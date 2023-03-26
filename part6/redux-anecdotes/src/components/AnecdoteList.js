@@ -17,6 +17,9 @@ const AnecdoteList = () => {
         console.log('Anecdote voted for: ', anecdote);
         dispatch(voteForAnecdote(anecdote.id))
         dispatch(votedForAnecdoteMessage(anecdote.content))
+        setTimeout(() => {
+          dispatch(votedForAnecdoteMessage(''))
+        }, 5000)
     }
     const anecdotes = useSelector(state => {
         console.log('State from AnecdoteList', state);
