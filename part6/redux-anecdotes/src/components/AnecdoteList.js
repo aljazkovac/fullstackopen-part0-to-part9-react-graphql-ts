@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { voteForAnecdote } from '../reducers/anecdoteReducer'
+import { votedForAnecdoteMessage } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleVote }) => {
     return (
@@ -12,6 +13,11 @@ const Anecdote = ({ anecdote, handleVote }) => {
 
 const AnecdoteList = () => {
     const dispatch = useDispatch()
+    const handleVote = (anecdote) => {
+        console.log('Anecdote voted for: ', anecdote);
+        dispatch(voteForAnecdote(anecdote.id))
+        dispatch(votedForAnecdoteMessage(anecdote.content))
+    }
     const anecdotes = useSelector(state => {
         console.log('State from AnecdoteList', state);
         if (state.filter === 'ALL') {
@@ -29,8 +35,7 @@ const AnecdoteList = () => {
                 <Anecdote
                     key={anecdote.id}
                     anecdote={anecdote}
-                    handleVote={() => 
-                    dispatch(voteForAnecdote(anecdote.id))}
+                    handleVote={() => handleVote(anecdote)}
                 />
             )}
         </ul>
