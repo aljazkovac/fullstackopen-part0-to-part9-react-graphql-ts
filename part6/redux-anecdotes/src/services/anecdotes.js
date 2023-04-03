@@ -13,6 +13,16 @@ const createNew = async (content) => {
   return response.data
 }
 
-const anecdoteService = { getAll, createNew }
+const voteForAnecdote = async (anecdote) => {
+  const votedForAnecdote = {
+    ...anecdote,
+    votes: anecdote.votes+1
+  }
+  console.log('Voted for anecdote from service: ', votedForAnecdote);
+  const response = await axios.put(`${baseUrl}/${anecdote.id}`, votedForAnecdote)
+  return response.data
+}
+
+const anecdoteService = { getAll, createNew, voteForAnecdote }
 
 export default anecdoteService
