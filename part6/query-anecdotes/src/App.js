@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAnecdotes, updateAnecdote } from './requests'
+import VoteButton from './components/VoteButton'
 
 const App = () => {
 
@@ -17,10 +18,6 @@ const App = () => {
     }
   })
 
-  const handleVote = (anecdote) => {
-    console.log('vote')
-    updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes+1})
-  }
 
   const result = useQuery('anecdotes', getAnecdotes)  
   console.log('Result', result)
@@ -48,8 +45,10 @@ const App = () => {
             {anecdote.content}
           </div>
           <div>
-            has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
+            has {anecdote.votes} votes
+            <VoteButton 
+            anecdote={anecdote} 
+            updateAnecdoteMutation={updateAnecdoteMutation} />
           </div>
         </div>
       )}
