@@ -11,6 +11,11 @@ const AnecdoteForm = () => {
   const newAnecdoteMutation = useMutation(createAnecdote, {
     onError: (error) => {
       console.log("Error from useMutation:", error);
+      console.log(error.response.data.error);
+      dispatch({ type: "error", payload: error.response.data.error })
+      setTimeout(() => {
+        dispatch({ type: '', payload: ''})
+      }, 5000)
     },
     onSuccess: (newAnecdote) => {
       console.log('New anecdote', newAnecdote)

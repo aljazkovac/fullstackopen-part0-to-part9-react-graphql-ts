@@ -42,10 +42,10 @@ const App = () => {
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
-            {anecdote.content}
+            {'"' + anecdote.content + '" '}
+            has {anecdote.votes} votes
           </div>
           <div>
-            has {anecdote.votes} votes
             <VoteButton 
             anecdote={anecdote} 
             updateAnecdoteMutation={updateAnecdoteMutation} />

@@ -8,6 +8,9 @@ const notificationReducer = (state, action) => {
       case "create":
         console.log('Creating', action.type);
         return 'You created ' + action.payload
+      case "error":
+        console.log("Error", action.type)
+        return action.payload
       default:
         console.log('Default', action.type);
         return ""
