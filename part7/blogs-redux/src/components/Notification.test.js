@@ -4,12 +4,12 @@ import { render, screen } from '@testing-library/react'
 import Notification from './Notification'
 
 test('renders content', () => {
-  const message = 'Blog added'
-  const error = null
+    const message = 'Blog added'
+    const error = null
 
-  render(<Notification message={message} error={error}/>)
+    render(<Notification message={message} error={error} />)
 
-  const element = screen.getByText('Blog added')
+    const element = screen.getByText('Blog added')
 
-  expect(element).toBeDefined()
+    expect(element).toBeDefined()
 })
