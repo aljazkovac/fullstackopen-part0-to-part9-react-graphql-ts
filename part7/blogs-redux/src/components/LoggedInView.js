@@ -2,18 +2,11 @@ import { useEffect, useState, useRef } from 'react'
 import BlogAddForm from './BlogAddForm'
 import LogOutForm from './LogOutForm'
 import Togglable from './Togglable'
-import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { createdBlog } from '../reducers/notificationReducer'
+import { createBlog } from '../reducers/blogReducer'
 
-const LoggedInView = ({
-    cancel,
-    setCancel,
-    user,
-    blogs,
-    setBlogs,
-    setError,
-}) => {
+const LoggedInView = ({ cancel, setCancel, user, setError }) => {
     const [newAuthor, setNewAuthor] = useState('')
     const [newTitle, setNewTitle] = useState('')
     const [newUrl, setNewUrl] = useState('')
@@ -50,15 +43,13 @@ const LoggedInView = ({
             url: newUrl,
             likes: newLikes,
         }
-        blogService.create(blogObject).then((returnedObject) => {
-            setBlogs(blogs.concat(returnedObject))
-            setNewAuthor('')
-            setNewTitle('')
-            setNewUrl('')
-            setNewLikes(0)
-            dispatch(createdBlog(blogObject, 5))
-            setError(false)
-        })
+        dispatch(createBlog(blogObject, 5))
+        setNewAuthor('')
+        setNewTitle('')
+        setNewUrl('')
+        setNewLikes(0)
+        dispatch(createdBlog(blogObject, 5))
+        setError(false)
     }
     return (
         <div>

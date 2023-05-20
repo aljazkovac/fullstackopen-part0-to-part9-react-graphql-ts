@@ -34,7 +34,7 @@ const remove = async (id, token) => {
     return response.data
 }
 
-const exportedObject = {
+const blogsService = {
     getAll,
     create,
     update,
@@ -42,4 +42,4 @@ const exportedObject = {
     setToken,
 }
 
-export default exportedObject
+export default blogsService

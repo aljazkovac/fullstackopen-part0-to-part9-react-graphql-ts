@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react'
 import { useTable, useSortBy, useRowSelect } from 'react-table'
-import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { deleteBlogs, voteForBlogs } from '../reducers/blogReducer'
+import { useSelector } from 'react-redux'
 
-const BlogTable = ({ user, blogs, setBlogs }) => {
-    const data = useMemo(() => blogs, [blogs])
+const BlogTable = ({ user }) => {
+    const dispatch = useDispatch()
+    const data = useSelector((state) => state.blogs)
     const columns = useMemo(
         () => [
             {
@@ -97,28 +100,20 @@ const BlogTable = ({ user, blogs, setBlogs }) => {
 
     const handleDelete = async (event) => {
         event.preventDefault()
-        window.confirm(`Delete blog ${Object.keys(selectedRowIds)}?`)
         const selectedRows = rows.filter((row) =>
             Object.keys(selectedRowIds).includes(row.id)
         )
         const blogsToDelete = selectedRows.map((row) => {
             return row.original
         })
-        console.log('Blogs to delete', blogsToDelete)
-        const blogsDeletePromises = blogsToDelete.map((blog) => {
-            return blogService.remove(blog.id, user.token)
-        })
-        await Promise.all(blogsDeletePromises)
-        console.log('Selected rows = ', selectedRowIds)
-        // Update the blogs in the state, so we get a real-time change in the table.
-        // Important that the selectedRowIds are sorted for the loop below to work.
-        // The selectedRowIds are sorted by default.
-        let blogsArray = Array.from(blogs)
-        for (let i = Object.keys(selectedRowIds).length - 1; i >= 0; i--) {
-            let idx = Object.keys(selectedRowIds)[i]
-            blogsArray.splice(idx, 1)
+        const titlesOfBlogsToDelete = blogsToDelete.map((b) => b.title)
+        const confirmDelete = window.confirm(
+            `Delete blogs ${titlesOfBlogsToDelete}?`
+        )
+        console.log('Blogs to delete', titlesOfBlogsToDelete)
+        if (confirmDelete) {
+            dispatch(deleteBlogs(blogsToDelete, user))
         }
-        setBlogs(blogsArray)
     }
 
     const handleVote = async (event) => {
@@ -136,17 +131,7 @@ const BlogTable = ({ user, blogs, setBlogs }) => {
             }
             return blogObject
         })
-        const upvotedBlogsPromises = upvotedBlogs.map((blog) =>
-            blogService.update(blog.id, blog)
-        )
-        const resolvedPromises = await Promise.all(upvotedBlogsPromises)
-        // Update the blogs in the state, so we get a real-time change in the table.
-        let blogsArray = Array.from(blogs)
-        for (let i = 0; i < Object.keys(selectedRowIds).length; i++) {
-            let idx = Object.keys(selectedRowIds)[i]
-            blogsArray.splice(idx, 1, resolvedPromises[i])
-        }
-        setBlogs(blogsArray)
+        dispatch(voteForBlogs(upvotedBlogs))
     }
 
     return (

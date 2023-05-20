@@ -2,10 +2,7 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-    userLoginSuccess,
-    userLoginError,
-} from '../reducers/notificationReducer'
+import { userLoginError } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
 
 const LoginForm = ({ cancel, setUser, setError }) => {
@@ -35,7 +32,6 @@ const LoginForm = ({ cancel, setUser, setError }) => {
             setUser(user)
             setUsername('')
             setPassword('')
-            dispatch(userLoginSuccess(user.username, 5))
             setError(false)
         } catch (exception) {
             dispatch(userLoginError(5))
