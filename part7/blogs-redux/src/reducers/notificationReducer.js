@@ -7,8 +7,7 @@ const notificationSlice = createSlice({
     initialState,
     reducers: {
         setMessage(state, action) {
-            const msg = action.payload
-            return msg
+            return action.payload
         },
         clearMessage() {
             return ''
@@ -18,7 +17,7 @@ const notificationSlice = createSlice({
 
 export const { setMessage, clearMessage } = notificationSlice.actions
 
-export const votedForMessage = (content, delay) => {
+export const votedForBlog = (content, delay) => {
     return async (dispatch) => {
         const fullMessage =
             content.length === 0 ? '' : 'You voted for ' + content
@@ -29,9 +28,34 @@ export const votedForMessage = (content, delay) => {
     }
 }
 
-export const createdMessage = (content, delay) => {
+export const createdBlog = (content, delay) => {
     return async (dispatch) => {
-        const fullMessage = content.length === 0 ? '' : 'You created ' + content
+        console.log(content)
+        const fullMessage =
+            content.length === 0
+                ? ''
+                : `You created "${content.title}" by ${content.author}.`
+        dispatch(setMessage(fullMessage))
+        setTimeout(() => {
+            dispatch(clearMessage())
+        }, delay * 1000)
+    }
+}
+
+export const userLoginSuccess = (content, delay) => {
+    return async (dispatch) => {
+        console.log(content)
+        const fullMessage = `User "${content}" logged in.`
+        dispatch(setMessage(fullMessage))
+        setTimeout(() => {
+            dispatch(clearMessage())
+        }, delay * 1000)
+    }
+}
+
+export const userLoginError = (delay) => {
+    return async (dispatch) => {
+        const fullMessage = 'Wrong credentials'
         dispatch(setMessage(fullMessage))
         setTimeout(() => {
             dispatch(clearMessage())

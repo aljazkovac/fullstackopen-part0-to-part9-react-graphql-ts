@@ -8,7 +8,6 @@ import BlogTable from './components/BlogTable'
 import Togglable from './components/Togglable'
 
 const App = () => {
-    const [message, setMessage] = useState(null)
     const [user, setUser] = useState(null)
     const [error, setError] = useState(true)
     const [blogs, setBlogs] = useState([])
@@ -28,7 +27,7 @@ const App = () => {
     return (
         <div>
             <h2>The Blogosphere</h2>
-            <Notification message={message} error={error} />
+            <Notification error={error} />
             {user === null ? (
                 <Togglable
                     buttonLabel="login"
@@ -38,7 +37,6 @@ const App = () => {
                     <LoginForm
                         cancel={cancel}
                         setUser={setUser}
-                        setMessage={setMessage}
                         setError={setError}
                     />
                 </Togglable>
@@ -49,7 +47,6 @@ const App = () => {
                     user={user}
                     blogs={blogs}
                     setBlogs={setBlogs}
-                    setMessage={setMessage}
                     setError={setError}
                 />
             )}

@@ -1,9 +1,14 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+    userLoginSuccess,
+    userLoginError,
+} from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
 
-const LoginForm = ({ cancel, setUser, setMessage, setError }) => {
+const LoginForm = ({ cancel, setUser, setError }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -11,6 +16,8 @@ const LoginForm = ({ cancel, setUser, setMessage, setError }) => {
         setUsername('')
         setPassword('')
     }, [cancel])
+
+    const dispatch = useDispatch()
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -28,17 +35,11 @@ const LoginForm = ({ cancel, setUser, setMessage, setError }) => {
             setUser(user)
             setUsername('')
             setPassword('')
-            setMessage(`${user.name} logged in`)
+            dispatch(userLoginSuccess(user.username, 5))
             setError(false)
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
         } catch (exception) {
-            setMessage('Wrong credentials')
+            dispatch(userLoginError(5))
             setError(true)
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
         }
     }
     return (
@@ -73,7 +74,6 @@ const LoginForm = ({ cancel, setUser, setMessage, setError }) => {
 LoginForm.propTypes = {
     cancel: PropTypes.bool.isRequired,
     setUser: PropTypes.func.isRequired,
-    setMessage: PropTypes.func.isRequired,
     setError: PropTypes.func.isRequired,
 }
 

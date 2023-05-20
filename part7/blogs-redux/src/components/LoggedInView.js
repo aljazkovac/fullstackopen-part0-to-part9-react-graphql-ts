@@ -3,6 +3,8 @@ import BlogAddForm from './BlogAddForm'
 import LogOutForm from './LogOutForm'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { createdBlog } from '../reducers/notificationReducer'
 
 const LoggedInView = ({
     cancel,
@@ -10,7 +12,6 @@ const LoggedInView = ({
     user,
     blogs,
     setBlogs,
-    setMessage,
     setError,
 }) => {
     const [newAuthor, setNewAuthor] = useState('')
@@ -18,6 +19,8 @@ const LoggedInView = ({
     const [newUrl, setNewUrl] = useState('')
     const [newLikes, setNewLikes] = useState(0)
     const addBlogFormRef = useRef()
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setNewAuthor('')
@@ -53,13 +56,8 @@ const LoggedInView = ({
             setNewTitle('')
             setNewUrl('')
             setNewLikes(0)
-            setMessage(
-                `A new blog, ${blogObject.title} by ${blogObject.author}, added!`
-            )
+            dispatch(createdBlog(blogObject, 5))
             setError(false)
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
         })
     }
     return (
