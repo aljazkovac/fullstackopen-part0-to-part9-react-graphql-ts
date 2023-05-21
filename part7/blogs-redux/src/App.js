@@ -3,14 +3,13 @@ import './index.css'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import LoggedInView from './components/LoggedInView'
-import blogsService from './services/blogs'
 import BlogTable from './components/BlogTable'
 import Togglable from './components/Togglable'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+import { getUser } from './reducers/userReducer'
 
 const App = () => {
-    const [user, setUser] = useState(null)
     const [error, setError] = useState(true)
     const [cancel, setCancel] = useState(false)
 
@@ -18,14 +17,10 @@ const App = () => {
 
     useEffect(() => {
         dispatch(initializeBlogs())
-        const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-        if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON)
-            setUser(user)
-            blogsService.setToken(user.token)
-            console.log('User', user)
-        }
-    }, [])
+        dispatch(getUser())
+    }, [dispatch])
+
+    const user = useSelector((state) => state.user)
 
     return (
         <div>
@@ -37,11 +32,7 @@ const App = () => {
                     cancel={cancel}
                     setCancel={setCancel}
                 >
-                    <LoginForm
-                        cancel={cancel}
-                        setUser={setUser}
-                        setError={setError}
-                    />
+                    <LoginForm cancel={cancel} setError={setError} />
                 </Togglable>
             ) : (
                 <LoggedInView
