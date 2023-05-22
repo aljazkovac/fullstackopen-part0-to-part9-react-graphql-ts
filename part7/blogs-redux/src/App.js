@@ -10,7 +10,6 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { getUser } from './reducers/userReducer'
 
 const App = () => {
-    const [error, setError] = useState(true)
     const [cancel, setCancel] = useState(false)
 
     const dispatch = useDispatch()
@@ -25,21 +24,20 @@ const App = () => {
     return (
         <div>
             <h2>The Blogosphere</h2>
-            <Notification error={error} />
+            <Notification />
             {user === null ? (
                 <Togglable
                     buttonLabel="login"
                     cancel={cancel}
                     setCancel={setCancel}
                 >
-                    <LoginForm cancel={cancel} setError={setError} />
+                    <LoginForm cancel={cancel} />
                 </Togglable>
             ) : (
                 <LoggedInView
                     cancel={cancel}
                     setCancel={setCancel}
                     user={user}
-                    setError={setError}
                 />
             )}
             <h3>All blogs(title, author, likes)</h3>

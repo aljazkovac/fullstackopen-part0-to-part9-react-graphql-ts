@@ -1,21 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = ''
-
+const initialState = {
+    message: '',
+    error: false,
+}
 const notificationSlice = createSlice({
     name: 'notifications',
     initialState,
     reducers: {
         setMessage(state, action) {
-            return action.payload
+            state.message = action.payload
         },
-        clearMessage() {
-            return ''
+        clearMessage(state) {
+            state.message = ''
+        },
+        setError(state, action) {
+            state.error = action.payload
         },
     },
 })
 
-export const { setMessage, clearMessage } = notificationSlice.actions
+export const { setMessage, clearMessage, setError } = notificationSlice.actions
 
 export const createdBlog = (content, delay) => {
     return async (dispatch) => {
@@ -31,8 +36,9 @@ export const createdBlog = (content, delay) => {
     }
 }
 
-export const userLoginError = (delay) => {
+export const userLoginErrorOrNot = (errorOrNot, delay) => {
     return async (dispatch) => {
+        dispatch(setError(errorOrNot))
         const fullMessage = 'Wrong credentials'
         dispatch(setMessage(fullMessage))
         setTimeout(() => {
