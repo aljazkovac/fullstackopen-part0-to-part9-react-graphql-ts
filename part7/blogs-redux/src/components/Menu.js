@@ -1,13 +1,8 @@
 import { Routes, Route, Link } from 'react-router-dom'
-import BlogTable from './BlogTable'
-import Notification from './Notification'
-import Togglable from './Togglable'
-import LoginForm from './LoginForm'
-import LoggedInView from './LoggedInView'
-import { useState } from 'react'
+import LandingPage from './LandingPage'
+import Users from './Users'
 
 const Menu = ({ user }) => {
-    const [cancel, setCancel] = useState(false)
     const padding = {
         paddingRight: 5,
     }
@@ -17,35 +12,13 @@ const Menu = ({ user }) => {
                 <Link style={padding} to="/">
                     blogs
                 </Link>
+                <Link style={padding} to="/users">
+                    users
+                </Link>
             </div>
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <div>
-                            <Notification />
-                            <h2>The Blogosphere</h2>
-                            {user === null ? (
-                                <Togglable
-                                    buttonLabel="login"
-                                    cancel={cancel}
-                                    setCancel={setCancel}
-                                >
-                                    <LoginForm cancel={cancel} />
-                                </Togglable>
-                            ) : (
-                                <>
-                                    <LoggedInView
-                                        cancel={cancel}
-                                        setCancel={setCancel}
-                                        user={user}
-                                    />
-                                </>
-                            )}
-                            <BlogTable user={user} />
-                        </div>
-                    }
-                />
+                <Route path="/" element={<LandingPage user={user} />} />
+                <Route path="/users" element={<Users />} />
             </Routes>
         </div>
     )

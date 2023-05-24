@@ -2,21 +2,28 @@ import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
 import blogsService from '../services/blogs'
 import { userLoginErrorOrNot } from './notificationReducer'
+import userService from '../services/users'
 
 const userSlice = createSlice({
     name: 'user',
-    initialState: null,
+    initialState: {
+        loggedInUser: null,
+        allUsers: [],
+    },
     reducers: {
         setUser(state, action) {
             window.localStorage.setItem(
                 'loggedBlogappUser',
                 JSON.stringify(action.payload)
             )
-            return action.payload
+            state.loggedInUser = action.payload
         },
-        removeUser() {
+        removeUser(state) {
             window.localStorage.removeItem('loggedBlogappUser')
-            return null
+            state.loggedInUser = null
+        },
+        setAllUsers(state, action) {
+            state.allUsers = action.payload
         },
     },
 })
@@ -37,7 +44,7 @@ export const loginUser = (username, password) => {
     }
 }
 
-export const getUser = () => {
+export const getLoggedInUser = () => {
     return async (dispatch) => {
         const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
         if (loggedUserJSON) {
@@ -48,6 +55,13 @@ export const getUser = () => {
         }
     }
 }
+export const getAllUsers = () => {
+    return async (dispatch) => {
+        const allUsers = await userService.getAll()
+        dispatch(setAllUsers(allUsers))
+        console.log('All users: ', allUsers)
+    }
+}
 
-export const { setUser, removeUser } = userSlice.actions
+export const { setUser, removeUser, setAllUsers } = userSlice.actions
 export default userSlice.reducer
