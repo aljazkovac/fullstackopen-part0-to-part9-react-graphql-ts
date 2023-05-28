@@ -18,7 +18,7 @@ const Menu = ({ user }) => {
             </div>
             <Routes>
                 <Route path="/" element={<LandingPage user={user} />} />
-                <Route exact path="/users" element={<UsersTable />} />
+                <Route path="/users" element={<UsersTable />} />
             </Routes>
         </div>
     )

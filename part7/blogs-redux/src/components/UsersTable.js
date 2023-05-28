@@ -33,7 +33,7 @@ const UsersTable = () => {
                     {users.map((row) => (
                         <TableRow key={row.id}>
                             <TableCell>
-                                <Link to={row.path}>{row.username}</Link>
+                                <Link to={row.id}>{row.username}</Link>
                             </TableCell>
                             <TableCell>{row.blogs.length}</TableCell>
                         </TableRow>
