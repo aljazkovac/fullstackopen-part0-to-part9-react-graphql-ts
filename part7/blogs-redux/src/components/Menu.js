@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom'
 import LandingPage from './LandingPage'
-import Users from './Users'
+import UsersTable from './UsersTable'
 
 const Menu = ({ user }) => {
     const padding = {
@@ -18,7 +18,7 @@ const Menu = ({ user }) => {
             </div>
             <Routes>
                 <Route path="/" element={<LandingPage user={user} />} />
-                <Route path="/users" element={<Users />} />
+                <Route exact path="/users" element={<UsersTable />} />
             </Routes>
         </div>
     )

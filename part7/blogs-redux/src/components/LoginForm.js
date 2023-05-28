@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/userReducer'
 import PropTypes from 'prop-types'
+import Button from '@mui/material/Button'
 
 const LoginForm = ({ cancel }) => {
     const [username, setUsername] = useState('')
@@ -42,9 +43,9 @@ const LoginForm = ({ cancel }) => {
                     id="password-input"
                 />
             </div>
-            <button id="login-button" type="submit">
+            <Button variant="outlined" id="login-button" type="submit">
                 login
-            </button>
+            </Button>
         </form>
     )
 }

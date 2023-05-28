@@ -14,6 +14,7 @@ const App = () => {
     }, [dispatch])
 
     const user = useSelector((state) => state.user.loggedInUser)
+    console.log(user)
 
     return (
         <div>

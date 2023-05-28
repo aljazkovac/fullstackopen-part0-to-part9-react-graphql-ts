@@ -1,5 +1,6 @@
 import { removeUser } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
+import Button from '@mui/material/Button'
 
 const LogOutForm = () => {
     const dispatch = useDispatch()
@@ -9,9 +10,9 @@ const LogOutForm = () => {
     }
     return (
         <form onSubmit={handleLogout}>
-            <button id="logout-button" type="submit">
-                Log out
-            </button>
+            <Button variant="outlined" id="logout-button" type="submit">
+                logout
+            </Button>
         </form>
     )
 }
