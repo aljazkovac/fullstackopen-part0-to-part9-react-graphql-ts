@@ -9,6 +9,7 @@ const userSlice = createSlice({
     initialState: {
         loggedInUser: null,
         allUsers: [],
+        specificUser: null,
     },
     reducers: {
         setUser(state, action) {
@@ -24,6 +25,9 @@ const userSlice = createSlice({
         },
         setAllUsers(state, action) {
             state.allUsers = action.payload
+        },
+        setSpecificUser(state, action) {
+            state.specificUser = action.payload
         },
     },
 })
@@ -63,5 +67,14 @@ export const getAllUsers = () => {
     }
 }
 
-export const { setUser, removeUser, setAllUsers } = userSlice.actions
+export const getUser = (id) => {
+    return async (dispatch) => {
+        const user = await userService.getUser(id)
+        dispatch(setSpecificUser(user))
+        console.log('Specific user: ', user)
+    }
+}
+
+export const { setUser, removeUser, setAllUsers, setSpecificUser } =
+    userSlice.actions
 export default userSlice.reducer
