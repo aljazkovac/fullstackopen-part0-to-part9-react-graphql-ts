@@ -8,18 +8,19 @@ import UserBlogsList from './UserBlogsList'
 import { getAllUserBlogs } from '../reducers/blogReducer'
 
 const User = () => {
-    const { id } = useParams()
+    const { userId } = useParams()
     const dispatch = useDispatch()
+    console.log('UserId in User component: ', userId)
 
     useEffect(() => {
         const fetchUserAndBlogs = async () => {
-            const fetchedUser = await dispatch(getUser(id)) // Fetch user first
+            const fetchedUser = await dispatch(getUser(userId)) // Fetch user first
             console.log('User fetched: ', fetchedUser)
             dispatch(getAllUserBlogs(fetchedUser)) // Then fetch the user's blogs
         }
 
         fetchUserAndBlogs() // Call the async function
-    }, [dispatch, id]) // Add dispatch and id as dependencies to avoid unnecessary re-renders
+    }, [dispatch, userId]) // Add dispatch and id as dependencies to avoid unnecessary re-renders
 
     const user = useSelector((state) => state.user.specificUser)
     const allUserBlogs = useSelector((state) => state.blogs.chosenUserBlogs)

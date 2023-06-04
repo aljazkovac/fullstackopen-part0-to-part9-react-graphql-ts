@@ -8,6 +8,7 @@ const getAll = async () => {
 }
 
 const getUser = async (id) => {
+    console.log('UserId in users service: ', id)
     const request = axios.get(`${baseUrl}/${id}`)
     const response = await request
     return response.data

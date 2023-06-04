@@ -2,6 +2,7 @@ import { Routes, Route, Link } from 'react-router-dom'
 import LandingPage from './LandingPage'
 import UsersTable from './UsersTable'
 import User from './User'
+import Blog from './Blog'
 
 const Menu = ({ user }) => {
     const padding = {
@@ -20,7 +21,8 @@ const Menu = ({ user }) => {
             <Routes>
                 <Route path="/" element={<LandingPage user={user} />} />
                 <Route path="/users" element={<UsersTable />} />
-                <Route path="/users/:id" element={<User />} />
+                <Route path="/users/:userId" element={<User />} />
+                <Route path="/users/:userId/:blogId" element={<Blog />} />
             </Routes>
         </div>
     )
