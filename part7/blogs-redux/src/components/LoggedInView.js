@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { createdBlog } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
 
-const LoggedInView = ({ cancel, setCancel, user, setError }) => {
+const LoggedInView = ({ cancel, setCancel, user }) => {
     const [newAuthor, setNewAuthor] = useState('')
     const [newTitle, setNewTitle] = useState('')
     const [newUrl, setNewUrl] = useState('')
@@ -49,7 +49,7 @@ const LoggedInView = ({ cancel, setCancel, user, setError }) => {
         setNewUrl('')
         setNewLikes(0)
         dispatch(createdBlog(blogObject, 5))
-        setError(false)
+        // setError(false)
     }
     return (
         <div>

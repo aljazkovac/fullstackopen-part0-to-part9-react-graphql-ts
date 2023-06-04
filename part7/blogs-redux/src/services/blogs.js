@@ -10,6 +10,18 @@ const getAll = async () => {
     const response = await request
     return response.data
 }
+
+const getManyBlogs = async (ids) => {
+    try {
+        let url = `${baseUrl}/fetchByIds?ids=${ids.join(',')}`
+        console.log('About to fetch blogs ... ')
+        const response = await axios.get(url)
+        return response.data
+    } catch (error) {
+        console.error('Error fetching blogs:', error)
+    }
+}
+
 const create = async (newObject) => {
     const config = {
         headers: { Authorization: token },
@@ -36,6 +48,7 @@ const remove = async (id, token) => {
 
 const blogsService = {
     getAll,
+    getManyBlogs,
     create,
     update,
     remove,

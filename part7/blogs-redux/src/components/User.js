@@ -4,14 +4,25 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getUser } from '../reducers/userReducer'
+import UserBlogsList from './UserBlogsList'
+import { getAllUserBlogs } from '../reducers/blogReducer'
 
 const User = () => {
-    const { id } = useParams() // Extract id from route parameters
+    const { id } = useParams()
     const dispatch = useDispatch()
+
     useEffect(() => {
-        dispatch(getUser(id))
-    }, [])
-    const user = useSelector((state) => state.user.specificUser) // Access users from Redux store
+        const fetchUserAndBlogs = async () => {
+            const fetchedUser = await dispatch(getUser(id)) // Fetch user first
+            console.log('User fetched: ', fetchedUser)
+            dispatch(getAllUserBlogs(fetchedUser)) // Then fetch the user's blogs
+        }
+
+        fetchUserAndBlogs() // Call the async function
+    }, [dispatch, id]) // Add dispatch and id as dependencies to avoid unnecessary re-renders
+
+    const user = useSelector((state) => state.user.specificUser)
+    const allUserBlogs = useSelector((state) => state.blogs.chosenUserBlogs)
 
     if (!user) {
         return null
@@ -20,7 +31,8 @@ const User = () => {
     return (
         <div>
             <h2>{user.username}</h2>
-            {/* Other user details here */}
+            <p>added blogs</p>
+            <UserBlogsList userBlogs={allUserBlogs} />
         </div>
     )
 }

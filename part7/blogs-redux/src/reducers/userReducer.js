@@ -72,6 +72,7 @@ export const getUser = (id) => {
         const user = await userService.getUser(id)
         dispatch(setSpecificUser(user))
         console.log('Specific user: ', user)
+        return user
     }
 }
 

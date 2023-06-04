@@ -13,15 +13,6 @@ const getUser = async (id) => {
     return response.data
 }
 
-//const create = async (newObject) => {
-//const config = {
-//headers: { Authorization: token },
-//}
-//const request = axios.post(baseUrl, newObject, config)
-//const response = await request
-//return response.data
-//}
-
 const userService = {
     getAll,
     getUser,

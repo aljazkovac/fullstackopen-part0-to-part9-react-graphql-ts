@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 const BlogTable = ({ user }) => {
     const dispatch = useDispatch()
-    const data = useSelector((state) => state.blogs)
+    const data = useSelector((state) => state.blogs.allBlogs)
     const columns = useMemo(
         () => [
             {
