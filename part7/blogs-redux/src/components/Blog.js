@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getUser } from '../reducers/userReducer'
+import MyTabPanel from './TabsPanel'
 
 const Blog = () => {
     const { userId, blogId } = useParams() // Extract id from route parameters
@@ -21,8 +22,13 @@ const Blog = () => {
 
     return (
         <div>
-            <div>{blog.title}</div>
-            <div>{blog.likes}</div>
+            <MyTabPanel labels={['Title and Author', 'Url', 'Likes']}>
+                <div>
+                    {blog.title} by {blog.author}
+                </div>
+                <div>{blog.url}</div>
+                <div>{blog.likes}</div>
+            </MyTabPanel>
         </div>
     )
 }
