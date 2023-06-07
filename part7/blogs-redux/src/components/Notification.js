@@ -1,27 +1,19 @@
 import { useSelector } from 'react-redux'
+import { Snackbar, Alert } from '@mui/material'
 
 const Notification = () => {
-    const style = {
-        border: 'solid',
-        padding: 10,
-        borderWidth: 1,
-        color: 'green',
-    }
-    const errorStyle = {
-        border: 'solid',
-        padding: 10,
-        borderWidth: 1,
-        color: 'red',
-    }
+    const message = useSelector((state) => state.notifications.message)
+    const error = useSelector((state) => state.notifications.error)
 
-    const message = useSelector((state) => {
-        return state.notifications.message
-    })
-    const error = useSelector((state) => {
-        return state.notifications.error
-    })
-
-    return <div style={error ? errorStyle : style}>{message}</div>
+    return (
+        <Snackbar
+            open={message !== null}
+            autoHideDuration={6000}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+            <Alert severity={error ? 'error' : 'success'}>{message}</Alert>
+        </Snackbar>
+    )
 }
 
 export default Notification
