@@ -4,13 +4,16 @@ import Notification from './Notification'
 import Togglable from './Togglable'
 import LoginForm from './LoginForm'
 import LoggedInView from './LoggedInView'
+import { Box, Typography } from '@mui/material'
 
 const LandingPage = ({ user }) => {
     const [cancel, setCancel] = useState(false)
     return (
-        <div>
+        <Box display="flex" flexDirection="column">
             <Notification />
-            <h2>The Blogosphere</h2>
+            <Typography variant="h2" align="center">
+                The Blogosphere
+            </Typography>
             {user === null ? (
                 <Togglable
                     buttonLabel="login"
@@ -29,7 +32,7 @@ const LandingPage = ({ user }) => {
                 </>
             )}
             <BlogTable user={user} />
-        </div>
+        </Box>
     )
 }
 
