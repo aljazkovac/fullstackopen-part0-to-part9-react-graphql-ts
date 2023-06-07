@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getUser } from '../reducers/userReducer'
-import MyTabPanel from './TabsPanel'
+import { Card, CardContent, Typography } from '@mui/material'
 
 const Blog = () => {
     const { userId, blogId } = useParams() // Extract id from route parameters
@@ -21,15 +21,20 @@ const Blog = () => {
     }
 
     return (
-        <div>
-            <MyTabPanel labels={['Title and Author', 'Url', 'Likes']}>
-                <div>
-                    {blog.title} by {blog.author}
-                </div>
-                <div>{blog.url}</div>
-                <div>{blog.likes}</div>
-            </MyTabPanel>
-        </div>
+        <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+                <Typography variant="h5" component="div">
+                    {blog.title}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                    by {blog.author}
+                </Typography>
+                <Typography variant="body2">
+                    URL: <a href={blog.url}>{blog.url}</a>
+                </Typography>
+                <Typography variant="body2">Likes: {blog.likes}</Typography>
+            </CardContent>
+        </Card>
     )
 }
 
