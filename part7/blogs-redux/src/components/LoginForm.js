@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/userReducer'
 import PropTypes from 'prop-types'
-import Button from '@mui/material/Button'
+import {
+    TextField,
+    Button,
+    FormControl,
+    FormGroup,
+    FormLabel,
+} from '@mui/material'
 
 const LoginForm = ({ cancel }) => {
     const [username, setUsername] = useState('')
@@ -22,31 +28,30 @@ const LoginForm = ({ cancel }) => {
         setPassword('')
     }
     return (
-        <form onSubmit={handleLogin}>
-            <div>
-                username
-                <input
+        <FormControl component="form" onSubmit={handleLogin}>
+            <FormLabel>Login</FormLabel>
+            <FormGroup>
+                <TextField
+                    id="username-input"
+                    label="Username"
                     type="text"
                     value={username}
-                    name="Username"
                     onChange={({ target }) => setUsername(target.value)}
-                    id="username-input"
+                    variant="outlined"
                 />
-            </div>
-            <div>
-                password
-                <input
+                <TextField
+                    id="password-input"
+                    label="Password"
                     type="password"
                     value={password}
-                    name="Password"
                     onChange={({ target }) => setPassword(target.value)}
-                    id="password-input"
+                    variant="outlined"
                 />
-            </div>
-            <Button variant="outlined" id="login-button" type="submit">
-                login
-            </Button>
-        </form>
+                <Button variant="outlined" id="login-button" type="submit">
+                    login
+                </Button>
+            </FormGroup>
+        </FormControl>
     )
 }
 
