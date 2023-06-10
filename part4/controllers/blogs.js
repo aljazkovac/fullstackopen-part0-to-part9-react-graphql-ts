@@ -4,14 +4,6 @@ const Blog = require("../models/blog");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
-blogRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("userId", {
-    username: 1,
-    name: 1,
-  });
-  response.json(blogs);
-});
-
 blogRouter.get("/fetchByIds", async (request, response) => {
   // assume that the array of ids comes in a query parameter named 'ids'
   // and that it's a string of comma-separated values
@@ -40,6 +32,14 @@ blogRouter.get("/:id", async (request, response) => {
   } else {
     response.status(404).end();
   }
+});
+
+blogRouter.get("/", async (request, response) => {
+  const blogs = await Blog.find({}).populate("userId", {
+    username: 1,
+    name: 1,
+  });
+  response.json(blogs);
 });
 
 blogRouter.post("/", async (request, response) => {
