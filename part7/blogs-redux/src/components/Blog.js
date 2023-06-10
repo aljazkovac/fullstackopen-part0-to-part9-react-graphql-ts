@@ -33,6 +33,9 @@ const Blog = () => {
                     URL: <a href={blog.url}>{blog.url}</a>
                 </Typography>
                 <Typography variant="body2">Likes: {blog.likes}</Typography>
+                <Typography variant="body2">
+                    Comments: {blog.comments}
+                </Typography>
             </CardContent>
         </Card>
     )
