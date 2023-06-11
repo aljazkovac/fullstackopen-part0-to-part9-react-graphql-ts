@@ -22,6 +22,17 @@ const getManyBlogs = async (ids) => {
     }
 }
 
+const getComments = async (blogId) => {
+    try {
+        let url = `${baseUrl}/${blogId}/comments`
+        console.log('About to fetch comments... ')
+        const response = await axios.get(url)
+        return response.data
+    } catch (error) {
+        console.log('Error fetching comments:', error)
+    }
+}
+
 const create = async (newObject) => {
     const config = {
         headers: { Authorization: token },
@@ -53,6 +64,7 @@ const blogsService = {
     update,
     remove,
     setToken,
+    getComments,
 }
 
 export default blogsService

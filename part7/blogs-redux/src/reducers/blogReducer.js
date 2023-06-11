@@ -6,6 +6,7 @@ const blogsSlice = createSlice({
     initialState: {
         allBlogs: [],
         chosenUserBlogs: [],
+        chosenBlogComments: [],
     },
     reducers: {
         appendBlog(state, action) {
@@ -40,6 +41,9 @@ const blogsSlice = createSlice({
         setChosenUserBlogs(state, action) {
             state.chosenUserBlogs = action.payload
         },
+        setChosenBlogComments(state, action) {
+            state.chosenBlogComments = action.payload
+        },
     },
 })
 
@@ -49,6 +53,7 @@ export const {
     removeBlogs,
     setBlogs,
     setChosenUserBlogs,
+    setChosenBlogComments,
 } = blogsSlice.actions
 
 export const initializeBlogs = () => {
@@ -64,6 +69,14 @@ export const getAllUserBlogs = (user) => {
     return async (dispatch) => {
         const blogs = await blogsService.getManyBlogs(user.blogs)
         dispatch(setChosenUserBlogs(blogs))
+    }
+}
+
+export const getAllChosenBlogComments = (blogId) => {
+    console.log('BlogId: ', blogId)
+    return async (dispatch) => {
+        const comments = await blogsService.getComments(blogId)
+        dispatch(setChosenBlogComments(comments))
     }
 }
 
