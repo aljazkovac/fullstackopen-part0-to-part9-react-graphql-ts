@@ -3,8 +3,13 @@ const Comment = require("../models/comment");
 const Blog = require("../models/blog");
 
 commentRouter.get("/", async (request, response) => {
-  const blogs = await Comment.find({});
-  response.json(blogs);
+  const blog = await Blog.findById(request.params.id);
+  if (!blog) {
+    return response.status(404).send({ error: "Blog not found" });
+  }
+  const comments = await Comment.find({ _id: { $in: blog.comments } });
+  console.log("Comments: ", comments);
+  response.json(comments);
 });
 
 commentRouter.post("/", async (request, response) => {

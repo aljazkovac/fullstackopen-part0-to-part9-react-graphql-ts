@@ -42,6 +42,7 @@ const blogsSlice = createSlice({
             state.chosenUserBlogs = action.payload
         },
         setChosenBlogComments(state, action) {
+            console.log('Chosen blog comments: ', action.payload)
             state.chosenBlogComments = action.payload
         },
     },

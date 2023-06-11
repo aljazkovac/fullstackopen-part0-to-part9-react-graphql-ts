@@ -45,26 +45,24 @@ const Blog = () => {
                     URL: <a href={blog.url}>{blog.url}</a>
                 </Typography>
                 <Typography variant="body2">Likes: {blog.likes}</Typography>
-                <Typography variant="body2">
-                    Comments:
-                    <List
-                        style={{ listStyleType: 'disc', paddingLeft: '20px' }}
-                    >
-                        {comments.map((c) => (
-                            <ListItem key={c.id} disablePadding>
-                                <ListItemIcon>
-                                    <StarBorder />
-                                    <ListItemText
-                                        primary={c.content}
-                                        primaryTypographyProps={{
-                                            variant: 'body2',
-                                        }}
-                                    ></ListItemText>
-                                </ListItemIcon>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Typography>
+                <Typography variant="body2">Comments:</Typography>
+                <List style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+                    {comments === null
+                        ? null
+                        : comments.map((c) => (
+                              <ListItem key={c.id} disablePadding>
+                                  <ListItemIcon>
+                                      <StarBorder />
+                                      <ListItemText
+                                          primary={c.content}
+                                          primaryTypographyProps={{
+                                              variant: 'body2',
+                                          }}
+                                      ></ListItemText>
+                                  </ListItemIcon>
+                              </ListItem>
+                          ))}
+                </List>
             </CardContent>
         </Card>
     )
