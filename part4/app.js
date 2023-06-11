@@ -21,9 +21,14 @@ mongoose
     logger.error("Error connecting to MongoDB: ", error.message);
   });
 app.use(cors());
+app.use((req, res, next) => {
+  console.log("Request body:", req.body);
+  next();
+});
 app.use(express.json());
-app.use(middleware.tokenExtractor);
+app.use(middleware.requestLogger);
 app.use("/api/login", loginRouter);
+app.use(middleware.tokenExtractor);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/blogs/:id/comments", commentsRouter);
@@ -31,6 +36,5 @@ if (process.env.NODE_ENV === "test") {
   const testingRouter = require("./controllers/testing");
   app.use("/api/testing", testingRouter);
 }
-app.use(middleware.requestLogger);
 
 module.exports = app;

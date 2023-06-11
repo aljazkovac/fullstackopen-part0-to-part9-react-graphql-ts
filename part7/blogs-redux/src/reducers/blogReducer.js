@@ -12,6 +12,9 @@ const blogsSlice = createSlice({
         appendBlog(state, action) {
             state.allBlogs.push(action.payload)
         },
+        appendComment(state, action) {
+            state.chosenBlogComments.push(action.payload)
+        },
         updateBlogs(state, action) {
             const updatedBlogs = action.payload // An array of blog objects with updated votes
             const updatedBlogsById = {} // Create a dictionary for quick lookup by id
@@ -50,6 +53,7 @@ const blogsSlice = createSlice({
 
 export const {
     appendBlog,
+    appendComment,
     updateBlogs,
     removeBlogs,
     setBlogs,
@@ -78,6 +82,14 @@ export const getAllChosenBlogComments = (blogId) => {
     return async (dispatch) => {
         const comments = await blogsService.getComments(blogId)
         dispatch(setChosenBlogComments(comments))
+    }
+}
+
+export const addCommentToBlog = (blogId, comment) => {
+    console.log('Comment: ', comment)
+    return async (dispatch) => {
+        const newComment = await blogsService.addComment(blogId, comment)
+        dispatch(appendComment(newComment))
     }
 }
 

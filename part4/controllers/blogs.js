@@ -43,6 +43,7 @@ blogRouter.get("/", async (request, response) => {
 });
 
 blogRouter.post("/", async (request, response) => {
+  console.log("Request in blogRouter.post: ", request.body);
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
   if (!decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid" });
@@ -106,6 +107,7 @@ blogRouter.delete("/:id", async (request, response) => {
 });
 
 blogRouter.put("/:id", async (request, response) => {
+  console.log("Request in blogRouter.put: ", request.body);
   const body = request.body;
   const blog = {
     title: body.title,

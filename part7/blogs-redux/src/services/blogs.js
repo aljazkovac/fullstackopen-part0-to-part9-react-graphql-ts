@@ -29,7 +29,19 @@ const getComments = async (blogId) => {
         const response = await axios.get(url)
         return response.data
     } catch (error) {
-        console.log('Error fetching comments:', error)
+        console.log('Error fetching comments: ', error)
+    }
+}
+
+const addComment = async (blogId, comment) => {
+    try {
+        console.log('BlogId: ', blogId)
+        console.log('Comment in addComment: ', comment)
+        let url = `${baseUrl}/${blogId}/comments`
+        const response = await axios.post(url, comment)
+        return response.data
+    } catch (error) {
+        console.log('Error adding comment: ', error)
     }
 }
 
@@ -65,6 +77,7 @@ const blogsService = {
     remove,
     setToken,
     getComments,
+    addComment,
 }
 
 export default blogsService

@@ -14,7 +14,9 @@ commentRouter.get("/", async (request, response) => {
 
 commentRouter.post("/", async (request, response) => {
   console.log("Comment reqParams: ", request.params);
+  console.log("Request in commentRouter.post: ", request.body);
   const blog = await Blog.findById(request.params.id);
+  console.log("Blog in commentRouter: ", blog);
   const comment = new Comment({
     content: request.body.content,
     blogId: blog._id,

@@ -1,10 +1,13 @@
-import { React } from 'react'
+import { React, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getUser } from '../reducers/userReducer'
-import { getAllChosenBlogComments } from '../reducers/blogReducer'
+import {
+    getAllChosenBlogComments,
+    addCommentToBlog,
+} from '../reducers/blogReducer'
 import {
     Card,
     CardContent,
@@ -13,12 +16,17 @@ import {
     ListItem,
     ListItemText,
     ListItemIcon,
+    Button,
+    TextField,
 } from '@mui/material'
 import StarBorder from '@mui/icons-material/StarBorder'
 
 const Blog = () => {
     const { userId, blogId } = useParams() // Extract id from route parameters
     const dispatch = useDispatch()
+    const [comment, setComment] = useState('')
+    const [showCommentBox, setShowCommentBox] = useState(false)
+
     useEffect(() => {
         dispatch(getUser(userId))
         dispatch(getAllChosenBlogComments(blogId))
@@ -27,6 +35,18 @@ const Blog = () => {
     const userBlogs = useSelector((state) => state.blogs.chosenUserBlogs)
     const blog = userBlogs.find((blog) => blog.id === blogId)
     const comments = useSelector((state) => state.blogs.chosenBlogComments)
+
+    const handleCommentChange = (event) => {
+        setComment(event.target.value)
+    }
+
+    const handleCommentSubmit = async (event) => {
+        event.preventDefault()
+        const commentObj = { content: comment }
+        dispatch(addCommentToBlog(blogId, commentObj))
+        setComment('')
+        setShowCommentBox(false)
+    }
 
     if (!user || !blog) {
         return null
@@ -63,6 +83,19 @@ const Blog = () => {
                               </ListItem>
                           ))}
                 </List>
+                <Button onClick={() => setShowCommentBox(true)}>
+                    Add comment
+                </Button>
+                {showCommentBox && (
+                    <form onSubmit={handleCommentSubmit}>
+                        <TextField
+                            value={comment}
+                            onChange={handleCommentChange}
+                            label="New comment"
+                        ></TextField>
+                        <Button type="submit">Submit</Button>
+                    </form>
+                )}
             </CardContent>
         </Card>
     )
