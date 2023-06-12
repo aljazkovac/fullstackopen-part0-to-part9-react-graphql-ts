@@ -7,6 +7,7 @@ import { getUser } from '../reducers/userReducer'
 import {
     getAllChosenBlogComments,
     addCommentToBlog,
+    getSentimentOfComment,
 } from '../reducers/blogReducer'
 import {
     Card,
@@ -19,7 +20,9 @@ import {
     Button,
     TextField,
 } from '@mui/material'
-import StarBorder from '@mui/icons-material/StarBorder'
+import TrendingUp from '@mui/icons-material/TrendingUp'
+import TrendingDown from '@mui/icons-material/TrendingDown'
+import TrendingFlat from '@mui/icons-material/TrendingFlat'
 
 const Blog = () => {
     const { userId, blogId } = useParams() // Extract id from route parameters
@@ -42,7 +45,15 @@ const Blog = () => {
 
     const handleCommentSubmit = async (event) => {
         event.preventDefault()
-        const commentObj = { content: comment }
+        const commentObjForSentimentAnalysis = { content: comment }
+        const commentSentiment = await dispatch(
+            getSentimentOfComment(commentObjForSentimentAnalysis)
+        )
+        console.log('Comment sentiment: ', commentSentiment)
+        const commentObj = {
+            content: comment,
+            sentiment: commentSentiment.result.trim(),
+        }
         dispatch(addCommentToBlog(blogId, commentObj))
         setComment('')
         setShowCommentBox(false)
@@ -50,6 +61,12 @@ const Blog = () => {
 
     if (!user || !blog) {
         return null
+    }
+
+    const sentimentIcons = {
+        POSITIVE: <TrendingUp />,
+        NEUTRAL: <TrendingFlat />,
+        NEGATIVE: <TrendingDown />,
     }
 
     return (
@@ -72,7 +89,7 @@ const Blog = () => {
                         : comments.map((c) => (
                               <ListItem key={c.id} disablePadding>
                                   <ListItemIcon>
-                                      <StarBorder />
+                                      {sentimentIcons[c.sentiment]}
                                       <ListItemText
                                           primary={c.content}
                                           primaryTypographyProps={{

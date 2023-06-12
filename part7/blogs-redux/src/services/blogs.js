@@ -45,6 +45,17 @@ const addComment = async (blogId, comment) => {
     }
 }
 
+const getSentiment = async (comment) => {
+    try {
+        console.log('Comment inside getSentiment: ', comment)
+        let url = '/api/sentiment'
+        const response = await axios.post(url, comment)
+        return response.data
+    } catch (error) {
+        console.log('Error getting comment sentiment', error)
+    }
+}
+
 const create = async (newObject) => {
     const config = {
         headers: { Authorization: token },
@@ -78,6 +89,7 @@ const blogsService = {
     setToken,
     getComments,
     addComment,
+    getSentiment,
 }
 
 export default blogsService

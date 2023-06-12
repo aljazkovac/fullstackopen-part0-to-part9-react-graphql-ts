@@ -20,6 +20,7 @@ commentRouter.post("/", async (request, response) => {
   const comment = new Comment({
     content: request.body.content,
     blogId: blog._id,
+    sentiment: request.body.sentiment,
   });
   const savedComment = await comment.save();
   blog.comments = blog.comments.concat(savedComment._id);

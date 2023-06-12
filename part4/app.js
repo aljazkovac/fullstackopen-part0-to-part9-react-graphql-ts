@@ -8,6 +8,7 @@ const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const commentsRouter = require("./controllers/comments");
 const loginRouter = require("./controllers/login");
+const sentimentRouter = require("./controllers/sentiment");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 
@@ -32,6 +33,7 @@ app.use(middleware.tokenExtractor);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/blogs/:id/comments", commentsRouter);
+app.use("/api/sentiment", sentimentRouter);
 if (process.env.NODE_ENV === "test") {
   const testingRouter = require("./controllers/testing");
   app.use("/api/testing", testingRouter);

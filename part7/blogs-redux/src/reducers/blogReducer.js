@@ -7,6 +7,7 @@ const blogsSlice = createSlice({
         allBlogs: [],
         chosenUserBlogs: [],
         chosenBlogComments: [],
+        commentSentiment: null,
     },
     reducers: {
         appendBlog(state, action) {
@@ -48,6 +49,10 @@ const blogsSlice = createSlice({
             console.log('Chosen blog comments: ', action.payload)
             state.chosenBlogComments = action.payload
         },
+        setCommentSentiment(state, action) {
+            console.log('Comment sentiment: ', action.payload)
+            state.commentSentiment = action.payload
+        },
     },
 })
 
@@ -59,6 +64,7 @@ export const {
     setBlogs,
     setChosenUserBlogs,
     setChosenBlogComments,
+    setCommentSentiment,
 } = blogsSlice.actions
 
 export const initializeBlogs = () => {
@@ -90,6 +96,15 @@ export const addCommentToBlog = (blogId, comment) => {
     return async (dispatch) => {
         const newComment = await blogsService.addComment(blogId, comment)
         dispatch(appendComment(newComment))
+    }
+}
+
+export const getSentimentOfComment = (commentObj) => {
+    console.log('Comment obj: ', commentObj)
+    return async (dispatch) => {
+        const sentiment = await blogsService.getSentiment(commentObj)
+        dispatch(setCommentSentiment(sentiment))
+        return sentiment
     }
 }
 
