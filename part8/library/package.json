@@ -1,0 +1,19 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alko5923/fullstack-open-2022.git"
+  },
+  "author": "Aljaz Kovac",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alko5923/fullstack-open-2022/issues"
+  },
+  "homepage": "https://github.com/alko5923/fullstack-open-2022#readme"
+}
