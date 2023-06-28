@@ -1,6 +1,7 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v1: uuid } = require("uuid");
+const { GraphQLError } = require("graphql");
 
 let authors = [
   {
@@ -100,17 +101,21 @@ let books = [
 
 const typeDefs = `
   type Book {
-      title: String!
-      published: Int!
-      author: String!
-      id: ID!
-      genres: [String!]!
+    title: String!
+    published: Int!
+    author: String!
+    id: ID!
+    genres: [String!]!
   }
   type Author {
     name: String!
     id: ID!
     born: Int
-    bookCount: Int!
+    bookCount: Int
+  }
+  type AuthorAndBook {
+    author: Author!
+    book: Book!
   }
   type Query {
     bookCount: Int!
@@ -125,6 +130,12 @@ const typeDefs = `
       published: Int!
       genres: [String!]!
     ): Book
+    createAuthorAndBook(
+      authorName: String!
+      title: String!
+      published: Int!
+      genres: [String!]!
+    ): AuthorAndBook
     editAuthor(
       name: String!
       setBornTo: Int!
@@ -153,15 +164,12 @@ const resolvers = {
   Mutation: {
     addBook: (root, args) => {
       if (books.find((b) => b.title === args.title)) {
-        throw (
-          (new GraphQLError("Title must be unique"),
-          {
-            extensions: {
-              code: "BAD_USER_INPUT",
-              invalidArgs: args.title,
-            },
-          })
-        );
+        throw new GraphQLError("Title must be unique", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.title,
+          },
+        });
       }
       const book = { ...args, id: uuid() };
       books = books.concat(book);
@@ -170,6 +178,24 @@ const resolvers = {
         authors = authors.concat(author);
       }
       return book;
+    },
+    createAuthorAndBook: (root, args) => {
+      if (books.find((b) => b.title === args.title)) {
+        throw new GraphQLError("Title must be unique", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.title,
+          },
+        });
+      }
+      const book = { ...args, author: args.authorName, id: uuid() };
+      books = books.concat(book);
+      let author = authors.find((a) => a.name === args.authorName);
+      if (!author) {
+        author = { name: args.authorName, id: uuid() };
+        authors = authors.concat(author);
+      }
+      return { author, book };
     },
     editAuthor: (root, args) => {
       const author = authors.find((a) => a.name === args.name);
