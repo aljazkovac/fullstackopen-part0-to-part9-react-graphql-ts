@@ -28,7 +28,11 @@ const App = () => {
 
       <Notification error={error} />
 
-      <Authors show={page === "authors"} authors={result.data.allAuthors} />
+      <Authors
+        show={page === "authors"}
+        authors={result.data.allAuthors}
+        setError={setError}
+      />
 
       <Books show={page === "books"} books={result.data.allBooks} />
 
