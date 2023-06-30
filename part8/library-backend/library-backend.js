@@ -19,7 +19,7 @@ mongoose
     console.log("connected to MongoDB");
   })
   .catch((error) => {
-    console.log("error connection to MongoDB:", error.message);
+    console.log("error connecting to MongoDB:", error.message);
   });
 
 const typeDefs = `
@@ -63,6 +63,28 @@ const typeDefs = `
     ): Author
   }
 `;
+
+const saveDocument = async (document) => {
+  try {
+    await document.save();
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const errorMessages = Object.values(error.errors).map(
+        (e) => `${e.path}: ${e.message}`
+      );
+      const combinedErrorMessage = errorMessages.join(", ");
+
+      throw new GraphQLError(combinedErrorMessage, {
+        extensions: {
+          code: "BAD_USER_INPUT",
+          invalidArgs: Object.keys(error.errors),
+        },
+      });
+    }
+    // if it's not a validation error, just re-throw the error
+    throw error;
+  }
+};
 
 const resolvers = {
   Query: {
@@ -123,7 +145,7 @@ const resolvers = {
       }
 
       const book = new Book({ ...args, author: author._id });
-      await book.save();
+      await saveDocument(book);
 
       return book;
     },
@@ -138,7 +160,7 @@ const resolvers = {
         });
       }
       const author = new Author({ ...args });
-      await author.save();
+      await saveDocument(author);
       return author;
     },
     editAuthor: async (root, args) => {
@@ -152,7 +174,7 @@ const resolvers = {
         });
       }
       existingAuthor.born = args.setBornTo;
-      await existingAuthor.save();
+      await saveDocument(existingAuthor);
       return existingAuthor;
     },
   },
