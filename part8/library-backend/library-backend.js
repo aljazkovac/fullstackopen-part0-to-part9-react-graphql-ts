@@ -137,39 +137,23 @@ const resolvers = {
           },
         });
       }
-      const author = new Author({ name: args.name });
+      const author = new Author({ ...args });
       await author.save();
       return author;
     },
-    //createAuthorAndBook: (root, args) => {
-    //let books = Book.find({});
-    //if (books.find((b) => b.title === args.title)) {
-    //throw new GraphQLError("Title must be unique", {
-    //extensions: {
-    //code: "BAD_USER_INPUT",
-    //invalidArgs: args.title,
-    //},
-    //});
-    //}
-    //const book = { ...args, author: args.authorName, id: uuid() };
-    //books = books.concat(book);
-    //let authors = Author.find({});
-    //let author = authors.find((a) => a.name === args.authorName);
-    //if (!author) {
-    //author = { name: args.authorName, id: uuid() };
-    //authors = authors.concat(author);
-    //}
-    //return { author, book };
-    //},
-    editAuthor: (root, args) => {
-      let authors = Author.find({});
-      const author = authors.find((a) => a.name === args.name);
-      if (!author) {
-        return null;
+    editAuthor: async (root, args) => {
+      const existingAuthor = await Author.findOne({ name: args.name });
+      if (!existingAuthor) {
+        throw new GraphQLError("Author does not exist.", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+          },
+        });
       }
-      const updatedAuthor = { ...author, born: args.setBornTo };
-      authors = authors.map((a) => (a.name === args.name ? updatedAuthor : a));
-      return updatedAuthor;
+      existingAuthor.born = args.setBornTo;
+      await existingAuthor.save();
+      return existingAuthor;
     },
   },
 };
