@@ -107,6 +107,16 @@ const saveDocument = async (document) => {
   }
 };
 
+const checkAuthentication = (context, errorMessage) => {
+  if (!context.currentUser) {
+    throw new GraphQLError(errorMessage, {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+  }
+};
+
 const resolvers = {
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
@@ -146,7 +156,8 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      checkAuthentication(context, "Only logged in users can add books.");
       const existingBook = await Book.find({ title: args.title });
       if (existingBook.length > 0) {
         throw new GraphQLError("Title must be unique", {
@@ -186,7 +197,8 @@ const resolvers = {
       await saveDocument(author);
       return author;
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      checkAuthentication(context, "Only logged in users can edit authors.");
       const existingAuthor = await Author.findOne({ name: args.name });
       if (!existingAuthor) {
         throw new GraphQLError("Author does not exist.", {
