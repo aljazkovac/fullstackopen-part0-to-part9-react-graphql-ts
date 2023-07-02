@@ -9,6 +9,9 @@ const LoginForm = ({ setError, setToken }) => {
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
       setError(error.graphQLErrors[0].message);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     },
   });
 

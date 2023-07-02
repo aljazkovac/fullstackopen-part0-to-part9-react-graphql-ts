@@ -1,15 +1,18 @@
 import { useState } from "react";
+import { useApolloClient } from "@apollo/client";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
+import LoginForm from "./components/LoginForm";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
-import LoginForm from "./components/LoginForm";
-import { useApolloClient } from "@apollo/client";
 
 const App = () => {
   const [page, setPage] = useState("authors");
   const [error, setError] = useState("");
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(
+    localStorage.getItem("library-user-token") || null
+  );
+
   const client = useApolloClient();
 
   const logout = () => {
@@ -30,15 +33,15 @@ const App = () => {
 
   return (
     <div>
+      <Notification error={error} />
       <div>
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
         <button onClick={() => setPage("add")}>add book</button>
       </div>
-      <Notification error={error} />
       <button onClick={logout}>logout</button>
       <Authors show={page === "authors"} setError={setError} />
-      <Books show={page === "books"} />
+      <Books show={page === "books"} setError={setError} />
       <NewBook show={page === "add"} setError={setError} />
     </div>
   );
