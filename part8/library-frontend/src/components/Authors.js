@@ -86,6 +86,7 @@ const Authors = (props) => {
       <div>
         <form onSubmit={submit}>
           <select
+            name="author"
             value={chosenAuthor}
             onChange={({ target }) => setChosenAuthor(target.value)}
           >

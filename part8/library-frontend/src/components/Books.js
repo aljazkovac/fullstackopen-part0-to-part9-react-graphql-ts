@@ -1,5 +1,7 @@
+import React from "react";
 import { ALL_BOOKS } from "../queries";
 import { useQuery } from "@apollo/client";
+import Select from "react-select";
 
 const Books = (props) => {
   const result = useQuery(ALL_BOOKS);
@@ -13,12 +15,12 @@ const Books = (props) => {
 
   return (
     <div>
-      <h2>books</h2>
+      <h2>Books</h2>
 
       <table>
         <tbody>
           <tr>
-            <th></th>
+            <th>title</th>
             <th>author</th>
             <th>published</th>
           </tr>
@@ -31,6 +33,14 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
+      <h3>Filter books by genre</h3>
+      <Select
+        isMulti
+        name="filter-genre"
+        options={books.map((b) => ({ value: b.title, label: b.title }))}
+        className="basic-multi-select"
+        classNamePrefix="select"
+      />
     </div>
   );
 };

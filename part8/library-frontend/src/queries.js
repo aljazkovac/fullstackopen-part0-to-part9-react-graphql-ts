@@ -27,6 +27,8 @@ export const ALL_BOOKS = gql`
   }
 `;
 
+// TODO: ALL_BOOKS_BY_GENRE
+
 export const CREATE_BOOK = gql`
   mutation createBook(
     $authorName: String!
