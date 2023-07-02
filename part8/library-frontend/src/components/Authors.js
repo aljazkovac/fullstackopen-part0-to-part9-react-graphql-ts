@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { EDIT_AUTHOR_BIRTHYEAR, ALL_AUTHORS_AND_BOOKS } from "../queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { EDIT_AUTHOR_BIRTHYEAR, ALL_AUTHORS } from "../queries";
 
 const Authors = (props) => {
-  const authors = props.authors;
   const [birthYear, setBirthYear] = useState("");
-  const [chosenAuthor, setAuthorName] = useState(authors[0]?.name || "");
-
+  const result = useQuery(ALL_AUTHORS);
+  const [chosenAuthor, setAuthorName] = useState("");
   const [editAuthorBirthYear] = useMutation(EDIT_AUTHOR_BIRTHYEAR, {
-    refetchQueries: [{ query: ALL_AUTHORS_AND_BOOKS }],
+    refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => {
       const messages = error.graphQLErrors[0].message;
       props.setError(messages);
@@ -17,6 +16,12 @@ const Authors = (props) => {
       }, 5000);
     },
   });
+
+  if (result.loading) {
+    return <div>loading...</div>;
+  }
+  const authors = result.data.allAuthors;
+  console.log("Result: ", result);
 
   const validateBirthYear = (birthYear) => {
     // Get the current year
