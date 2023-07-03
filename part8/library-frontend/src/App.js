@@ -54,7 +54,7 @@ const App = () => {
         authors={authors}
         setError={setError}
       />
-      <Books show={page === "books"} authors={authors} setError={setError} />
+      <Books show={page === "books"} setError={setError} />
       <NewBook show={page === "add"} setError={setError} />
     </div>
   );

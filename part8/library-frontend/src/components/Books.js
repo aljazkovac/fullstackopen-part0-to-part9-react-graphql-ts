@@ -1,29 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ALL_BOOKS, ALL_GENRES, ALL_BOOKS_FILTERED } from "../queries";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import Select from "react-select";
 
 const Books = (props) => {
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
 
   const { loading: booksLoading, data: booksData } = useQuery(ALL_BOOKS);
   const { loading: genresLoading, data: genresData } = useQuery(ALL_GENRES);
-  const {
-    loading: filteredBooksLoading,
-    data: filteredBooksData,
-    refetch: refetchFilteredBooks,
-  } = useQuery(ALL_BOOKS_FILTERED, {
-    variables: { authors: selectedAuthors, genres: selectedGenres },
-    skip: !selectedAuthors.length && !selectedGenres.length,
-  });
+  const [
+    getFilteredBooks,
+    { loading: filteredBooksLoading, data: filteredBooksData },
+  ] = useLazyQuery(ALL_BOOKS_FILTERED);
+
+  useEffect(() => {
+    if (selectedAuthors.length > 0 || selectedGenres.length > 0) {
+      getFilteredBooks({
+        variables: { authors: selectedAuthors, genres: selectedGenres },
+      });
+    }
+  }, [selectedAuthors, selectedGenres, getFilteredBooks]);
+
+  useEffect(() => {
+    if (filteredBooksData) {
+      setFilteredBooks(filteredBooksData.allBooksFiltered);
+    }
+  }, [filteredBooksData]);
 
   const handleAuthorsChange = (selectedOption) => {
     const authors = selectedOption
       ? selectedOption.map((option) => option.value)
       : [];
     setSelectedAuthors(authors);
-    refetchFilteredBooks({ authors, genres: selectedGenres });
   };
 
   const handleGenresChange = (selectedOption) => {
@@ -31,21 +41,24 @@ const Books = (props) => {
       ? selectedOption.map((option) => option.value)
       : [];
     setSelectedGenres(genres);
-    refetchFilteredBooks({ authors: selectedAuthors, genres });
   };
 
   if (booksLoading || genresLoading || filteredBooksLoading) {
     return null;
   }
 
-  const books = filteredBooksData
-    ? filteredBooksData.allBooksFiltered
-    : booksData.allBooks;
+  const books = filteredBooksData ? filteredBooks : booksData.allBooks;
   const genres = genresData.allGenres;
+  console.log("books", books);
+  console.log("filteredBooksData", filteredBooksData);
 
   if (!props.show) {
     return null;
   }
+
+  const authors = booksData ? booksData.allBooks.map((b) => b.author.name) : [];
+  const uniqueAuthors = [...new Set(authors)];
+  console.log("authors", authors);
 
   return (
     <div>
@@ -71,7 +84,7 @@ const Books = (props) => {
         <Select
           isMulti
           name="filter-author"
-          options={props.authors.map((a) => ({ value: a.name, label: a.name }))}
+          options={uniqueAuthors.map((a) => ({ value: a, label: a }))}
           className="basic-multi-select"
           classNamePrefix="select"
           onChange={handleAuthorsChange}
