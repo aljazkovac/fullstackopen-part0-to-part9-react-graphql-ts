@@ -27,7 +27,13 @@ export const ALL_BOOKS = gql`
   }
 `;
 
-// TODO: ALL_BOOKS_BY_GENRE
+// TODO: ALL_BOOKS_FILTERED
+
+export const ALL_GENRES = gql`
+  query {
+    allGenres
+  }
+`;
 
 export const CREATE_BOOK = gql`
   mutation createBook(

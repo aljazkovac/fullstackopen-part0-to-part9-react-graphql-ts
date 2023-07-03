@@ -46,8 +46,10 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String, genre: String): [Book!]!
+    allBooks: [Book!]!
+    allBooksFiltered(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    allGenres: [String!]!
     me: User
   }
   type Mutation {
@@ -111,7 +113,8 @@ const resolvers = {
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
-    allBooks: async (root, args) => {
+    allBooks: async () => Book.find({}),
+    allBooksFiltered: async (root, args) => {
       const filters = {};
       if (args.author) {
         const author = await Author.findOne({ name: args.author });
@@ -128,7 +131,13 @@ const resolvers = {
       if (args.genre) {
         filters.genres = args.genre;
       }
-      return Book.find(filters);
+      return await Book.find(filters);
+    },
+    allGenres: async () => {
+      const books = await Book.find({});
+      let genres = books.reduce((acc, b) => acc.concat(b.genres), []);
+      const uniqueGenres = Array.from(new Set(genres));
+      return uniqueGenres;
     },
     allAuthors: async () => Author.find({}),
     me: (root, args, context) => {

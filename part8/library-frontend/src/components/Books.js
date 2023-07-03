@@ -1,14 +1,17 @@
 import React from "react";
-import { ALL_BOOKS } from "../queries";
+import { ALL_BOOKS, ALL_GENRES } from "../queries";
 import { useQuery } from "@apollo/client";
 import Select from "react-select";
 
 const Books = (props) => {
-  const result = useQuery(ALL_BOOKS);
-  if (result.loading) {
+  const booksResult = useQuery(ALL_BOOKS);
+  const genresResult = useQuery(ALL_GENRES);
+  if (booksResult.loading || genresResult.loading) {
     return null;
   }
-  const books = result.data.allBooks;
+  const books = booksResult.data.allBooks;
+  const genres = genresResult.data.allGenres;
+  console.log("Genres result:", genresResult);
   if (!props.show) {
     return null;
   }
@@ -33,14 +36,26 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
-      <h3>Filter books by genre</h3>
-      <Select
-        isMulti
-        name="filter-genre"
-        options={books.map((b) => ({ value: b.title, label: b.title }))}
-        className="basic-multi-select"
-        classNamePrefix="select"
-      />
+      <div>
+        <h3>Filter books by author</h3>
+        <Select
+          isMulti
+          name="filter-genre"
+          options={props.authors.map((a) => ({ value: a.name, label: a.name }))}
+          className="basic-multi-select"
+          classNamePrefix="select"
+        />
+      </div>
+      <div>
+        <h3>Filter books by genre</h3>
+        <Select
+          isMulti
+          name="filter-genre"
+          options={genres.map((g) => ({ value: g, label: g }))}
+          className="basic-multi-select"
+          classNamePrefix="select"
+        />
+      </div>
     </div>
   );
 };
