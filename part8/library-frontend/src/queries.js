@@ -28,6 +28,9 @@ export const ALL_BOOKS = gql`
 `;
 
 // TODO: ALL_BOOKS_FILTERED
+//export const ALL_BOOKS_FILTERED = gql`
+//query {
+//allBooksFiltered {
 
 export const ALL_GENRES = gql`
   query {

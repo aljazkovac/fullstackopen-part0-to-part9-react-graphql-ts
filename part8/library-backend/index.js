@@ -47,7 +47,7 @@ const typeDefs = `
     bookCount: Int!
     authorCount: Int!
     allBooks: [Book!]!
-    allBooksFiltered(author: String, genre: String): [Book!]!
+    allBooksFiltered(authors: [String], genres: [String]): [Book!]!
     allAuthors: [Author!]!
     allGenres: [String!]!
     me: User
@@ -116,22 +116,28 @@ const resolvers = {
     allBooks: async () => Book.find({}),
     allBooksFiltered: async (root, args) => {
       const filters = {};
-      if (args.author) {
-        const author = await Author.findOne({ name: args.author });
-        if (!author) {
-          throw new GraphQLError("Author not found", {
-            extensions: {
-              code: "BAD_USER_INPUT",
-              invalidArgs: args.author,
-            },
-          });
+      if (args.authors && args.authors.length > 0) {
+        let authorIds = [];
+        for (let i = 0; i < args.authors.length; i++) {
+          const author = await Author.findOne({ name: args.authors[i] });
+          if (!author) {
+            throw new GraphQLError("Author not found", {
+              extensions: {
+                code: "BAD_USER_INPUT",
+                invalidArgs: args.authors[i],
+              },
+            });
+          }
+          authorIds.push(author._id);
         }
-        filters.author = author._id;
+        filters.author = { $in: authorIds };
+
+        if (args.genres && args.genres.length > 0) {
+          filters.genres = { $in: args.genres };
+        }
+        console.log("Filters: ", filters);
+        return await Book.find(filters).populate("author");
       }
-      if (args.genre) {
-        filters.genres = args.genre;
-      }
-      return await Book.find(filters);
     },
     allGenres: async () => {
       const books = await Book.find({});

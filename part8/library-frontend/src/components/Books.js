@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ALL_BOOKS, ALL_GENRES } from "../queries";
 import { useQuery } from "@apollo/client";
 import Select from "react-select";
 
 const Books = (props) => {
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const booksResult = useQuery(ALL_BOOKS);
   const genresResult = useQuery(ALL_GENRES);
+  //const filteredBooksResult = useQuery
+  //useEffect(() => {
+  //if (selectedGenres.length > 0) {
+
   if (booksResult.loading || genresResult.loading) {
     return null;
   }
   const books = booksResult.data.allBooks;
   const genres = genresResult.data.allGenres;
   console.log("Genres result:", genresResult);
+  console.log("Selected genres:", selectedGenres);
   if (!props.show) {
     return null;
   }
@@ -54,6 +60,11 @@ const Books = (props) => {
           options={genres.map((g) => ({ value: g, label: g }))}
           className="basic-multi-select"
           classNamePrefix="select"
+          onChange={(selectedOption) => {
+            setSelectedGenres(
+              selectedOption ? selectedOption.map((option) => option.value) : []
+            );
+          }}
         />
       </div>
     </div>
