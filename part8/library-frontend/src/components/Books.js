@@ -6,7 +6,6 @@ import Select from "react-select";
 const Books = (props) => {
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
 
   const { loading: booksLoading, data: booksData } = useQuery(ALL_BOOKS);
   const { loading: genresLoading, data: genresData } = useQuery(ALL_GENRES);
@@ -16,18 +15,10 @@ const Books = (props) => {
   ] = useLazyQuery(ALL_BOOKS_FILTERED);
 
   useEffect(() => {
-    if (selectedAuthors.length > 0 || selectedGenres.length > 0) {
-      getFilteredBooks({
-        variables: { authors: selectedAuthors, genres: selectedGenres },
-      });
-    }
+    getFilteredBooks({
+      variables: { authors: selectedAuthors, genres: selectedGenres },
+    });
   }, [selectedAuthors, selectedGenres, getFilteredBooks]);
-
-  useEffect(() => {
-    if (filteredBooksData) {
-      setFilteredBooks(filteredBooksData.allBooksFiltered);
-    }
-  }, [filteredBooksData]);
 
   const handleAuthorsChange = (selectedOption) => {
     const authors = selectedOption
@@ -44,10 +35,12 @@ const Books = (props) => {
   };
 
   if (booksLoading || genresLoading || filteredBooksLoading) {
-    return null;
+    return <div>loading ...</div>;
   }
 
-  const books = filteredBooksData ? filteredBooks : booksData.allBooks;
+  const books = filteredBooksData
+    ? filteredBooksData.allBooksFiltered
+    : booksData.allBooks;
   const genres = genresData.allGenres;
   console.log("books", books);
   console.log("filteredBooksData", filteredBooksData);
@@ -58,7 +51,6 @@ const Books = (props) => {
 
   const authors = booksData ? booksData.allBooks.map((b) => b.author.name) : [];
   const uniqueAuthors = [...new Set(authors)];
-  console.log("authors", authors);
 
   return (
     <div>
@@ -88,6 +80,7 @@ const Books = (props) => {
           className="basic-multi-select"
           classNamePrefix="select"
           onChange={handleAuthorsChange}
+          value={selectedAuthors.map((a) => ({ value: a, label: a }))}
         />
       </div>
       <div>
@@ -99,6 +92,7 @@ const Books = (props) => {
           className="basic-multi-select"
           classNamePrefix="select"
           onChange={handleGenresChange}
+          value={selectedGenres.map((a) => ({ value: a, label: a }))}
         />
       </div>
     </div>
