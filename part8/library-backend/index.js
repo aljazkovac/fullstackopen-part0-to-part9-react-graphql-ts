@@ -131,13 +131,13 @@ const resolvers = {
           authorIds.push(author._id);
         }
         filters.author = { $in: authorIds };
-
-        if (args.genres && args.genres.length > 0) {
-          filters.genres = { $in: args.genres };
-        }
-        console.log("Filters: ", filters);
-        return await Book.find(filters).populate("author");
       }
+
+      if (args.genres && args.genres.length > 0) {
+        filters.genres = { $in: args.genres };
+      }
+      console.log("Filters: ", filters);
+      return await Book.find(filters).populate("author");
     },
     allGenres: async () => {
       const books = await Book.find({});

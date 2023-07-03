@@ -27,10 +27,21 @@ export const ALL_BOOKS = gql`
   }
 `;
 
-// TODO: ALL_BOOKS_FILTERED
-//export const ALL_BOOKS_FILTERED = gql`
-//query {
-//allBooksFiltered {
+export const ALL_BOOKS_FILTERED = gql`
+  query allBooksFiltered($authors: [String], $genres: [String]) {
+    allBooksFiltered(authors: $authors, genres: $genres) {
+      title
+      published
+      author {
+        name
+        born
+        bookCount
+      }
+      genres
+      id
+    }
+  }
+`;
 
 export const ALL_GENRES = gql`
   query {
