@@ -39,7 +39,8 @@ const Books = (props) => {
   }
 
   const books =
-    selectedAuthors.length > 0 && selectedGenres.length > 0 && filteredBooksData
+    (selectedAuthors.length > 0 || selectedGenres.length > 0) &&
+    filteredBooksData
       ? filteredBooksData.allBooksFiltered
       : booksData.allBooks;
   const genres = genresData.allGenres;
