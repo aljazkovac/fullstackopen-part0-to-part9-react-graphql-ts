@@ -38,10 +38,12 @@ const Books = (props) => {
     return <div>loading ...</div>;
   }
 
-  const books = filteredBooksData
-    ? filteredBooksData.allBooksFiltered
-    : booksData.allBooks;
+  const books =
+    selectedAuthors.length > 0 && selectedGenres.length > 0 && filteredBooksData
+      ? filteredBooksData.allBooksFiltered
+      : booksData.allBooks;
   const genres = genresData.allGenres;
+  console.log("booksData", booksData.allBooks);
   console.log("books", books);
   console.log("filteredBooksData", filteredBooksData);
 
