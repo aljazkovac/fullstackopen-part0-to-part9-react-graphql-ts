@@ -6,7 +6,7 @@ import LoginForm from "./components/LoginForm";
 import NewAuthor from "./components/NewAuthor";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
-import { ALL_AUTHORS, BOOK_ADDED } from "./queries";
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from "./queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -21,9 +21,17 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
-      console.log("Data", data.data);
-      if (data && data.data.bookAdded) {
-        window.alert(`New book added: ${data.data.bookAdded.title}`);
+      console.log("Data", data);
+      if (data) {
+        const bookAdded = data.data.bookAdded;
+        console.log("Book added", bookAdded);
+        window.alert(bookAdded.title + " added");
+        client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+          console.log("All books", allBooks);
+          return {
+            allBooks: allBooks.concat(bookAdded),
+          };
+        });
       } else {
         console.log("No new book data received");
       }
