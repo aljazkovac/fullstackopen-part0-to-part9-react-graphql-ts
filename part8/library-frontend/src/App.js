@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useApolloClient, useQuery } from "@apollo/client";
+import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import LoginForm from "./components/LoginForm";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
-import { ALL_AUTHORS } from "./queries";
+import { ALL_AUTHORS, BOOK_ADDED } from "./queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -17,6 +17,17 @@ const App = () => {
   const [authors, setAuthors] = useState([]);
 
   const client = useApolloClient();
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log("Data", data.data);
+      if (data && data.data.bookAdded) {
+        window.alert(`New book added: ${data.data.bookAdded.title}`);
+      } else {
+        console.log("No new book data received");
+      }
+    },
+  });
 
   useEffect(() => {
     if (resultAuthors.data) {
