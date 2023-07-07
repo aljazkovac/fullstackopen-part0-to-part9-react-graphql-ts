@@ -34,6 +34,9 @@ export const updateCache = (cache, addedBook) => {
             }
           `,
         });
+        if (existingBooks.some((b) => b.id === addedBook.id)) {
+          return existingBooks;
+        }
         return [...existingBooks, newBookRef];
       },
     },
