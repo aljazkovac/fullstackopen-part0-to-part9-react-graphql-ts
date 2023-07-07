@@ -1,23 +1,48 @@
+// Desc: Main entry point for the backend
+
+// ====================================================
+// ==================== Imports =======================
+// ====================================================
+
+// Environment variables
 require("dotenv").config();
+
+// Web socket and server setup
+const { WebSocketServer } = require("ws");
+const { useServer } = require("graphql-ws/lib/use/ws");
 const { ApolloServer } = require("@apollo/server");
-const { expressMiddleware } = require("@apollo/server/express4");
 const {
   ApolloServerPluginDrainHttpServer,
 } = require("@apollo/server/plugin/drainHttpServer");
-const { makeExecutableSchema } = require("@graphql-tools/schema");
+
+// Express and HTTP server setup
 const express = require("express");
+const { expressMiddleware } = require("@apollo/server/express4");
 const cors = require("cors");
 const http = require("http");
+
+// Authentication setup
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
+
+// MongoDB setup
 const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
+mongoose.set("strictQuery", false);
 const User = require("./models/user");
+
+// GraphQL setup
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 
 console.log("connecting to", MONGODB_URI);
 
+// ====================================================
+// ================= DB CONNECTION ====================
+// ====================================================
+
+// Connect to MongoDB
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
@@ -27,18 +52,45 @@ mongoose
     console.log("error connecting to MongoDB:", error.message);
   });
 
-// setup is now within a function
+// ====================================================
+// ===================== SERVER =======================
+// ====================================================
+
+// Start function to setup the server
 const start = async () => {
   const app = express();
   const httpServer = http.createServer(app);
 
+  // Setup WebSocket server
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/",
+  });
+
+  // Setup GraphQL schema
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const serverCleanup = useServer({ schema }, wsServer);
+
+  // Setup Apollo server
   const server = new ApolloServer({
-    schema: makeExecutableSchema({ typeDefs, resolvers }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    schema,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
   });
 
   await server.start();
 
+  // Middleware and authentication setup
   app.use(
     "/",
     cors(),
