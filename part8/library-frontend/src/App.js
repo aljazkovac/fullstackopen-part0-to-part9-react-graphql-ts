@@ -1,12 +1,44 @@
 import { useState, useEffect } from "react";
-import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
+import {
+  useApolloClient,
+  useQuery,
+  useSubscription,
+  gql,
+} from "@apollo/client";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import LoginForm from "./components/LoginForm";
 import NewAuthor from "./components/NewAuthor";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
-import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from "./queries";
+import { ALL_AUTHORS, BOOK_ADDED } from "./queries";
+
+// function that takes care of manipulating cache
+export const updateCache = (cache, addedBook) => {
+  cache.modify({
+    fields: {
+      allBooks: (existingBooks = []) => {
+        const newBookRef = cache.writeFragment({
+          data: addedBook,
+          fragment: gql`
+            fragment NewBook on Book {
+              id
+              title
+              published
+              author {
+                name
+                born
+                bookCount
+              }
+              genres
+            }
+          `,
+        });
+        return [...existingBooks, newBookRef];
+      },
+    },
+  });
+};
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -26,12 +58,7 @@ const App = () => {
         const bookAdded = data.data.bookAdded;
         console.log("Book added", bookAdded);
         window.alert(bookAdded.title + " added");
-        client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-          console.log("All books", allBooks);
-          return {
-            allBooks: allBooks.concat(bookAdded),
-          };
-        });
+        updateCache(client.cache, bookAdded);
       } else {
         console.log("No new book data received");
       }
