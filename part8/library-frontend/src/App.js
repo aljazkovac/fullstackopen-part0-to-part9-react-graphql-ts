@@ -3,6 +3,7 @@ import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import LoginForm from "./components/LoginForm";
+import NewAuthor from "./components/NewAuthor";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
 import { ALL_AUTHORS, BOOK_ADDED } from "./queries";
@@ -57,7 +58,8 @@ const App = () => {
       <div>
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
-        <button onClick={() => setPage("add")}>add book</button>
+        <button onClick={() => setPage("add author")}>add author</button>
+        <button onClick={() => setPage("add book")}>add book</button>
       </div>
       <button onClick={logout}>logout</button>
       <Authors
@@ -66,7 +68,8 @@ const App = () => {
         setError={setError}
       />
       <Books show={page === "books"} setError={setError} />
-      <NewBook show={page === "add"} setError={setError} />
+      <NewBook show={page === "add book"} setError={setError} />
+      <NewAuthor show={page === "add author"} setError={setError} />
     </div>
   );
 };

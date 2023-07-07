@@ -25,37 +25,22 @@ export const ALL_AUTHORS = gql`
   }
 `;
 
-// TODO: Use fragment
 export const ALL_BOOKS = gql`
   query {
     allBooks {
-      title
-      published
-      author {
-        name
-        born
-        bookCount
-      }
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `;
 
 export const ALL_BOOKS_FILTERED = gql`
   query allBooksFiltered($authors: [String], $genres: [String]) {
     allBooksFiltered(authors: $authors, genres: $genres) {
-      title
-      published
-      author {
-        name
-        born
-        bookCount
-      }
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `;
 
 export const ALL_GENRES = gql`
@@ -77,15 +62,10 @@ export const CREATE_BOOK = gql`
       published: $published
       genres: $genres
     ) {
-      title
-      published
-      author {
-        name
-      }
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `;
 
 export const CREATE_AUTHOR = gql`
