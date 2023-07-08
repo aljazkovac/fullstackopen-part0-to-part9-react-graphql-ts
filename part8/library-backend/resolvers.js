@@ -42,7 +42,11 @@ const checkAuthentication = (context, errorMessage) => {
 
 const resolvers = {
   Query: {
-    bookCount: async () => Book.collection.countDocuments(),
+    bookCount: async () => {
+      const count = await Book.collection.countDocuments();
+      console.log("Book.collection.countDocuments(): ", count);
+      return count;
+    },
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async () => Book.find({}),
     allBooksFiltered: async (root, args) => {

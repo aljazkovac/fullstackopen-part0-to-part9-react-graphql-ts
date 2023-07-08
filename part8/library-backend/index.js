@@ -31,6 +31,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.set("strictQuery", false);
 const User = require("./models/user");
 
+
 // GraphQL setup
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 const typeDefs = require("./schema");
@@ -51,6 +52,8 @@ mongoose
   .catch((error) => {
     console.log("error connecting to MongoDB:", error.message);
   });
+
+mongoose.set("debug", true);
 
 // ====================================================
 // ===================== SERVER =======================
