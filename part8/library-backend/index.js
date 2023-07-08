@@ -30,7 +30,8 @@ const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.set("strictQuery", false);
 const User = require("./models/user");
-
+const Book = require("./models/book");
+const DataLoader = require("dataloader");
 
 // GraphQL setup
 const { makeExecutableSchema } = require("@graphql-tools/schema");
@@ -74,6 +75,23 @@ const start = async () => {
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const serverCleanup = useServer({ schema }, wsServer);
 
+  // Setup DataLoader
+  const batchBookCounts = async (authorIds) => {
+    const objectIds = authorIds.map((id) => new mongoose.Types.ObjectId(id));
+    const bookCounts = await Book.aggregate([
+      { $match: { author: { $in: objectIds } } },
+      { $group: { _id: "$author", count: { $sum: 1 } } },
+    ]);
+
+    // Convert the result into a Map for easy lookup.
+    const bookCountMap = new Map(
+      bookCounts.map((item) => [item._id.toString(), item.count])
+    );
+
+    // Map over the original keys to maintain the order.
+    return authorIds.map((id) => bookCountMap.get(id) || 0);
+  };
+
   // Setup Apollo server
   const server = new ApolloServer({
     schema,
@@ -105,7 +123,12 @@ const start = async () => {
           const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
           const currentUser = await User.findById(decodedToken.id);
           console.log("currentUser", currentUser);
-          return { currentUser };
+          return {
+            currentUser,
+            loaders: {
+              bookCount: new DataLoader((keys) => batchBookCounts(keys)),
+            },
+          };
         }
       },
     })

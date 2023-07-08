@@ -86,8 +86,8 @@ const resolvers = {
     },
   },
   Author: {
-    bookCount: async (author) => {
-      return await Book.countDocuments({ author: author._id });
+    bookCount: async (author, args, context) => {
+      return context.loaders.bookCount.load(author._id.toString());
     },
   },
   Book: {
