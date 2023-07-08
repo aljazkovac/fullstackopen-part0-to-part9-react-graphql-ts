@@ -4,7 +4,6 @@ const Author = require("./models/author");
 const Book = require("./models/book");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
-
 const { PubSub } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 
