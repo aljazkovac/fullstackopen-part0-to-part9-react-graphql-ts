@@ -10,18 +10,14 @@ const calculateBmi = (height: number, weight: number): BmiResult => {
   const bmi = weight / Math.pow(height / 100, 2);
   let category: BmiCategory;
 
-  switch (true) {
-    case bmi < 18.5:
-      category = "Underweight";
-      break;
-    case bmi < 25:
-      category = "Normal (healthy weight)";
-      break;
-    case bmi < 30:
-      category = "Overweight";
-      break;
-    default:
-      category = "Obese";
+  if (bmi < 18.5) {
+    category = "Underweight";
+  } else if (bmi < 25) {
+    category = "Normal (healthy weight)";
+  } else if (bmi < 30) {
+    category = "Overweight";
+  } else {
+    category = "Obese";
   }
 
   return [bmi, category];
