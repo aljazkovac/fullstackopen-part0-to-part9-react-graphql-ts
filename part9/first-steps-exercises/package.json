@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "ts-node": "ts-node",
-    "bmiCalculator": "ts-node bmiCalculator.ts"
+    "bmiCalculator": "ts-node bmiCalculator.ts",
+    "exerciseCalculator": "ts-node exerciseCalculator.ts"
   },
   "author": "Aljaz Kovac",
   "license": "ISC",
