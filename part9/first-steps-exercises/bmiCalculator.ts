@@ -23,5 +23,10 @@ const calculateBmi = (height: number, weight: number): BmiResult => {
   return [bmi, category];
 };
 
-const [bmi, category] = calculateBmi(193, 96);
-console.log(`Your BMI is ${bmi} and you are ${category}.`);
+const [bmi1, category1] = calculateBmi(193, 96);
+console.log(`HARDCODED ARGS: Your BMI is ${bmi1} and you are ${category1}.`);
+
+const height = Number(process.argv[2]);
+const weight = Number(process.argv[3]);
+const [bmi2, category2] = calculateBmi(height, weight);
+console.log(`GIVEN ARGS: Your BMI is ${bmi2} and you are ${category2}.`);

@@ -92,14 +92,28 @@ const calculateExercises = (
   return result;
 };
 
-const result = calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2);
+const result1 = calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2);
 console.log(
-  `Your results are the following: 
-    periodLength: ${result.periodLength};
-    trainingDays: ${result.trainingDays};
-    success: ${result.success};
-    rating: ${result.rating};
-    ratingDesc: ${result.ratingDescription};
-    target: ${result.target};
-    average: ${result.average}.`
+  `Your HARDCODED results are the following: 
+    periodLength: ${result1.periodLength};
+    trainingDays: ${result1.trainingDays};
+    success: ${result1.success};
+    rating: ${result1.rating};
+    ratingDesc: ${result1.ratingDescription};
+    target: ${result1.target};
+    average: ${result1.average}.`
+);
+
+const target = Number(process.argv[2]);
+const daysArray = process.argv.slice(3).map(Number);
+const result2 = calculateExercises(daysArray, target);
+console.log(
+  `Your GIVEN results are the following: 
+    periodLength: ${result2.periodLength};
+    trainingDays: ${result2.trainingDays};
+    success: ${result2.success};
+    rating: ${result2.rating};
+    ratingDesc: ${result2.ratingDescription};
+    target: ${result2.target};
+    average: ${result2.average}.`
 );
