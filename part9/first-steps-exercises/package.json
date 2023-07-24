@@ -7,12 +7,19 @@
     "test": "test",
     "ts-node": "ts-node",
     "bmiCalculator": "ts-node bmiCalculator.ts",
-    "exerciseCalculator": "ts-node exerciseCalculator.ts"
+    "exerciseCalculator": "ts-node exerciseCalculator.ts",
+    "start": "ts-node index.ts",
+    "dev": "ts-node-dev index.ts"
   },
   "author": "Aljaz Kovac",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
