@@ -117,3 +117,5 @@ console.log(
     target: ${result2.target};
     average: ${result2.average}.`
 );
+
+export default calculateExercises;

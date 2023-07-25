@@ -30,3 +30,5 @@ const height = Number(process.argv[2]);
 const weight = Number(process.argv[3]);
 const [bmi2, category2] = calculateBmi(height, weight);
 console.log(`GIVEN ARGS: Your BMI is ${bmi2} and you are ${category2}.`);
+
+export default calculateBmi;
