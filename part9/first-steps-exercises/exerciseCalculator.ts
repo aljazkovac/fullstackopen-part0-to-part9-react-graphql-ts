@@ -75,7 +75,7 @@ const calculateRating = (
   return ratingResult;
 };
 
-const calculateExercises = (
+export const calculateExercises = (
   exerciseArray: number[],
   averageDailyTarget: number
 ): Result => {
