@@ -27,11 +27,19 @@ app.get('/bmi', (req, res) => {
   });
 });
 
+const validateArray = (exerciseArray: number[]): boolean => {
+  return exerciseArray.every((element) => !isNaN(element));
+};
+
 app.post('/calculate', (req: Request, res: Response) => {
   const { value1, value2 } = req.body as { value1: number[]; value2: number };
 
-  if (value1.length === 0 || isNaN(value2)) {
-    return res.status(400).send({ error: 'Wrong arguments.' });
+  // The order matters: first check if value1 exists, then check its length.
+  if (!value1 || value1.length === 0 || !value2) {
+    return res.status(400).send({ error: 'Missing arguments.' });
+  }
+  if (!validateArray(value1) || isNaN(value2)) {
+    return res.status(400).json({ error: 'malformatted parameters' });
   }
   const result = calculateExercises(value1, value2);
   return res.send({ result });

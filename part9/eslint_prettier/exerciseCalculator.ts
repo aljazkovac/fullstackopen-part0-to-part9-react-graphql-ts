@@ -33,6 +33,7 @@ const calculateNumberOfTrainingDays = (exerciseArray: number[]): number => {
 const calculateAverageHoursPerDay = (exerciseArray: number[]): number => {
   const sumTotalHours = exerciseArray.reduce(
     (sum, currentDay) => sum + currentDay,
+    0,
   );
   const averageHoursPerDay = sumTotalHours / exerciseArray.length;
   return averageHoursPerDay;
