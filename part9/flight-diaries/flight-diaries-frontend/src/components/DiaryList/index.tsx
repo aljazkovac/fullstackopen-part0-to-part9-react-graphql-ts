@@ -20,7 +20,7 @@ interface Props {
 
 const DiaryList = ({ diaries, setDiaries }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | undefined>();
   console.log("Diaries from DiaryList: ", diaries);
 
   const openModal = (): void => setModalOpen(true);

@@ -21,6 +21,7 @@ const App = () => {
 
       setDiaries(diaries);
     };
+    // Intentionally not awaiting, so that the page loads before the request is completed
     void fetchDiaryList();
   }, []);
 
