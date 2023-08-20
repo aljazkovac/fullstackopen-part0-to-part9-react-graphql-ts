@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,6 +17,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "../../flight-diaries/flight-diaries-frontend/src/components/AddDiaryModal/AddDiaryForm.tsx"
   ]
 }
