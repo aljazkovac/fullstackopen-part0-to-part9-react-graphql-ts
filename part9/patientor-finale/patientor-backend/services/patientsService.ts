@@ -9,13 +9,21 @@ const getPatients = (): PatientEntry[] => {
 };
 
 const getPatientsNoSsn = (): Omit<PatientEntry, "ssn">[] => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id,
-    name,
-    dateOfBirth,
-    gender,
-    occupation,
-  }));
+  return patients.map(
+    ({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+      id,
+      name,
+      dateOfBirth,
+      gender,
+      occupation,
+      entries,
+    })
+  );
+};
+
+const getPatient = (id: string): PatientEntry | undefined => {
+  const patient = patients.find((p) => p.id === id);
+  return patient;
 };
 
 const addPatient = (entry: NewPatientEntry) => {
@@ -31,5 +39,6 @@ const addPatient = (entry: NewPatientEntry) => {
 export default {
   getPatients,
   getPatientsNoSsn,
+  getPatient,
   addPatient,
 };

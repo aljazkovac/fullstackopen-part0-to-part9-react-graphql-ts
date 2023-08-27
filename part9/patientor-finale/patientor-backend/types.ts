@@ -23,3 +23,5 @@ export enum Gender {
 }
 
 export type NewPatientEntry = Omit<PatientEntry, "id">;
+
+export type NonSensitivePatientEntry = Omit<PatientEntry, "ssn" | "entries">;
