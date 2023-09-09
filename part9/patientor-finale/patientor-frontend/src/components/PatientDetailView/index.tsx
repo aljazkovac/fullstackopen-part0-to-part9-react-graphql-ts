@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
-import { Patient } from "../../types";
+import { Patient, Diagnosis } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { Box } from "@mui/material";
 import Entry from "./Entry";
 
-interface Props {}
+interface Props {
+  diagnoses: Diagnosis[];
+}
 
-const PatientDetailView: React.FC<Props> = () => {
+const PatientDetailView: React.FC<Props> = ({ diagnoses }) => {
   const [patient, setPatient] = useState<Patient | null>(null);
   const patientId = useParams<{ id: string }>();
 
@@ -28,6 +30,7 @@ const PatientDetailView: React.FC<Props> = () => {
 
   console.log("Patient ID: ", patientId.id);
   console.log("Patient: ", patient);
+  console.log("Diagnoses: ", diagnoses);
 
   return (
     <div>
@@ -41,7 +44,7 @@ const PatientDetailView: React.FC<Props> = () => {
       </Box>
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
-      <Entry entries={patient?.entries}></Entry>
+      <Entry entries={patient?.entries} diagnoses={diagnoses}></Entry>
     </div>
   );
 };

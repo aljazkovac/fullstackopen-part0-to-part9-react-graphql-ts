@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Entry } from "../../types";
+import { Diagnosis, Entry } from "../../types";
 
 interface Props {
   entries: Entry[] | undefined;
+  diagnoses: Diagnosis[];
 }
 
-const Entries: React.FC<Props> = ({ entries }) => {
+const Entries: React.FC<Props> = ({ entries, diagnoses }) => {
   return (
     <div>
       <h3>entries</h3>
@@ -17,10 +17,13 @@ const Entries: React.FC<Props> = ({ entries }) => {
             </p>
             <ul>
               {entry.diagnosisCodes?.map((code) => {
-                return <li key={code}>{code}</li>;
+                return (
+                  <li key={code}>
+                    {code}: {diagnoses.find((d) => d.code === code)?.name}
+                  </li>
+                );
               })}
             </ul>
-            {entry.type === "OccupationalHealthcare" && entry.employerName}
           </div>
         );
       })}
