@@ -32,8 +32,8 @@ const EntryDetails: React.FC<EntryDetailsProps> = ({ entry }) => {
       const healthCheckEntry = entry as HealthCheckEntry;
       return (
         <div>
-          <p>diagnosed by {entry.specialist}</p>
-          {determineHealthCheckRatingIcon(entry.healthCheckRating)}
+          <p>diagnosed by {healthCheckEntry.specialist}</p>
+          {determineHealthCheckRatingIcon(healthCheckEntry.healthCheckRating)}
         </div>
       );
     case "Hospital":
@@ -42,7 +42,7 @@ const EntryDetails: React.FC<EntryDetailsProps> = ({ entry }) => {
         <div>
           Discharge: {hospitalEntry.discharge?.date} -{" "}
           {hospitalEntry.discharge?.criteria}
-          <p>diagnosed by {entry.specialist}</p>
+          <p>diagnosed by {hospitalEntry.specialist}</p>
         </div>
       );
     case "OccupationalHealthcare":
@@ -50,7 +50,7 @@ const EntryDetails: React.FC<EntryDetailsProps> = ({ entry }) => {
       return (
         <div>
           Employer: {occupationalHealthcareEntry.employerName}
-          <p>diagnosed by {entry.specialist}</p>
+          <p>diagnosed by {occupationalHealthcareEntry.specialist}</p>
         </div>
       );
     default:
