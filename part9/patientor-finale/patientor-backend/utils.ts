@@ -1,14 +1,15 @@
 import {
-  Entry,
+  //Entry,
   Gender,
   NewPatientEntry,
-  HealthCheckEntry,
-  OccupationalHealthcareEntry,
-  HospitalEntry,
-  HealthCheckRating,
+  Entry,
+  //HealthCheckEntry,
+  //OccupationalHealthcareEntry,
+  //HospitalEntry,
+  //HealthCheckRating,
 } from "./types";
 
-const toNewPatientEntry = (object: unknown): NewPatientEntry => {
+export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
   if (!object || typeof object !== "object") {
     throw new Error("Incorrect or missing data");
   }
@@ -17,9 +18,7 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
     "dateOfBirth" in object &&
     "ssn" in object &&
     "gender" in object &&
-    "occupation" in object &&
-    "entries" in object &&
-    Array.isArray(object.entries)
+    "occupation" in object
   ) {
     const newEntry: NewPatientEntry = {
       name: parseName(object.name),
@@ -27,7 +26,59 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
       ssn: parseSsn(object.ssn),
       gender: parseGender(object.gender),
       occupation: parseOccupation(object.occupation),
-      entries: parseEntries(object.entries),
+      entries: [],
+    };
+
+    return newEntry;
+  }
+  throw new Error("Incorrect data: some fields are missing");
+};
+
+export const toNewEntry = (object: unknown): Entry => {
+  if (!object || typeof object !== "object") {
+    throw new Error("Incorrect or missing data");
+  }
+  if (
+    "type" in object &&
+    object.type === "HealthCheck" &&
+    "description" in object &&
+    "date" in object &&
+    "specialist" in object
+  ) {
+    const newEntry: Entry = {
+      description: parseDescription(object.description),
+      date: parseDate(object.date),
+      specialist: parseSpecialist(object.specialist),
+    }
+  }
+  else if (
+    "type" in object &&
+    object.type === "Hospital" &&
+    "description" in object &&
+    "date" in object &&
+    "specialist" in object &&
+    "healthCheckRating" in object
+  ) {
+    const newEntry: Entry = {
+      description: parseDescription(object.description),
+      date: parseDate(object.date),
+      specialist: parseSpecialist(object.specialist),
+      healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
+    }
+  }
+  else if (
+    "type" in object &&
+    object.type === "OccupationalHealthcare" &&
+    "description" in object &&
+    "date" in object &&
+    "specialist" in object &&
+    "employerName" in object
+  ) {
+    const newEntry: Entry = {
+      description: parseDescription(object.description),
+      date: parseDate(object.date),
+      specialist: parseSpecialist(object.specialist),
+      employerName: parseEmployerName(object.employerName),
     };
 
     return newEntry;
@@ -92,52 +143,50 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-const isValidHealthCheckEntry = (entry: unknown): entry is HealthCheckEntry => {
-  // Use a temporary type assertion to be able to check the type of the entry
-  const e = entry as HealthCheckEntry;
-  return (
-    e?.type === "HealthCheck" &&
-    Object.values(HealthCheckRating).includes(e.healthCheckRating)
-  );
-};
+//const isValidHealthCheckEntry = (entry: unknown): entry is HealthCheckEntry => {
+//// Use a temporary type assertion to be able to check the type of the entry
+//const e = entry as HealthCheckEntry;
+//return (
+//e?.type === "HealthCheck" &&
+//Object.values(HealthCheckRating).includes(e.healthCheckRating)
+//);
+//};
 
-const isValidHospitalEntry = (entry: unknown): entry is HospitalEntry => {
-  // Use a temporary type assertion to be able to check the type of the entry
-  const e = entry as HospitalEntry;
-  return e?.type === "Hospital" && isValidDischarge(e.discharge);
-};
+//const isValidHospitalEntry = (entry: unknown): entry is HospitalEntry => {
+//// Use a temporary type assertion to be able to check the type of the entry
+//const e = entry as HospitalEntry;
+//return e?.type === "Hospital" && isValidDischarge(e.discharge);
+//};
 
-const isValidOccupationalHealthcareEntry = (
-  entry: unknown
-): entry is OccupationalHealthcareEntry => {
-  // Use a temporary type assertion to be able to check the type of the entry
-  const e = entry as OccupationalHealthcareEntry;
-  return (
-    e?.type === "OccupationalHealthcare" && typeof e.employerName === "string"
-  );
-};
+//const isValidOccupationalHealthcareEntry = (
+//entry: unknown
+//): entry is OccupationalHealthcareEntry => {
+//// Use a temporary type assertion to be able to check the type of the entry
+//const e = entry as OccupationalHealthcareEntry;
+//return (
+//e?.type === "OccupationalHealthcare" && typeof e.employerName === "string"
+//);
+//};
 
-const isValidDischarge = (
-  discharge: unknown
-): discharge is { date: string; criteria: string } => {
-  const d = discharge as { date: string; criteria: string };
-  return typeof d?.date === "string" && typeof d?.criteria === "string";
-};
+//const isValidDischarge = (
+//discharge: unknown
+//): discharge is { date: string; criteria: string } => {
+//const d = discharge as { date: string; criteria: string };
+//return typeof d?.date === "string" && typeof d?.criteria === "string";
+//};
 
-const parseEntries = (entries: unknown[]): Entry[] => {
-  let parsedEntries: Entry[] = [];
-  for (let entry of entries) {
-    if (isValidHealthCheckEntry(entry)) {
-      parsedEntries.push(entry);
-    } else if (isValidHospitalEntry(entry)) {
-      parsedEntries.push(entry);
-    } else if (isValidOccupationalHealthcareEntry(entry)) {
-      parsedEntries.push(entry);
-    } else {
-      throw new Error("Invalid entry type: " + JSON.stringify(entry));
-    }
-  }
-  return parsedEntries;
-};
-
-export default toNewPatientEntry;
+//const parseEntries = (entries: unknown[]): Entry[] => {
+//let parsedEntries: Entry[] = [];
+//for (let entry of entries) {
+//if (isValidHealthCheckEntry(entry)) {
+//parsedEntries.push(entry);
+//} else if (isValidHospitalEntry(entry)) {
+//parsedEntries.push(entry);
+//} else if (isValidOccupationalHealthcareEntry(entry)) {
+//parsedEntries.push(entry);
+//} else {
+//throw new Error("Invalid entry type: " + JSON.stringify(entry));
+//}
+//}
+//return parsedEntries;
+//};
