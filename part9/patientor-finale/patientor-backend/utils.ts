@@ -16,6 +16,7 @@ import {
 //          ***** Main utility functions *****
 
 export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
+  console.log(object);
   if (
     !object ||
     typeof object !== "object" ||
@@ -164,11 +165,11 @@ const parseDiagnosisCodes = (
 };
 
 const parseHealthCheckRating = (rating: unknown): HealthCheckRating => {
-  if (!rating || !isHealthCheckRating(rating)) {
+  if (rating !== undefined && rating !== null && isHealthCheckRating(rating)) {
+    return rating;
+  } else {
     throw new Error("Incorrect or missing health check rating: " + rating);
   }
-
-  return rating;
 };
 
 const parseDischarge = (
@@ -230,9 +231,10 @@ const isValidNewPatientEntry = (entry: unknown): entry is NewPatientEntry => {
     typeof e?.occupation === "string" &&
     Array.isArray(e?.entries) &&
     e?.entries.every(
-      isValidHealthCheckEntry ||
-        isValidHospitalEntry ||
-        isValidOccupationalHealthcareEntry
+      (entry) =>
+        isValidHealthCheckEntry(entry) ||
+        isValidHospitalEntry(entry) ||
+        isValidOccupationalHealthcareEntry(entry)
     )
   );
 };
