@@ -213,6 +213,7 @@ const parseSickLeave = (
       throw new Error("Incorrect sick leave: " + JSON.stringify(sickLeave));
     }
   }
+
   return undefined;
 };
 
