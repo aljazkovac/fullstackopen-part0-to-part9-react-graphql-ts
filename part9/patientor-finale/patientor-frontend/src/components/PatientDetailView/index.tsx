@@ -5,7 +5,7 @@ import { Patient, Diagnosis } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { Box } from "@mui/material";
-import Entry from "./Entry";
+import Entry from "./Entries";
 
 interface Props {
   diagnoses: Diagnosis[];

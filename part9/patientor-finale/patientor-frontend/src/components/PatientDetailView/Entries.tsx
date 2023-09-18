@@ -4,7 +4,8 @@ import EntryDetails from "./EntryDetails";
 import MonitorHeartOutlinedIcon from "@mui/icons-material/MonitorHeartOutlined";
 import AssuredWorkloadOutlinedIcon from "@mui/icons-material/AssuredWorkloadOutlined";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
+import AddEntryModal from "../AddEntryModal";
 
 interface Props {
   entries: Entry[] | undefined;
@@ -29,6 +30,17 @@ function assertNever(value: never): never {
 }
 
 const Entries: React.FC<Props> = ({ entries, diagnoses }) => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async () => {};
+
   return (
     <div>
       <h3>Entries</h3>
@@ -57,7 +69,13 @@ const Entries: React.FC<Props> = ({ entries, diagnoses }) => {
           </Box>
         );
       })}
-      <Button variant="contained" onClick={() => null}>
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button variant="contained" onClick={() => openModal()}>
         Add New Entry
       </Button>
     </div>
