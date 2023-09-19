@@ -1,6 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 import { TextField, Grid, Button } from "@mui/material";
-import { EntryFormValues } from "../../types";
+import { EntryFormValues, HealthCheckRating } from "../../types";
 
 interface Props {
   onCancel: () => void;
@@ -22,6 +22,10 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
       specialist,
       healthCheckRating,
     });
+  };
+
+  const determineEntryType = () => {
+    return "HealthCheck";
   };
 
   return (

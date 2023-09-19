@@ -90,7 +90,7 @@ const Entries: React.FC<Props> = ({ patient, entries, diagnoses }) => {
             <ul>
               {entry.diagnosisCodes?.map((code) => {
                 return (
-                  <Box key={code}>
+                  <Box>
                     <li>
                       {code}: {diagnoses.find((d) => d.code === code)?.name}
                     </li>
