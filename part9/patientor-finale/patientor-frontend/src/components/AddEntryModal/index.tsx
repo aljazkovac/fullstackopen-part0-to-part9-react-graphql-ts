@@ -7,12 +7,12 @@ import {
 } from "@mui/material";
 
 import AddEntryForm from "./AddEntryForm";
-import { PatientFormValues } from "../../types";
+import { EntryFormValues } from "../../types";
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: PatientFormValues) => Promise<void>;
+  onSubmit: (values: EntryFormValues) => Promise<void>;
   error?: string;
 }
 

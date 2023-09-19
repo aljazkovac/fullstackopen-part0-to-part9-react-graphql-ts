@@ -7,11 +7,6 @@ const getDiagnoses = (): DiagnosisEntry[] => {
   return diagnoses;
 };
 
-const addDiary = () => {
-  return null;
-};
-
 export default {
   getDiagnoses,
-  addDiary,
 };

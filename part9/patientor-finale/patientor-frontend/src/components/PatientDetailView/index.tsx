@@ -5,7 +5,7 @@ import { Patient, Diagnosis } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { Box } from "@mui/material";
-import Entry from "./Entries";
+import Entries from "./Entries";
 
 interface Props {
   diagnoses: Diagnosis[];
@@ -44,7 +44,11 @@ const PatientDetailView: React.FC<Props> = ({ diagnoses }) => {
       </Box>
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
-      <Entry entries={patient?.entries} diagnoses={diagnoses}></Entry>
+      <Entries
+        patient={patient}
+        entries={patient?.entries}
+        diagnoses={diagnoses}
+      ></Entries>
     </div>
   );
 };
