@@ -16,7 +16,7 @@ import {
 //          ***** Main utility functions *****
 
 export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
-  console.log(object);
+  console.log("object:", object);
   if (
     !object ||
     typeof object !== "object" ||
@@ -30,7 +30,7 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
     ssn: parseSsn(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseStringProperty(object.occupation, "occupation"),
-    entries: parseEntries(object.entries) || [],
+    entries: [],
   };
 };
 
@@ -100,10 +100,6 @@ const parseGender = (gender: unknown): Gender => {
     throw new Error("Incorrect or missing gender: " + gender);
   }
   return gender;
-};
-
-const parseEntries = (entries: unknown[]): Entry[] => {
-  return entries.map((entry) => toNewEntry(entry));
 };
 
 const parseHealthCheckEntry = (entry: unknown): HealthCheckEntry => {
@@ -229,14 +225,7 @@ const isValidNewPatientEntry = (entry: unknown): entry is NewPatientEntry => {
     isSsn(e.ssn) &&
     typeof e?.gender === "string" &&
     isGender(e.gender) &&
-    typeof e?.occupation === "string" &&
-    Array.isArray(e?.entries) &&
-    e?.entries.every(
-      (entry) =>
-        isValidHealthCheckEntry(entry) ||
-        isValidHospitalEntry(entry) ||
-        isValidOccupationalHealthcareEntry(entry)
-    )
+    typeof e?.occupation === "string"
   );
 };
 

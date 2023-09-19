@@ -38,7 +38,11 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
 
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
+      console.log("values", values);
+
       const patient = await patientService.create(values);
+      console.log("patient", patient);
+
       setPatients(patients.concat(patient));
       setModalOpen(false);
     } catch (e: unknown) {

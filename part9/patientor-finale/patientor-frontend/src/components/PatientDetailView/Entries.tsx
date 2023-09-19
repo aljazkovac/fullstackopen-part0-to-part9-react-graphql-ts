@@ -8,6 +8,7 @@ import AssuredWorkloadOutlinedIcon from "@mui/icons-material/AssuredWorkloadOutl
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import AddEntryModal from "../AddEntryModal";
 import axios from "axios";
+import { v1 as uuid } from "uuid";
 
 interface Props {
   patient: Patient | null;
@@ -48,6 +49,7 @@ const Entries: React.FC<Props> = ({ patient, entries, diagnoses }) => {
       console.log("entry", entry);
 
       try {
+        entry.id = uuid();
         entries?.push(entry);
         setModalOpen(false);
       } catch (e: unknown) {
@@ -89,7 +91,7 @@ const Entries: React.FC<Props> = ({ patient, entries, diagnoses }) => {
               {entry.diagnosisCodes?.map((code) => {
                 return (
                   <Box key={code}>
-                    <li key={code}>
+                    <li>
                       {code}: {diagnoses.find((d) => d.code === code)?.name}
                     </li>
                   </Box>

@@ -20,6 +20,8 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   try {
+    console.log("req.body: ", req.body);
+
     const newPatientEntry = toNewPatientEntry(req.body);
     const addedEntry = patientsService.addPatient(newPatientEntry);
     if (addedEntry) {
