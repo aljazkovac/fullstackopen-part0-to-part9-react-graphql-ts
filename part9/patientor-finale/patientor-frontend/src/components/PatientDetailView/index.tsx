@@ -19,6 +19,8 @@ const PatientDetailView: React.FC<Props> = ({ diagnoses }) => {
     const fetchPatient = async () => {
       try {
         const fetchedPatient = await patientService.getOne(patientId.id);
+        console.log("fetchedPatient", fetchedPatient);
+
         setPatient(fetchedPatient);
       } catch (error) {
         console.error("Error fetching the patient:", error);

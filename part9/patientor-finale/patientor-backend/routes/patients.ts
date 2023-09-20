@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get("/", (_req, res) => {
   const patients = patientsService.getPatientsNoSsn();
+  console.log("patients: ", patients);
+
   res.json(patients);
 });
 

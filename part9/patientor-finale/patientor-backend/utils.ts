@@ -30,7 +30,7 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
     ssn: parseSsn(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseStringProperty(object.occupation, "occupation"),
-    entries: [],
+    entries: object.entries.map((entry: unknown) => toNewEntry(entry)),
   };
 };
 

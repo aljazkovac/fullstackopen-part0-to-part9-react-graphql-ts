@@ -48,7 +48,7 @@ export interface PatientEntry {
   ssn?: string;
   gender: string;
   occupation: string;
-  entries: Entry[];
+  entries: Array<Entry>;
 }
 
 export enum Gender {

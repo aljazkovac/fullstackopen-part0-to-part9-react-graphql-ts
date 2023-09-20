@@ -8,6 +8,7 @@ import {
 
 import AddEntryForm from "./AddEntryForm";
 import { EntryFormValues } from "../../types";
+import { log } from "console";
 
 interface Props {
   modalOpen: boolean;
@@ -17,14 +18,17 @@ interface Props {
 }
 
 const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
-  <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
-    <DialogTitle>Add a new entry</DialogTitle>
-    <Divider />
-    <DialogContent>
-      {error && <Alert severity="error">{error}</Alert>}
-      <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
-    </DialogContent>
-  </Dialog>
+  console.log("error", error),
+  (
+    <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
+      <DialogTitle>Add a new entry</DialogTitle>
+      <Divider />
+      <DialogContent>
+        {error && <Alert severity="error">{error}</Alert>}
+        <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
+      </DialogContent>
+    </Dialog>
+  )
 );
 
 export default AddEntryModal;

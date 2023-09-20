@@ -27,6 +27,7 @@ const getPatient = (id: string): PatientEntry | undefined => {
 };
 
 const addPatient = (entry: NewPatientEntry) => {
+  console.log("entry: ", entry);
   const id = uuid();
   const newPatientEntry = {
     id: id,

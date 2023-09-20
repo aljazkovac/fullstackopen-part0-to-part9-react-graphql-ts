@@ -1,5 +1,8 @@
 import { useState, SyntheticEvent } from "react";
 import { TextField, Grid, Button } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { EntryFormValues, HealthCheckRating } from "../../types";
 
 interface Props {
@@ -37,13 +40,18 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           value={description}
           onChange={({ target }) => setDescription(target.value)}
         />
-        <TextField
-          label="Date"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={date}
-          onChange={({ target }) => setDate(target.value)}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            value={date}
+            onChange={(newValue) => {
+              if (newValue) {
+                setDate(newValue.toString());
+              } else {
+                setDate("");
+              }
+            }}
+          />
+        </LocalizationProvider>
         <TextField
           label="Specialist"
           fullWidth

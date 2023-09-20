@@ -45,28 +45,26 @@ const Entries: React.FC<Props> = ({ patient, entries, diagnoses }) => {
 
   const submitNewEntry = async (values: EntryFormValues) => {
     if (patient) {
-      const entry = await patientService.createEntry(patient.id, values);
-      console.log("entry", entry);
-
       try {
+        const entry = await patientService.createEntry(patient.id, values);
         entry.id = uuid();
         entries?.push(entry);
         setModalOpen(false);
-      } catch (e: unknown) {
+      } catch (e: any) {
         if (axios.isAxiosError(e)) {
+          console.log("Unknown error", e);
           if (e?.response?.data && typeof e?.response?.data === "string") {
             const message = e.response.data.replace(
               "Something went wrong. Error: ",
               ""
             );
-            console.error(message);
             setError(message);
           } else {
             setError("Unrecognized axios error");
           }
         } else {
-          console.error("Unknown error", e);
-          setError("Unknown error");
+          console.log("Unknown error", e);
+          setError(e.toString());
         }
       }
     } else {
@@ -77,6 +75,7 @@ const Entries: React.FC<Props> = ({ patient, entries, diagnoses }) => {
   return (
     <div>
       <h3>Entries</h3>
+
       {entries?.map((entry) => {
         return (
           <Box
