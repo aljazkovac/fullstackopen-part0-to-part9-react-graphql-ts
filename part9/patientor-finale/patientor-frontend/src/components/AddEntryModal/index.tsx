@@ -8,16 +8,22 @@ import {
 
 import AddEntryForm from "./AddEntryForm";
 import { EntryFormValues } from "../../types";
-import { log } from "console";
 
 interface Props {
+  diagnosisCodes: string[];
   modalOpen: boolean;
   onClose: () => void;
   onSubmit: (values: EntryFormValues) => Promise<void>;
   error?: string;
 }
 
-const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
+const AddEntryModal = ({
+  diagnosisCodes,
+  modalOpen,
+  onClose,
+  onSubmit,
+  error,
+}: Props) => (
   console.log("error", error),
   (
     <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
@@ -25,7 +31,11 @@ const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
       <Divider />
       <DialogContent>
         {error && <Alert severity="error">{error}</Alert>}
-        <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
+        <AddEntryForm
+          diagnosisCodes={diagnosisCodes}
+          onSubmit={onSubmit}
+          onCancel={onClose}
+        />
       </DialogContent>
     </Dialog>
   )

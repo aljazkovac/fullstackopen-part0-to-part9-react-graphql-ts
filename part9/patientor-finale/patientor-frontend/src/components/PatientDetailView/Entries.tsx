@@ -102,6 +102,7 @@ const Entries: React.FC<Props> = ({ patient, entries, diagnoses }) => {
         );
       })}
       <AddEntryModal
+        diagnosisCodes={diagnoses.map((d) => d.code)}
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}
         error={error}
