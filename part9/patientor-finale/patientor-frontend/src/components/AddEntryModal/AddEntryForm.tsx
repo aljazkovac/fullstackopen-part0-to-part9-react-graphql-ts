@@ -25,7 +25,9 @@ const AddEntryForm = ({ diagnosisCodes, onCancel, onSubmit }: Props) => {
   const [sickLeaveStartDate, setSickLeaveStartDate] = useState("");
   const [sickLeaveEndDate, setSickLeaveEndDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState(0);
+  const [healthCheckRating, setHealthCheckRating] = useState<
+    HealthCheckRating | undefined
+  >(undefined);
   const [selectedDiagnosisCodes, setSelectedDiagnosisCodes] = useState<
     string[]
   >([]);
@@ -58,7 +60,8 @@ const AddEntryForm = ({ diagnosisCodes, onCancel, onSubmit }: Props) => {
         description,
         date,
         specialist,
-        healthCheckRating,
+        healthCheckRating:
+          (healthCheckRating as unknown as HealthCheckRating) ?? "",
         diagnosisCodes: selectedDiagnosisCodes,
       };
     } else if (entryType === "Hospital") {
@@ -120,6 +123,7 @@ const AddEntryForm = ({ diagnosisCodes, onCancel, onSubmit }: Props) => {
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            label="Date"
             value={date}
             onChange={(newValue) => {
               if (newValue) {
@@ -130,19 +134,81 @@ const AddEntryForm = ({ diagnosisCodes, onCancel, onSubmit }: Props) => {
             }}
           />
         </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Discharge Date"
+            value={dischargeDate}
+            onChange={(newValue) => {
+              if (newValue) {
+                setDischargeDate(newValue.toString());
+              } else {
+                setDischargeDate("");
+              }
+            }}
+          />
+        </LocalizationProvider>
+        <TextField
+          label="Discharge Criteria"
+          fullWidth
+          value={dischargeCriteria}
+          onChange={({ target }) => setDischargeCriteria(target.value)}
+        />
         <TextField
           label="Specialist"
           fullWidth
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
+        <FormControl fullWidth>
+          <InputLabel>HealthCheck Rating</InputLabel>
+          <Select
+            value={healthCheckRating || ""}
+            onChange={(event) => {
+              setHealthCheckRating(
+                Number(event.target.value) as HealthCheckRating
+              );
+            }}
+          >
+            {Object.entries(HealthCheckRating)
+              .filter(([key, value]) => isNaN(Number(key))) // filter out numeric keys
+              .map(([key, value]) => (
+                <MenuItem key={key} value={value}>
+                  {key}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Sick Leave Start Date"
+            value={sickLeaveStartDate}
+            onChange={(newValue) => {
+              if (newValue) {
+                setSickLeaveStartDate(newValue.toString());
+              } else {
+                setSickLeaveStartDate("");
+              }
+            }}
+          />
+        </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Sick Leave End Date"
+            value={sickLeaveEndDate}
+            onChange={(newValue) => {
+              if (newValue) {
+                setSickLeaveEndDate(newValue.toString());
+              } else {
+                setSickLeaveEndDate("");
+              }
+            }}
+          />
+        </LocalizationProvider>
         <TextField
-          label="HealthCheckRating"
+          label="Employer Name"
           fullWidth
-          value={healthCheckRating}
-          onChange={({ target }) =>
-            setHealthCheckRating(parseInt(target.value))
-          }
+          value={employerName}
+          onChange={({ target }) => setEmployerName(target.value)}
         />
         <Grid>
           <Grid item>

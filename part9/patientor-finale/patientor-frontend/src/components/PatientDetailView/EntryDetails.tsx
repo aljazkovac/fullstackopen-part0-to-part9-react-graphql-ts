@@ -32,7 +32,7 @@ const EntryDetails: React.FC<EntryDetailsProps> = ({ entry }) => {
       const healthCheckEntry = entry as HealthCheckEntry;
       return (
         <div>
-          <p>diagnosed by {healthCheckEntry.specialist}</p>
+          <p>Diagnosed by {healthCheckEntry.specialist}</p>
           {determineHealthCheckRatingIcon(healthCheckEntry.healthCheckRating)}
         </div>
       );
