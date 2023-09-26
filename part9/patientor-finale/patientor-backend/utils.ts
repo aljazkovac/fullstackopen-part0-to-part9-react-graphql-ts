@@ -247,6 +247,9 @@ const isGender = (param: string): param is Gender => {
 };
 
 const isDate = (date: unknown): boolean => {
+  if (date === "") {
+    return true;
+  }
   return typeof date === "string" && Boolean(Date.parse(date));
 };
 
