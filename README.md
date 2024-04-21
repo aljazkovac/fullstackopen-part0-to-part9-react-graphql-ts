@@ -1,5 +1,5 @@
 # Full Stack Open
-The repo for the course Full Stack Open, parts 0 to 9: [Go to course]([url](https://fullstackopen.com/en/))
+The repo for the course Full Stack Open, parts 0 to 9: [Go to course]([https://fullstackopen.com/en/])
 
 For part 10 (React Native) please see this repo: https://github.com/alko5923/fullstackopen-part10-reactnative
 For part 11 (CI/CD) please see the following repos:
