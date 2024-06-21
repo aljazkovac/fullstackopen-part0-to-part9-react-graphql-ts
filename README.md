@@ -19,3 +19,4 @@ Here is the certificate for parts 0 to 7, which covers the following topics:
 7. [Part 6 - Advanced state management](https://fullstackopen.com/en/part6)
 8. [Part 7 - React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
+![Certificate part 0 to 7](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/blob/main/certificate-fullstack-part0-part7-react.png)
