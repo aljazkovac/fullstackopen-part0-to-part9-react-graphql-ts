@@ -9,7 +9,7 @@ The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
 4. For part 12, [Containers](https://fullstackopen.com/en/part12), please see [Containers-repo](https://github.com/alko5923/fullstackopen-part12-containers);
 5. For part 13, [Relational Databases](https://fullstackopen.com/en/part13), please see [Relalational-databases-repo](https://github.com/aljazkovac/fullstackopen-relational-db). 
 
-Here is the certificate for parts 0 to 7, which covers the following topics:
+Here is the certificate for parts 0 to 7, which cover the following topics:
 1. [Part 0 - Fundamentals of Web apps](https://fullstackopen.com/en/part0)
 2. [Part 1 - Introduction to React](https://fullstackopen.com/en/part1)
 3. [Part 2 - Communicating with server](https://fullstackopen.com/en/part2)
@@ -28,3 +28,5 @@ Here is the certificate for [Part 8 - GraphQl](https://fullstackopen.com/en/part
 Here is the certificate for [Part 9 - Typescript](https://fullstackopen.com/en/part9)
 
 ![Certificate part 0 - Typescript](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/blob/main/certificate-fullstack-part9-typescript.png)
+
+For the other certificates, please see the respective repos (as listed above).
