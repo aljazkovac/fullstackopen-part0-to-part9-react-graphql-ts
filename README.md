@@ -11,7 +11,7 @@ The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
 
 Here are the certificates for parts 0 to 9:
 
-![Certificate parts 0 to 7](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/blob/main/fullstackopen-part0-to-part7-cert.pdf)
+![certificate-fullstack-part0-part7-react](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/assets/55275972/0040928c-2d8e-41e5-a0ab-76e6c9ae59ff)
 
 ![Certificate part 8](fullstackopen-part8-GraphQL-cert.pdf)
 
