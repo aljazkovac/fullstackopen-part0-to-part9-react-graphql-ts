@@ -9,11 +9,13 @@ The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
 4. For part 12, [Containers](https://fullstackopen.com/en/part12), please see [Containers-repo](https://github.com/alko5923/fullstackopen-part12-containers);
 5. For part 13, [Relational Databases](https://fullstackopen.com/en/part13), please see [Relalational-databases-repo](https://github.com/aljazkovac/fullstackopen-relational-db). 
 
-Here are the certificates for parts 0 to 9:
-
-![certificate-fullstack-part0-part7-react](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/assets/55275972/0040928c-2d8e-41e5-a0ab-76e6c9ae59ff)
-
-![Certificate part 8](fullstackopen-part8-GraphQL-cert.pdf)
-
-![Certificate part 9](fullstackopen-part9-TS-cert.pdf)
+Here is the certificate for parts 0 to 7, which covers the following topics:
+1. [Part 0 - Fundamentals of Web apps](https://fullstackopen.com/en/part0)
+2. [Part 1 - Introduction to React](https://fullstackopen.com/en/part1)
+3. [Part 2 - Communicating with server](https://fullstackopen.com/en/part2)
+4. [Part 3 - Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
+5. [Part 4 - Testing Express servers, user administration](https://fullstackopen.com/en/part4)
+6. [Part 5 - Testing React apps](https://fullstackopen.com/en/part5)
+7. [Part 6 - Advanced state management](https://fullstackopen.com/en/part6)
+8. [Part 7 - React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
