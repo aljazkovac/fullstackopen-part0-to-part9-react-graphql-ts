@@ -25,3 +25,6 @@ Here is the certificate for [Part 8 - GraphQl](https://fullstackopen.com/en/part
 
 ![Certificate part 8 - GraphQl](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/blob/main/certificate-fullstack-part8-graphql.png)
 
+Here is the certificate for [Part 9 - Typescript](https://fullstackopen.com/en/part9)
+
+![Certificate part 0 - Typescript](https://github.com/aljazkovac/fullstackopen-part0-to-part9-react/blob/main/certificate-fullstack-part9-typescript.png)
