@@ -1,4 +1,5 @@
-# Full Stack Open
+# Full Stack Open - React
+
 The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
 
 1. This repo contains code from part 0, [Fundamentals of Web Apps](https://fullstackopen.com/en/part0), to part 9, [Typescript](https://fullstackopen.com/en/part9);
