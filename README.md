@@ -9,3 +9,11 @@ The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
 4. For part 12, [Containers](https://fullstackopen.com/en/part12), please see [Containers-repo](https://github.com/alko5923/fullstackopen-part12-containers);
 5. For part 13, [Relational Databases](https://fullstackopen.com/en/part13), please see [Relalational-databases-repo](https://github.com/aljazkovac/fullstackopen-relational-db). 
 
+Here are the certificates for parts 0 to 9:
+
+![Certificate parts 0 to 7](fullstackopen-part0-to-part7-cert.pdf)
+
+![Certificate part 8](fullstackopen-part8-GraphQL-cert.pdf)
+
+![Certificate part 9](fullstackopen-part9-TS-cert.pdf)
+
