@@ -1,4 +1,4 @@
-# Full Stack Open - React
+# Full Stack Open - React, GraphQl and Typescript
 
 The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
 
