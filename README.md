@@ -1,6 +1,6 @@
 # Full Stack Open - React, GraphQl and Typescript
 
-The repo for the course [Full Stack Open](https://fullstackopen.com/en/).
+The repo for the course [Full Stack Open - Deep Dive Into Modern Web Development](https://fullstackopen.com/en/).
 
 1. This repo contains code from part 0, [Fundamentals of Web Apps](https://fullstackopen.com/en/part0), to part 9, [Typescript](https://fullstackopen.com/en/part9)
 2. For part 10, [React Native](https://fullstackopen.com/en/part10), please see [React-Native-repo](https://github.com/alko5923/fullstackopen-part10-reactnative)
